@@ -16,15 +16,26 @@
 }
 
 @layer base {
-  html,
-  body {
+  html {
     @apply overflow-x-hidden;
+    overflow-y: scroll; /* reserve scrollbar space, allow vertical scroll */
+    -webkit-overflow-scrolling: touch;
   }
   body {
-    @apply bg-brand-white text-brand-black font-sans antialiased;
+    @apply bg-brand-white text-brand-black font-sans antialiased overflow-x-hidden;
+    overflow-y: auto;
+    min-height: 100%;
+    -webkit-overflow-scrolling: touch;
     overscroll-behavior: none;
+    touch-action: pan-y; /* allow vertical touch scroll */
   }
-
+  /* Touch/narrow: plain wrapper so document scroll works; no height/overflow lock */
+  .scroll-container-touch {
+    overflow-x: hidden;
+    overflow-y: visible;
+    min-height: 100%;
+    display: block;
+  }
 }
 
 @layer utilities {
@@ -77,6 +88,21 @@
   @media (min-width: 1024px) {
     .text-hero-size {
       font-size: min(11.2vw, 36vh);
+    }
+  }
+  /* Hero inside 60vh video panel: smaller text, correct placement */
+  .text-hero-size-video {
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+    letter-spacing: -0.02em;
+  }
+  @media (min-width: 640px) {
+    .text-hero-size-video {
+      font-size: clamp(2.25rem, 6vw, 3.5rem);
+    }
+  }
+  @media (min-width: 1024px) {
+    .text-hero-size-video {
+      font-size: clamp(2.5rem, 4.5vw, 4rem);
     }
   }
   /* Same letter-spacing between every character for even gaps */

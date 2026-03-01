@@ -9,7 +9,8 @@ function useIsTouchDevice() {
   const [isTouch, setIsTouch] = useState<boolean | null>(null);
   useEffect(() => {
     const prefersCoarse = window.matchMedia("(pointer: coarse)").matches;
-    setIsTouch(prefersCoarse);
+    const isNarrow = typeof window !== "undefined" && window.innerWidth < 1024;
+    setIsTouch(prefersCoarse || isNarrow);
   }, []);
   return isTouch;
 }
@@ -23,8 +24,7 @@ export function ScrollSmootherProvider({
   const isTouch = useIsTouchDevice();
 
   useEffect(() => {
-    if (isTouch === true) return;
-    if (isTouch === null) return;
+    if (isTouch !== false) return;
 
     ScrollSmoother.create({
       smooth: 2,
@@ -37,13 +37,23 @@ export function ScrollSmootherProvider({
     };
   }, [isTouch]);
 
+  // On touch/narrow: use plain wrapper (no smooth-* ids) so document scroll works.
+  // ScrollSmoother never runs on these devices and can't apply overflow/height locks.
+  const useNativeScroll = isTouch === true || isTouch === null;
+
   return (
     <>
       <Navbar onMenuClick={() => setIsMenuOpen(true)} />
       <MenuOverlay isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
-      <div id="smooth-wrapper" className={isTouch ? "overflow-x-hidden" : ""}>
-        <div id="smooth-content">{children}</div>
-      </div>
+      {useNativeScroll ? (
+        <div className="scroll-container-touch overflow-x-hidden min-h-full">
+          {children}
+        </div>
+      ) : (
+        <div id="smooth-wrapper">
+          <div id="smooth-content">{children}</div>
+        </div>
+      )}
     </>
   );
 }

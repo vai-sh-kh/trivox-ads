@@ -36,13 +36,13 @@ export function FeaturedSection({ embedded }: { embedded?: boolean }) {
 
   if (embedded) {
     return (
-      <section ref={sectionRef} className="px-4 pb-16 md:pb-24">
-        <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-10">
+      <section ref={sectionRef} className="px-2 py-1 flex-shrink-0">
+        <div className="max-w-[1920px] mx-auto px-2 sm:px-4">
           <div
             ref={containerRef}
-            className="relative flex items-center justify-center py-16"
+            className="relative flex items-center justify-center py-2"
           >
-            {/* placeholder for optional content */}
+            {/* Compact placeholder inside 60vh video panel */}
           </div>
         </div>
       </section>
