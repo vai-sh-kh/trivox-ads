@@ -35,6 +35,15 @@
     overflow-y: visible;
     min-height: 100%;
     display: block;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+  }
+
+  /* Allow native overscroll on touch devices so vertical scroll works reliably */
+  @media (pointer: coarse) {
+    body {
+      overscroll-behavior-y: auto;
+    }
   }
 }
 

@@ -59,7 +59,7 @@ export function StatsSection() {
   return (
     <section
       ref={sectionRef}
-      className="bg-black text-white py-24 md:py-32 min-h-screen relative overflow-hidden"
+      className="bg-black text-white py-24 md:py-32 min-h-screen relative overflow-x-hidden"
     >
       <div className="flex">
         <div className="hidden lg:flex flex-col border-r border-white/10 select-none bg-black">
@@ -221,14 +221,15 @@ export function StatsSection() {
         </div>
       </div>
 
-      {/* White band at bottom with black paint drips extending down */}
-      <div className="absolute bottom-0 left-0 w-full h-28 bg-white pointer-events-none" />
-      <svg
-        className="absolute bottom-0 left-0 w-full h-28 pointer-events-none"
-        viewBox="0 0 100 28"
-        preserveAspectRatio="none"
-        fill="black"
-      >
+      {/* White band at bottom with black paint drips (clipped to avoid overflow on mobile) */}
+      <div className="absolute bottom-0 left-0 w-full h-28 overflow-hidden pointer-events-none">
+        <div className="w-full h-28 bg-white" />
+        <svg
+          className="absolute bottom-0 left-0 w-full h-28"
+          viewBox="0 0 100 28"
+          preserveAspectRatio="none"
+          fill="black"
+        >
         {/* Irregular organic black drip shapes on white */}
         <path d="M 0 0 L 6 28 L 14 12 L 18 0 Z" />
         <path d="M 14 0 Q 20 14 22 28 L 30 8 L 32 0 Z" />
@@ -238,6 +239,7 @@ export function StatsSection() {
         <path d="M 74 0 L 80 22 L 88 0 Z" />
         <path d="M 86 0 Q 92 14 98 28 L 100 28 L 100 0 Z" />
       </svg>
+      </div>
     </section>
   );
 }
