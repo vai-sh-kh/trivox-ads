@@ -2,7 +2,10 @@
 
 import { motion } from "motion/react";
 import { Menu } from "lucide-react";
+import { SlidingText } from "@/components/sliding-text";
 import { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 const HEADER_TEXTS = [
   "2X ADWEEK'S FASTEST GROWING AGENCY",
@@ -55,16 +58,23 @@ export function Navbar({ onMenuClick }: NavbarProps) {
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       className="fixed top-0 left-0 w-full z-50 py-5 bg-transparent"
     >
-      <div className="max-w-[1920px] mx-auto px-8 flex justify-between items-center relative">
+      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center relative gap-2">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2, duration: 1, ease: [0.16, 1, 0.3, 1] }}
           className="flex items-center gap-3 flex-1 justify-start"
         >
-          <span className="text-[32px] font-black text-[#FF0000] uppercase leading-none">
-            TRIVOXAD
-          </span>
+          <Link href="/">
+            <Image
+              src="/logo.png"
+              alt="Trivoxad Logo"
+              width={540}
+              height={45}
+              className="w-auto h-12 md:h-14 lg:h-16 object-contain"
+              priority
+            />
+          </Link>
         </motion.div>
 
         <motion.div
@@ -79,24 +89,24 @@ export function Navbar({ onMenuClick }: NavbarProps) {
           </span>
         </motion.div>
 
-        <div className="flex items-center gap-4 flex-1 justify-end">
+        <div className="flex items-center gap-2 sm:gap-4 flex-1 justify-end min-w-0 shrink-0">
           <motion.button
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="bg-[#FF0000] text-white px-8 py-3.5 rounded-full text-[12px] font-black uppercase tracking-widest hover:scale-105 transition-transform"
+            className="group bg-[#4A148C] text-white px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 rounded-full text-[10px] sm:text-[12px] font-black uppercase tracking-widest hover:scale-105 transition-transform whitespace-nowrap"
           >
-            WORK WITH US
+            <SlidingText>WORK WITH US</SlidingText>
           </motion.button>
           <motion.button
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4, duration: 1, ease: [0.16, 1, 0.3, 1] }}
             onClick={onMenuClick}
-            className="bg-[#F2F2F2] text-black px-6 py-3.5 rounded-full text-[12px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-zinc-200 transition-colors"
+            className="group bg-[#F2F2F2] text-[#4A148C] px-4 sm:px-6 py-2.5 sm:py-3.5 rounded-full text-[10px] sm:text-[12px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-[#4A148C] hover:text-white transition-colors shrink-0"
           >
-            <Menu size={16} strokeWidth={4} />
-            MENU
+            <Menu size={14} className="sm:w-4 sm:h-4" strokeWidth={4} />
+            <SlidingText>MENU</SlidingText>
           </motion.button>
         </div>
       </div>

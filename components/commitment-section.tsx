@@ -67,7 +67,7 @@ export function CommitmentSection() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-brand-red text-white px-12 py-5 rounded-full font-black text-sm uppercase tracking-widest"
+              className="bg-brand-purple text-white px-12 py-5 rounded-full font-black text-sm uppercase tracking-widest"
             >
               START A PROJECT
             </motion.button>
@@ -119,7 +119,7 @@ export function CommitmentSection() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-brand-red text-white px-12 py-5 rounded-full font-black text-sm uppercase tracking-widest"
+              className="bg-brand-purple text-white px-12 py-5 rounded-full font-black text-sm uppercase tracking-widest"
             >
               BEGIN RETAINER
             </motion.button>

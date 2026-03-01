@@ -1,17 +1,60 @@
 "use client";
 
-import { motion } from "motion/react";
+import { useRef, useLayoutEffect } from "react";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { MusicWaveBars } from "@/components/music-wave-bars";
 
-export function FeaturedSection() {
+export function FeaturedSection({ embedded }: { embedded?: boolean }) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const section = sectionRef.current;
+    const container = containerRef.current;
+    if (!section || !container) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        container,
+        { y: 60, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1.2,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 85%",
+            once: true,
+          },
+        },
+      );
+    }, section);
+
+    return () => ctx.revert();
+  }, []);
+
+  if (embedded) {
+    return (
+      <section ref={sectionRef} className="px-4 pb-16 md:pb-24">
+        <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-10">
+          <div
+            ref={containerRef}
+            className="relative flex items-center justify-center py-16"
+          >
+            {/* placeholder for optional content */}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section className="px-4 pb-24">
-      <div className="max-w-[1920px] mx-auto px-10">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          className="relative aspect-[21/9] w-full rounded-[1rem] overflow-hidden flex items-center justify-center bg-zinc-900"
+    <section ref={sectionRef} className="px-4 pb-16 md:pb-24">
+      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-10">
+        <div
+          ref={containerRef}
+          className="relative aspect-video md:aspect-[21/9] w-full rounded-xl md:rounded-[1rem] overflow-hidden flex items-center justify-center bg-zinc-900"
         >
           <video
             autoPlay
@@ -23,21 +66,13 @@ export function FeaturedSection() {
             <source src="/videos/home-banner.mp4" type="video/mp4" />
           </video>
           <div className="flex items-center gap-8 text-white scale-110 md:scale-150 relative z-10">
-            <div className="flex gap-3 items-end h-24">
-              {[0.5, 0.8, 1, 0.9, 0.6].map((h, i) => (
-                <div
-                  key={i}
-                  className="w-3 bg-white rounded-full"
-                  style={{ height: `${h * 100}%` }}
-                />
-              ))}
-            </div>
+            <MusicWaveBars className="bg-white" />
             <span className="text-8xl md:text-9xl font-medium tracking-tighter">
               vividly
             </span>
           </div>
           <div className="absolute inset-0 bg-black/30 pointer-events-none z-[1]" />
-        </motion.div>
+        </div>
       </div>
     </section>
   );

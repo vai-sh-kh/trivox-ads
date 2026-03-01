@@ -1,18 +1,22 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useLayoutEffect } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 export function StatsSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const statsGridRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!sectionRef.current || !headingRef.current) return;
+  useLayoutEffect(() => {
+    const section = sectionRef.current;
+    const heading = headingRef.current;
+    const statsGrid = statsGridRef.current;
+    if (!section || !heading) return;
 
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        headingRef.current,
+        heading,
         { x: -60, opacity: 0 },
         {
           x: 0,
@@ -20,14 +24,34 @@ export function StatsSection() {
           duration: 1,
           ease: "power2.out",
           scrollTrigger: {
-            trigger: sectionRef.current,
+            trigger: section,
             start: "top 85%",
             end: "top 40%",
             scrub: 1.5,
           },
         },
       );
-    }, sectionRef);
+
+      // Stagger stat cards when section enters
+      if (statsGrid) {
+        const cards = gsap.utils.toArray<HTMLElement>(
+          statsGrid.querySelectorAll("[data-stat-card]"),
+        );
+        gsap.set(cards, { opacity: 0, y: 24 });
+        gsap.to(cards, {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          stagger: 0.08,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 85%",
+            once: true,
+          },
+        });
+      }
+    }, section);
 
     return () => ctx.revert();
   }, []);
@@ -75,8 +99,14 @@ export function StatsSection() {
             </h2>
           </div>
 
-          <div className="lg:col-span-9 grid grid-cols-1 md:grid-cols-3 bg-white/10">
-            <div className="bg-black p-12 border-r border-b border-white/10 flex flex-col justify-between h-72">
+          <div
+            ref={statsGridRef}
+            className="lg:col-span-9 grid grid-cols-1 md:grid-cols-3 bg-white/10"
+          >
+            <div
+              data-stat-card
+              className="bg-black p-12 border-r border-b border-white/10 flex flex-col justify-between h-72"
+            >
               <span className="text-8xl font-black tracking-tighter text-white">
                 2X
               </span>
@@ -90,7 +120,10 @@ export function StatsSection() {
                 </p>
               </div>
             </div>
-            <div className="bg-black p-12 border-r border-b border-white/10 flex flex-col justify-between h-72">
+            <div
+              data-stat-card
+              className="bg-black p-12 border-r border-b border-white/10 flex flex-col justify-between h-72"
+            >
               <span className="text-8xl font-black tracking-tighter text-white">
                 6
               </span>
@@ -102,7 +135,10 @@ export function StatsSection() {
                 </p>
               </div>
             </div>
-            <div className="bg-black p-12 border-b border-white/10 flex flex-col justify-between h-72">
+            <div
+              data-stat-card
+              className="bg-black p-12 border-b border-white/10 flex flex-col justify-between h-72"
+            >
               <span className="text-8xl font-black tracking-tighter text-white">
                 8
               </span>
@@ -117,7 +153,10 @@ export function StatsSection() {
               </div>
             </div>
 
-            <div className="md:col-span-1 bg-black p-12 border-r border-b border-white/10 flex flex-col justify-between h-80">
+            <div
+              data-stat-card
+              className="md:col-span-1 bg-black p-12 border-r border-b border-white/10 flex flex-col justify-between h-80"
+            >
               <span className="text-7xl font-black tracking-tighter text-white">
                 $2.7bn
               </span>
@@ -129,7 +168,10 @@ export function StatsSection() {
                 </p>
               </div>
             </div>
-            <div className="md:col-span-2 bg-black p-12 md:p-16 border-b border-white/10 flex flex-col justify-center">
+            <div
+              data-stat-card
+              className="md:col-span-2 bg-black p-12 md:p-16 border-b border-white/10 flex flex-col justify-center"
+            >
               <blockquote className="text-2xl md:text-4xl font-black leading-[1.1] tracking-tight uppercase mb-8 text-white">
                 &quot;BORN & BRED WAS A STRATEGIC GAME-CHANGER. THEIR METICULOUS
                 CURATION CUT THROUGH INDUSTRY NOISE, SHAPING A BRAND THAT
@@ -140,7 +182,10 @@ export function StatsSection() {
               </cite>
             </div>
 
-            <div className="bg-black p-12 border-r border-white/10 flex flex-col justify-between h-72">
+            <div
+              data-stat-card
+              className="bg-black p-12 border-r border-white/10 flex flex-col justify-between h-72"
+            >
               <span className="text-8xl font-black tracking-tighter text-white">
                 200+
               </span>
@@ -152,7 +197,10 @@ export function StatsSection() {
                 </p>
               </div>
             </div>
-            <div className="bg-black p-12 border-r border-white/10 flex flex-col justify-between h-72">
+            <div
+              data-stat-card
+              className="bg-black p-12 border-r border-white/10 flex flex-col justify-between h-72"
+            >
               <span className="text-8xl font-black tracking-tighter text-white">
                 12
               </span>

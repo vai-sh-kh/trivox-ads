@@ -32,7 +32,7 @@ export function ScrollRevealSection({
   end = "top 40%",
   scrub = 1,
 }: ScrollRevealSectionProps) {
-  const rootRef = useRef<HTMLElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
   const outerRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -92,7 +92,10 @@ export function ScrollRevealSection({
   const bgClass = revealBg === "black" ? "bg-black" : "bg-white";
 
   return (
-    <Component ref={rootRef} className={`overflow-hidden ${className}`.trim()}>
+    <Component
+      ref={rootRef as React.Ref<HTMLDivElement>}
+      className={`overflow-hidden ${className}`.trim()}
+    >
       <div
         ref={outerRef}
         className={`w-full overflow-hidden ${bgClass}`}

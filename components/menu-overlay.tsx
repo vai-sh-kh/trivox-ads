@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "motion/react";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 const HEADER_TEXTS = [
   "2X ADWEEK'S FASTEST GROWING AGENCY",
@@ -89,9 +90,14 @@ export function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
         >
           {/* Header - matches reference: logo left, slogan center, buttons right */}
           <header className="relative max-w-[1920px] mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
-            <span className="text-[26px] md:text-[30px] font-black text-brand-red uppercase leading-[1.1] tracking-tight z-10">
-              TRIVOXAD
-            </span>
+            <Image
+              src="/logo.png"
+              alt="Trivoxad Logo"
+              width={180}
+              height={45}
+              className="w-auto h-12 md:h-14 lg:h-16 object-contain z-10"
+              priority
+            />
 
             <span className="hidden sm:block absolute left-1/2 -translate-x-1/2 text-[11px] md:text-xs font-black tracking-[0.12em] uppercase text-black pointer-events-none min-h-[1.2em]">
               {displayText}
@@ -102,7 +108,7 @@ export function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
               <a
                 href="#contact"
                 onClick={onClose}
-                className="bg-brand-red text-white px-8 py-3.5 rounded-full text-[12px] font-black uppercase tracking-widest hover:scale-105 transition-transform"
+                className="bg-brand-purple text-white px-8 py-3.5 rounded-full text-[12px] font-black uppercase tracking-widest hover:scale-105 transition-transform"
               >
                 WORK WITH US
               </a>
@@ -136,7 +142,7 @@ export function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
               <a
                 href="#contact"
                 onClick={onClose}
-                className="mt-12 md:mt-0 bg-brand-red text-white px-10 py-5 rounded-md text-sm font-black uppercase tracking-[0.15em] hover:bg-red-700 transition-colors w-fit"
+                className="mt-12 md:mt-0 bg-brand-purple text-white px-10 py-5 rounded-md text-sm font-black uppercase tracking-[0.15em] hover:bg-purple-900 transition-colors w-fit"
               >
                 WORK WITH US
               </a>

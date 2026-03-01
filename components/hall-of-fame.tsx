@@ -2,7 +2,14 @@
 
 import { motion } from "motion/react";
 import { ArrowRight, ArrowLeft, Eye, Heart, Zap } from "lucide-react";
-import { useState, useEffect, useCallback, useRef } from "react";
+import {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  useLayoutEffect,
+} from "react";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { AnimatedText } from "@/components/animated-text";
 
 const famers = [
@@ -86,6 +93,44 @@ export function HallOfFame() {
     return () => clearInterval(id);
   }, [next]);
 
+  const leftColRef = useRef<HTMLDivElement>(null);
+  const rightColRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const section = sectionRef.current;
+    const leftCol = leftColRef.current;
+    const rightCol = rightColRef.current;
+    if (!section || !leftCol || !rightCol) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        leftCol,
+        { x: -40, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power2.out",
+          scrollTrigger: { trigger: section, start: "top 85%", once: true },
+        },
+      );
+      gsap.fromTo(
+        rightCol,
+        { x: 40, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.8,
+          delay: 0.15,
+          ease: "power2.out",
+          scrollTrigger: { trigger: section, start: "top 85%", once: true },
+        },
+      );
+    }, section);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
       ref={sectionRef}
@@ -110,7 +155,10 @@ export function HallOfFame() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          <div className="relative h-[min(380px,45vh)] lg:h-[min(420px,50vh)] flex items-center justify-center">
+          <div
+            ref={leftColRef}
+            className="relative h-[min(380px,45vh)] lg:h-[min(420px,50vh)] flex items-center justify-center"
+          >
             <div className="relative w-full max-w-sm h-full">
               {famers.map((famer, i) => {
                 const isCurrent = i === activeIndex;
@@ -266,7 +314,7 @@ export function HallOfFame() {
             </div>
           </div>
 
-          <div className="space-y-6 md:space-y-8">
+          <div ref={rightColRef} className="space-y-6 md:space-y-8">
             <div>
               <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-2">
                 {current.role}

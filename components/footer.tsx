@@ -1,7 +1,9 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef, useLayoutEffect } from "react";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { SlidingText } from "@/components/sliding-text";
 
 const HOME_LINKS = [
   { label: "Home", href: "#" },
@@ -48,14 +50,72 @@ const SOCIAL_LINKS = [
 
 export function Footer() {
   const [email, setEmail] = useState("");
+  const footerRef = useRef<HTMLElement>(null);
+  const topSectionRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const footer = footerRef.current;
+    const topSection = topSectionRef.current;
+    if (!footer) return;
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: footer,
+          start: "top 92%",
+          once: true,
+        },
+      });
+
+      // Footer wrapper: opacity + y on enter
+      tl.fromTo(
+        footer,
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
+      );
+
+      // Stagger the three top columns (starts before footer animation ends)
+      if (topSection) {
+        const cols = gsap.utils.toArray<HTMLElement>(
+          topSection.querySelectorAll("[data-footer-col]"),
+        );
+        if (cols.length) {
+          gsap.set(cols, { opacity: 0, y: 20 });
+          tl.to(
+            cols,
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.5,
+              stagger: 0.1,
+              ease: "power2.out",
+            },
+            "-=0.4",
+          );
+        }
+      }
+    }, footer);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <footer className="bg-brand-red text-white overflow-hidden font-sans">
+    <footer
+      ref={footerRef}
+      className="bg-[#4A148C] text-white overflow-hidden font-sans"
+      data-cursor-white
+    >
       <div className="w-full max-w-[1920px] mx-auto">
         {/* Top section: 3 columns with two 1px vertical white lines */}
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_1px_minmax(0,1fr)_1px_minmax(0,1fr)] gap-0 px-8 sm:px-10 lg:px-14 pt-28 lg:pt-36 pb-0">
+        <div
+          ref={topSectionRef}
+          className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_1px_minmax(0,1fr)_1px_minmax(0,1fr)] gap-0 px-8 sm:px-10 lg:px-14 pt-28 lg:pt-36 pb-0"
+        >
           {/* ——— Column 1: Subscribe & Contact ——— */}
-          <div className="pt-0 pb-20 lg:pb-28 border-b border-white/50 lg:border-b-0">
+          <div
+            data-footer-col
+            className="pt-0 pb-20 lg:pb-28 border-b border-white/50 lg:border-b-0"
+          >
             <h3
               className="uppercase font-bold tracking-[0.06em] mb-6"
               style={{ fontSize: "24px", lineHeight: 1.2 }}
@@ -85,10 +145,11 @@ export function Footer() {
                   <a
                     key={label}
                     href={href}
-                    className="flex items-center gap-1.5 text-white hover:opacity-90 transition-opacity"
+                    className="group inline-flex items-center gap-1.5 text-white hover:opacity-90 transition-opacity"
                     style={{ fontSize: "16px", letterSpacing: "0.01em" }}
                   >
-                    {label} →
+                    <SlidingText>{label}</SlidingText>
+                    <span>→</span>
                   </a>
                 ))}
               </div>
@@ -102,7 +163,7 @@ export function Footer() {
                   className="uppercase hover:underline block"
                   style={{ fontSize: "16px" }}
                 >
-                  HELLO@TRIVOXAD.COM
+                  HELLO@TRIVOXADS.COM
                 </a>
               </div>
             </div>
@@ -115,7 +176,10 @@ export function Footer() {
           />
 
           {/* ——— Column 2: Navigation + Services (first half) ——— */}
-          <div className="px-0 lg:px-10 pt-10 lg:pt-0 pb-20 lg:pb-28 flex flex-col border-b border-white/50 lg:border-b-0">
+          <div
+            data-footer-col
+            className="px-0 lg:px-10 pt-10 lg:pt-0 pb-20 lg:pb-28 flex flex-col border-b border-white/50 lg:border-b-0"
+          >
             <h3
               className="uppercase font-bold tracking-[0.06em] mb-6"
               style={{ fontSize: "24px", lineHeight: 1.2 }}
@@ -128,10 +192,10 @@ export function Footer() {
                   <li key={label}>
                     <a
                       href={href}
-                      className="text-white hover:opacity-90 transition-opacity"
+                      className="group inline-block text-white hover:opacity-90 transition-opacity"
                       style={{ fontSize: "18px" }}
                     >
-                      {label}
+                      <SlidingText>{label}</SlidingText>
                     </a>
                   </li>
                 ))}
@@ -148,10 +212,10 @@ export function Footer() {
                     <li key={name}>
                       <a
                         href="#"
-                        className="text-white hover:opacity-90 transition-opacity"
+                        className="group inline-block text-white hover:opacity-90 transition-opacity"
                         style={{ fontSize: "18px" }}
                       >
-                        {name}
+                        <SlidingText>{name}</SlidingText>
                       </a>
                     </li>
                   ))}
@@ -167,12 +231,15 @@ export function Footer() {
           />
 
           {/* ——— Column 3: Copyright + Services (second half) + Industries ——— */}
-          <div className="pl-0 lg:pl-10 pt-10 lg:pt-0 pb-20 lg:pb-28 flex flex-col">
+          <div
+            data-footer-col
+            className="pl-0 lg:pl-10 pt-10 lg:pt-0 pb-20 lg:pb-28 flex flex-col"
+          >
             <p
               className="uppercase mb-6 tracking-wide"
               style={{ fontSize: "18px", letterSpacing: "0.04em" }}
             >
-              ©TRIVOXAD 2026
+              ©TRIVOXADS 2026
             </p>
             <div className="flex gap-12 lg:gap-14 flex-wrap">
               <div>
@@ -181,10 +248,10 @@ export function Footer() {
                     <li key={name}>
                       <a
                         href="#"
-                        className="text-white hover:opacity-90 transition-opacity"
+                        className="group inline-block text-white hover:opacity-90 transition-opacity"
                         style={{ fontSize: "18px" }}
                       >
-                        {name}
+                        <SlidingText>{name}</SlidingText>
                       </a>
                     </li>
                   ))}
@@ -203,10 +270,10 @@ export function Footer() {
                       <li key={name}>
                         <a
                           href="#"
-                          className="text-white hover:opacity-90 transition-opacity"
+                          className="group inline-block text-white hover:opacity-90 transition-opacity"
                           style={{ fontSize: "18px" }}
                         >
-                          {name}
+                          <SlidingText>{name}</SlidingText>
                         </a>
                       </li>
                     ))}
@@ -217,10 +284,10 @@ export function Footer() {
                     <li key={name}>
                       <a
                         href="#"
-                        className="text-white hover:opacity-90 transition-opacity"
+                        className="group inline-block text-white hover:opacity-90 transition-opacity"
                         style={{ fontSize: "18px" }}
                       >
-                        {name}
+                        <SlidingText>{name}</SlidingText>
                       </a>
                     </li>
                   ))}
@@ -242,33 +309,33 @@ export function Footer() {
           <div className="flex flex-wrap gap-8 lg:gap-12 mb-6">
             <a
               href="#"
-              className="uppercase font-medium hover:opacity-90 transition-opacity"
+              className="group inline-block uppercase font-medium hover:opacity-90 transition-opacity"
               style={{
                 fontSize: "12px",
                 letterSpacing: "0.14em",
               }}
             >
-              PRIVACY POLICY
+              <SlidingText>PRIVACY POLICY</SlidingText>
             </a>
             <a
               href="#"
-              className="uppercase font-medium hover:opacity-90 transition-opacity"
+              className="group inline-block uppercase font-medium hover:opacity-90 transition-opacity"
               style={{
                 fontSize: "12px",
                 letterSpacing: "0.14em",
               }}
             >
-              COOKIES
+              <SlidingText>COOKIES</SlidingText>
             </a>
             <a
               href="#"
-              className="uppercase font-medium hover:opacity-90 transition-opacity"
+              className="group inline-block uppercase font-medium hover:opacity-90 transition-opacity"
               style={{
                 fontSize: "12px",
                 letterSpacing: "0.14em",
               }}
             >
-              TERMS AND CONDITIONS
+              <SlidingText>TERMS AND CONDITIONS</SlidingText>
             </a>
           </div>
           <p
@@ -279,7 +346,7 @@ export function Footer() {
             }}
             aria-hidden
           >
-            Trivoxad
+            TRIVOXADS
           </p>
         </div>
       </div>

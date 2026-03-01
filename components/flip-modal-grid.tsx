@@ -22,6 +22,8 @@ type FlipModalGridProps = {
   /** Optional per-item class for the box wrapper (e.g. "lg:col-span-2") */
   itemWrapperClassNames?: (string | undefined)[];
   modalContentClassName?: string;
+  /** Optional ref for the grid container (e.g. for GSAP stagger) */
+  gridRef?: React.RefObject<HTMLDivElement | null>;
 };
 
 export function FlipModalGrid({
@@ -31,6 +33,7 @@ export function FlipModalGrid({
   boxContentClassName = "",
   itemWrapperClassNames,
   modalContentClassName = "",
+  gridRef,
 }: FlipModalGridProps) {
   const count = Array.isArray(children) ? children.length : 0;
   const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -127,7 +130,7 @@ export function FlipModalGrid({
 
   return (
     <>
-      <div className={gridClassName}>
+      <div ref={gridRef} className={gridClassName}>
         {Array.isArray(children)
           ? children.map((child, i) => (
               <div

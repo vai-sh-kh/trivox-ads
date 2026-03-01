@@ -5,12 +5,11 @@ import { useRef, useEffect } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { HeroSwoosh } from "./hero-swoosh";
 
-const CONTAINER_CLASS = "max-w-[1920px] mx-auto px-8";
+const CONTAINER_CLASS = "max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8";
 
-export function Hero() {
+export function Hero({ videoBackground }: { videoBackground?: boolean }) {
   const sectionRef = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const titleRef = useRef<HTMLHeadingElement | HTMLDivElement>(null);
 
   useEffect(() => {
     if (!titleRef.current || !sectionRef.current) return;
@@ -40,9 +39,8 @@ export function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative pt-28 sm:pt-32 pb-0 overflow-hidden bg-white"
+      className={`relative pt-20 sm:pt-24 lg:pt-28 overflow-hidden ${!videoBackground ? "bg-gradient-to-b from-[#5D3FD3]/[0.06] via-transparent to-[#E0115F]/[0.04]" : ""}`}
     >
-      {/* Same container as navbar: start and end fit inside same bounds */}
       <div className={CONTAINER_CLASS}>
         <motion.div
           className="w-full flex items-center justify-center"
@@ -50,19 +48,40 @@ export function Hero() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         >
-          <h1
-            ref={titleRef}
-            className="flex w-full items-stretch justify-between gap-0 leading-none font-black uppercase hero-title-fit text-gradient text-[280px]!"
-          >
-            {["T", "R", "I", "V", "O", "X", "A", "D", "S"].map((letter, i) => (
-              <span
-                key={i}
-                className="flex-1 flex items-center justify-center min-w-0"
-              >
-                {letter}
-              </span>
-            ))}
-          </h1>
+          {videoBackground ? (
+            /* Video-through-text: black layer + white text, mix-blend-mode shows video only in text */
+            <div
+              ref={titleRef}
+              className="flex w-full items-stretch justify-between gap-0 leading-none font-black uppercase hero-title-fit text-hero-size bg-black mix-blend-multiply [&_span]:text-white"
+            >
+              {["T", "R", "I", "V", "O", "X", "A", "D", "S"].map(
+                (letter, i) => (
+                  <span
+                    key={i}
+                    className="flex-1 flex items-center justify-center min-w-0"
+                  >
+                    {letter}
+                  </span>
+                ),
+              )}
+            </div>
+          ) : (
+            <h1
+              ref={titleRef}
+              className="flex w-full items-stretch justify-between gap-0 leading-none font-black uppercase hero-title-fit text-gradient text-hero-size"
+            >
+              {["T", "R", "I", "V", "O", "X", "A", "D", "S"].map(
+                (letter, i) => (
+                  <span
+                    key={i}
+                    className="flex-1 flex items-center justify-center min-w-0"
+                  >
+                    {letter}
+                  </span>
+                ),
+              )}
+            </h1>
+          )}
         </motion.div>
       </div>
     </section>

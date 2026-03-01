@@ -44,12 +44,12 @@ export function AnimatedText({
       const start = useSectionAtTop
         ? "top bottom"
         : sectionRef
-          ? "top 95%"
+          ? "top 88%"
           : "top 100%";
       const end = useSectionAtTop
         ? "top top"
         : sectionRef
-          ? "bottom top+=500"
+          ? "top 28%"
           : "top 30%";
 
       split.chars.forEach((char) => {
@@ -62,7 +62,7 @@ export function AnimatedText({
             trigger,
             start,
             end,
-            scrub: 1,
+            scrub: 1.2,
           },
         });
       });

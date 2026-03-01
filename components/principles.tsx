@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useLayoutEffect } from "react";
 import { motion } from "motion/react";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { AnimatedText } from "@/components/animated-text";
 
 const principles = [
@@ -29,6 +30,34 @@ const principles = [
 
 export function Principles() {
   const sectionRef = useRef<HTMLElement>(null);
+  const columnsRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const section = sectionRef.current;
+    const columns = columnsRef.current;
+    if (!section || !columns) return;
+
+    const ctx = gsap.context(() => {
+      const cards = gsap.utils.toArray<HTMLElement>(
+        columns.querySelectorAll("[data-principle-card]"),
+      );
+      gsap.set(cards, { opacity: 0, y: 28 });
+      gsap.to(cards, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        stagger: 0.08,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: section,
+          start: "top 82%",
+          once: true,
+        },
+      });
+    }, section);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section
@@ -68,7 +97,7 @@ export function Principles() {
         {/* Title floats above the vertical lines */}
         <div className="text-center mb-20 md:mb-28 lg:mb-32">
           <h2 className="text-left inline-block max-w-[min(90vw,1000px)]">
-            <span className="block text-[clamp(2rem,4vw,2.75rem)] md:text-[clamp(2.25rem,4.5vw,3.5rem)] font-bold leading-[1.05] tracking-tight text-brand-red">
+            <span className="block text-[clamp(2rem,4vw,2.75rem)] md:text-[clamp(2.25rem,4.5vw,3.5rem)] font-bold leading-[1.05] tracking-tight text-brand-purple">
               <AnimatedText
                 sectionRef={sectionRef}
                 as="span"
@@ -90,26 +119,20 @@ export function Principles() {
         </div>
 
         {/* Four columns aligned with full-height vertical lines */}
-        <div className="mt-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-16 lg:gap-y-0 lg:gap-x-0 items-stretch">
+        <div
+          ref={columnsRef}
+          className="mt-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-16 lg:gap-y-0 lg:gap-x-0 items-stretch"
+        >
           {principles.map((p, i) => (
             <div key={i} className="lg:px-8">
-              <motion.div
-                initial={{ opacity: 0, y: 28 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{
-                  delay: i * 0.08,
-                  duration: 0.7,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-              >
+              <div data-principle-card>
                 <h3 className="text-xl md:text-2xl font-bold tracking-tight leading-[1.2] text-black mb-6 whitespace-pre-line">
                   {p.title}
                 </h3>
                 <p className="text-base md:text-[1.05rem] leading-relaxed text-black font-normal">
                   {p.description}
                 </p>
-              </motion.div>
+              </div>
             </div>
           ))}
         </div>
