@@ -66,11 +66,11 @@ export default function ContactPage() {
         centerContent={true}
         showDecorativeCircle={false}
       >
-        <div className="space-y-16 md:space-y-20 lg:space-y-24">
+        <div className="space-y-12 sm:space-y-16 md:space-y-20 lg:space-y-24">
           {/* Hero: same as Digital Marketing / About */}
           <header className="text-center max-w-6xl mx-auto w-full">
             <motion.h1
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-black uppercase tracking-tight leading-[0.95] mt-8 mb-8 whitespace-nowrap"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-black uppercase tracking-tight leading-[0.95] mt-6 sm:mt-8 mb-6 sm:mb-8"
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
@@ -78,7 +78,7 @@ export default function ContactPage() {
               Contact
             </motion.h1>
             <motion.p
-              className="text-base md:text-lg lg:text-xl text-zinc-600 leading-relaxed"
+              className="text-sm sm:text-base md:text-lg lg:text-xl text-zinc-600 leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{

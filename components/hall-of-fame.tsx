@@ -100,16 +100,16 @@ export function HallOfFame() {
       <div className="max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16">
         <h2
           ref={headingRef}
-          className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black leading-[0.9] tracking-tighter uppercase mb-3"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black leading-[0.9] tracking-tighter uppercase mb-2 sm:mb-3"
         >
           Our Clients Say
         </h2>
-        <p className="text-zinc-400 max-w-2xl text-base md:text-lg mb-12 md:mb-16">
+        <p className="text-zinc-400 max-w-2xl text-sm sm:text-base md:text-lg mb-8 sm:mb-12 md:mb-16">
           We&apos;ve been privileged to work with brands doing great things.
           Here&apos;s how they&apos;re growing with TrivoxAds.
         </p>
 
-        <div className="flex flex-col lg:flex-row lg:items-stretch gap-10 lg:gap-12">
+        <div className="flex flex-col lg:flex-row lg:items-stretch gap-8 sm:gap-10 lg:gap-12">
           {/* Carousel: cards with circuit-style border */}
           <div ref={carouselRef} className="flex-1 min-w-0">
             <div className="relative flex items-center justify-center gap-4">
@@ -145,27 +145,27 @@ export function HallOfFame() {
                       <div className="absolute bottom-0 left-0 w-8 h-8 border-l-2 border-b-2 border-brand-purple/60 rounded-bl" />
                       <div className="absolute bottom-0 right-0 w-8 h-8 border-r-2 border-b-2 border-brand-purple/60 rounded-br" />
 
-                      <div className="p-8 md:p-10 lg:p-12 rounded-xl">
-                        <div className="flex items-center gap-5 mb-8">
-                          <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-brand-purple flex items-center justify-center text-2xl md:text-3xl font-black text-white shrink-0">
+                      <div className="p-5 sm:p-8 md:p-10 lg:p-12 rounded-xl">
+                        <div className="flex items-center gap-3 sm:gap-5 mb-5 sm:mb-8">
+                          <div className="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full bg-brand-purple flex items-center justify-center text-lg sm:text-2xl md:text-3xl font-black text-white shrink-0">
                             {current.initials}
                           </div>
-                          <div>
-                            <div className="font-bold text-white text-xl md:text-2xl">
+                          <div className="min-w-0">
+                            <div className="font-bold text-white text-base sm:text-xl md:text-2xl truncate">
                               {current.authorName}
                             </div>
                             {current.company && (
-                              <div className="text-base md:text-lg text-zinc-400">
+                              <div className="text-sm sm:text-base md:text-lg text-zinc-400 truncate">
                                 {current.company}
                               </div>
                             )}
-                            <div className="text-sm text-zinc-500 mt-1.5 font-mono">
+                            <div className="text-xs sm:text-sm text-zinc-500 mt-1.5 font-mono">
                               {cardCode(current.id, activeIndex)}
                             </div>
                           </div>
                         </div>
-                        <div className="h-px bg-white/10 mb-8" />
-                        <blockquote className="text-zinc-300 text-lg md:text-xl lg:text-2xl leading-relaxed">
+                        <div className="h-px bg-white/10 mb-5 sm:mb-8" />
+                        <blockquote className="text-zinc-300 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl leading-relaxed">
                           &ldquo;{current.text}&rdquo;
                         </blockquote>
                         <div className="mt-8 h-2 w-32 md:w-40 rounded-full bg-linear-to-r from-brand-purple to-logo-pink" />
@@ -224,12 +224,12 @@ export function HallOfFame() {
           {/* Right panel: active client details */}
           <div
             ref={panelRef}
-            className="lg:w-[380px] xl:w-[420px] shrink-0 border border-white/10 rounded-xl bg-white/5 p-6 md:p-8 flex flex-col justify-center"
+            className="lg:w-[380px] xl:w-[420px] shrink-0 border border-white/10 rounded-xl bg-white/5 p-4 sm:p-6 md:p-8 flex flex-col justify-center"
           >
-            <p className="text-xs font-black uppercase tracking-widest text-zinc-500 mb-2">
+            <p className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-zinc-500 mb-1.5 sm:mb-2">
               Client spotlight
             </p>
-            <h3 className="text-2xl md:text-3xl font-black text-white mb-4">
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white mb-3 sm:mb-4 break-words">
               {current.company || current.authorName}
             </h3>
             <p className="text-white font-semibold mb-6">

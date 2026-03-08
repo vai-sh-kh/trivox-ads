@@ -39,11 +39,11 @@ export function FeaturedSection({ embedded }: { embedded?: boolean }) {
   }
 
   return (
-    <section ref={sectionRef} className="px-4 pb-16 md:pb-24">
+    <section ref={sectionRef} className="px-4 pb-10 sm:pb-16 md:pb-24">
       <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-10">
         <div
           ref={containerRef}
-          className="relative aspect-video md:aspect-[21/9] w-full rounded-xl md:rounded-[1rem] overflow-hidden flex items-center justify-center bg-zinc-900"
+          className="relative aspect-video md:aspect-[21/9] w-full rounded-lg sm:rounded-xl md:rounded-[1rem] overflow-hidden flex items-center justify-center bg-zinc-900"
         >
           <video
             autoPlay
@@ -54,9 +54,9 @@ export function FeaturedSection({ embedded }: { embedded?: boolean }) {
           >
             <source src="/videos/home-banner.mp4" type="video/mp4" />
           </video>
-          <div className="flex items-center gap-8 text-white scale-110 md:scale-150 relative z-10">
-            <MusicWaveBars className="bg-white" />
-            <span className="text-8xl md:text-9xl font-medium tracking-tighter">
+          <div className="flex items-center gap-4 sm:gap-6 md:gap-8 text-white scale-100 sm:scale-110 md:scale-150 relative z-10">
+            <MusicWaveBars className="bg-white scale-90 sm:scale-100" />
+            <span className="text-4xl min-[400px]:text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-medium tracking-tighter">
               vividly
             </span>
           </div>

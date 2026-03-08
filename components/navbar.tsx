@@ -52,22 +52,22 @@ export function Navbar({ onMenuClick }: NavbarProps) {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed top-0 left-0 w-full z-50 h-[88px] flex items-center bg-transparent"
+      className="fixed top-0 left-0 w-full z-50 h-16 sm:h-[72px] lg:h-[88px] flex items-center bg-transparent"
     >
       <div className="max-w-[1920px] mx-auto w-full px-4 sm:px-6 lg:px-8 flex justify-between items-center relative gap-2">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="flex items-center gap-3 flex-1 justify-start min-w-0 h-14"
+          className="flex items-center gap-3 flex-1 justify-start min-w-0 h-10 sm:h-12 lg:h-14"
         >
-          <Link href="/" className="flex items-center h-14 min-w-0">
+          <Link href="/" className="flex items-center h-10 sm:h-12 lg:h-14 min-w-0 min-h-[44px]">
             <Image
               src="/logo.png"
               alt="TrivoxAds"
               width={200}
               height={56}
-              className="h-14 w-auto max-w-[200px] object-contain object-left shrink-0"
+              className="h-8 sm:h-10 lg:h-14 w-auto max-w-[120px] sm:max-w-[160px] lg:max-w-[200px] object-contain object-left shrink-0"
               priority
             />
           </Link>
@@ -86,12 +86,12 @@ export function Navbar({ onMenuClick }: NavbarProps) {
         </motion.div>
 
         <div className="flex items-center gap-2 sm:gap-4 flex-1 justify-end min-w-0 shrink-0">
-          <Link href="/contact">
+          <Link href="/contact" className="min-h-[44px] flex items-center">
             <motion.span
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className="group inline-block bg-brand-purple text-white px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 rounded-full text-[10px] sm:text-[12px] font-black uppercase tracking-widest hover:scale-105 transition-transform whitespace-nowrap"
+              className="group inline-block bg-brand-purple text-white px-3 sm:px-6 lg:px-8 py-3 sm:py-3.5 rounded-full text-[10px] sm:text-[12px] font-black uppercase tracking-widest hover:scale-105 transition-transform whitespace-nowrap min-h-[44px] flex items-center justify-center"
             >
               <SlidingText>WORK WITH US</SlidingText>
             </motion.span>
@@ -101,9 +101,9 @@ export function Navbar({ onMenuClick }: NavbarProps) {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4, duration: 1, ease: [0.16, 1, 0.3, 1] }}
             onClick={onMenuClick}
-            className="group bg-[#F2F2F2] text-brand-purple border border-zinc-300/80 px-4 sm:px-6 py-2.5 sm:py-3.5 rounded-full text-[10px] sm:text-[12px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-brand-purple hover:text-white hover:border-brand-purple/50 transition-colors shrink-0"
+            className="group bg-[#F2F2F2] text-brand-purple border border-zinc-300/80 px-3 sm:px-6 py-3 sm:py-3.5 rounded-full text-[10px] sm:text-[12px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-brand-purple hover:text-white hover:border-brand-purple/50 transition-colors shrink-0 min-h-[44px]"
           >
-            <Menu size={14} className="sm:w-4 sm:h-4" strokeWidth={4} />
+            <Menu size={14} className="sm:w-4 sm:h-4 shrink-0" strokeWidth={4} />
             <SlidingText>MENU</SlidingText>
           </motion.button>
         </div>

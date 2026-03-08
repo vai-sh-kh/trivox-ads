@@ -108,7 +108,7 @@ export function DefiningMomentsSection() {
         <div className="flex flex-col items-center text-center">
           <h2
             ref={headingRef}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[clamp(3.5rem,6.5vw,6rem)] font-black leading-[1.05] tracking-wide uppercase mt-12 sm:mt-16 md:mt-20 mb-10 sm:mb-12 md:mb-16"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-wide uppercase mt-8 sm:mt-12 md:mt-16 lg:mt-20 mb-8 sm:mb-10 md:mb-12 lg:mb-16"
           >
             <span className="text-gradient">Who we are</span>
           </h2>

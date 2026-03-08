@@ -80,37 +80,32 @@ export function Footer() {
         {/* Top section: 3 columns with two 1px vertical white lines */}
         <div
           ref={topSectionRef}
-          className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_1px_minmax(0,1fr)_1px_minmax(0,1fr)] gap-0 px-8 sm:px-10 lg:px-14 pt-28 lg:pt-36 pb-0"
+          className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_1px_minmax(0,1fr)_1px_minmax(0,1fr)] gap-0 px-4 sm:px-10 lg:px-14 pt-16 sm:pt-20 md:pt-28 lg:pt-36 pb-0"
         >
           {/* ——— Column 1: Get in touch & Contact (from docs/constants) ——— */}
           <div
             data-footer-col
-            className="pt-0 pb-20 lg:pb-28 border-b border-white/50 lg:border-b-0"
+            className="pt-0 pb-12 sm:pb-20 lg:pb-28 border-b border-white/50 lg:border-b-0"
           >
-            <h3
-              className="uppercase font-bold tracking-[0.06em] mb-6"
-              style={{ fontSize: "24px", lineHeight: 1.2 }}
-            >
+            <h3 className="uppercase font-bold tracking-[0.06em] mb-4 sm:mb-6 text-lg sm:text-xl md:text-2xl leading-tight">
               GET IN TOUCH
             </h3>
             <Link
               href="/contact"
-              className="group inline-flex items-center gap-2 border border-white rounded-[6px] px-5 py-3.5 text-white hover:bg-white/10 transition-colors max-w-[280px] mb-10 uppercase tracking-wide"
-              style={{ fontSize: "16px" }}
+              className="group inline-flex items-center gap-2 border border-white rounded-[6px] px-4 sm:px-5 py-3 sm:py-3.5 text-white hover:bg-white/10 transition-colors max-w-[280px] mb-8 sm:mb-10 uppercase tracking-wide text-sm sm:text-base"
             >
               <SlidingText>Start a project</SlidingText>
               <ArrowRight size={18} strokeWidth={2} className="shrink-0" />
             </Link>
-            <div className="flex gap-16">
-              <div className="space-y-4">
+            <div className="flex flex-col sm:flex-row gap-8 sm:gap-16">
+              <div className="space-y-3 sm:space-y-4">
                 {MEDIA_LINKS.map(({ label, href }) => (
                   <a
                     key={label}
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-1.5 text-white hover:opacity-90 transition-opacity"
-                    style={{ fontSize: "16px", letterSpacing: "0.01em" }}
+                    className="group inline-flex items-center gap-1.5 text-white hover:opacity-90 transition-opacity text-sm sm:text-base tracking-[0.01em]"
                   >
                     <SlidingText>{label}</SlidingText>
                     <span>→</span>
@@ -118,26 +113,23 @@ export function Footer() {
                 ))}
                 <Link
                   href="/contact"
-                  className="group inline-flex items-center gap-1.5 text-white hover:opacity-90 transition-opacity"
-                  style={{ fontSize: "16px", letterSpacing: "0.01em" }}
+                  className="group inline-flex items-center gap-1.5 text-white hover:opacity-90 transition-opacity text-sm sm:text-base tracking-[0.01em]"
                 >
                   <SlidingText>Contact</SlidingText>
                   <span>→</span>
                 </Link>
               </div>
-              <div className="space-y-2">
-                <p style={{ fontSize: "16px" }}>Start A Project</p>
+              <div className="space-y-1.5 sm:space-y-2">
+                <p className="text-sm sm:text-base">Start A Project</p>
                 <a
                   href={`tel:${CONTACT.phone.replace(/\s/g, "")}`}
-                  className="block text-white hover:underline"
-                  style={{ fontSize: "16px" }}
+                  className="block text-white hover:underline text-sm sm:text-base"
                 >
                   {CONTACT.phone}
                 </a>
                 <a
                   href={`mailto:${CONTACT.email}`}
-                  className="uppercase hover:underline block"
-                  style={{ fontSize: "16px" }}
+                  className="uppercase hover:underline block text-sm sm:text-base break-all"
                 >
                   {CONTACT.email}
                 </a>
@@ -154,22 +146,18 @@ export function Footer() {
           {/* ——— Column 2: Navigation + Services (first half) ——— */}
           <div
             data-footer-col
-            className="px-0 lg:px-10 pt-10 lg:pt-0 pb-20 lg:pb-28 flex flex-col border-b border-white/50 lg:border-b-0"
+            className="px-0 lg:px-10 pt-8 sm:pt-10 lg:pt-0 pb-12 sm:pb-20 lg:pb-28 flex flex-col border-b border-white/50 lg:border-b-0"
           >
-            <h3
-              className="uppercase font-bold tracking-[0.06em] mb-6"
-              style={{ fontSize: "24px", lineHeight: 1.2 }}
-            >
+            <h3 className="uppercase font-bold tracking-[0.06em] mb-4 sm:mb-6 text-lg sm:text-xl md:text-2xl leading-tight">
               NAVIGATION
             </h3>
-            <div className="flex gap-12 lg:gap-14">
-              <ul className="space-y-5">
+            <div className="flex flex-col sm:flex-row gap-8 sm:gap-12 lg:gap-14">
+              <ul className="space-y-3 sm:space-y-5">
                 {NAV_LINKS.map(({ label, href }) => (
                   <li key={label}>
                     <Link
                       href={href}
-                      className="group inline-block text-white hover:opacity-90 transition-opacity"
-                      style={{ fontSize: "18px" }}
+                      className="group inline-block text-white hover:opacity-90 transition-opacity text-base sm:text-lg"
                     >
                       <SlidingText>{label}</SlidingText>
                     </Link>
@@ -177,19 +165,15 @@ export function Footer() {
                 ))}
               </ul>
               <div>
-                <p
-                  className="font-bold uppercase mb-4 tracking-wide"
-                  style={{ fontSize: "15px" }}
-                >
+                <p className="font-bold uppercase mb-3 sm:mb-4 tracking-wide text-sm sm:text-base">
                   SERVICES
                 </p>
-                <ul className="space-y-5">
+                <ul className="space-y-3 sm:space-y-5">
                   {SERVICES_COL1.map((name) => (
                     <li key={name}>
                       <Link
                         href="/digital-marketing"
-                        className="group inline-block text-white hover:opacity-90 transition-opacity"
-                        style={{ fontSize: "18px" }}
+                        className="group inline-block text-white hover:opacity-90 transition-opacity text-base sm:text-lg"
                       >
                         <SlidingText>{name}</SlidingText>
                       </Link>
@@ -209,29 +193,22 @@ export function Footer() {
           {/* ——— Column 3: Copyright + Services (second half) ——— */}
           <div
             data-footer-col
-            className="pl-0 lg:pl-10 pt-10 lg:pt-0 pb-20 lg:pb-28 flex flex-col"
+            className="pl-0 lg:pl-10 pt-8 sm:pt-10 lg:pt-0 pb-12 sm:pb-20 lg:pb-28 flex flex-col"
           >
-            <p
-              className="uppercase mb-6 tracking-wide"
-              style={{ fontSize: "18px", letterSpacing: "0.04em" }}
-            >
+            <p className="uppercase mb-4 sm:mb-6 text-base sm:text-lg tracking-[0.04em]">
               ©TRIVOXADS 2026
             </p>
-            <div className="flex gap-12 lg:gap-14 flex-wrap">
+            <div className="flex gap-8 sm:gap-12 lg:gap-14 flex-wrap">
               <div>
-                <p
-                  className="font-bold uppercase mb-4 tracking-wide"
-                  style={{ fontSize: "15px" }}
-                >
+                <p className="font-bold uppercase mb-3 sm:mb-4 tracking-wide text-sm sm:text-base">
                   SERVICES
                 </p>
-                <ul className="space-y-5">
+                <ul className="space-y-3 sm:space-y-5">
                   {SERVICES_COL2.map((name) => (
                     <li key={name}>
                       <Link
                         href="/digital-marketing"
-                        className="group inline-block text-white hover:opacity-90 transition-opacity"
-                        style={{ fontSize: "18px" }}
+                        className="group inline-block text-white hover:opacity-90 transition-opacity text-base sm:text-lg"
                       >
                         <SlidingText>{name}</SlidingText>
                       </Link>
@@ -251,45 +228,29 @@ export function Footer() {
         />
 
         {/* Bottom: legal links + large wordmark */}
-        <div className="px-8 sm:px-10 lg:px-14 pt-14 pb-14">
-          <div className="flex flex-wrap gap-8 lg:gap-12 mb-6">
+        <div className="px-4 sm:px-10 lg:px-14 pt-10 sm:pt-14 pb-10 sm:pb-14">
+          <div className="flex flex-wrap gap-4 sm:gap-6 md:gap-8 lg:gap-12 mb-4 sm:mb-6">
             <a
               href="#"
-              className="group inline-block uppercase font-medium hover:opacity-90 transition-opacity"
-              style={{
-                fontSize: "12px",
-                letterSpacing: "0.14em",
-              }}
+              className="group inline-block uppercase font-medium hover:opacity-90 transition-opacity text-[10px] sm:text-xs tracking-[0.14em]"
             >
               <SlidingText>PRIVACY POLICY</SlidingText>
             </a>
             <a
               href="#"
-              className="group inline-block uppercase font-medium hover:opacity-90 transition-opacity"
-              style={{
-                fontSize: "12px",
-                letterSpacing: "0.14em",
-              }}
+              className="group inline-block uppercase font-medium hover:opacity-90 transition-opacity text-[10px] sm:text-xs tracking-[0.14em]"
             >
               <SlidingText>COOKIES</SlidingText>
             </a>
             <a
               href="#"
-              className="group inline-block uppercase font-medium hover:opacity-90 transition-opacity"
-              style={{
-                fontSize: "12px",
-                letterSpacing: "0.14em",
-              }}
+              className="group inline-block uppercase font-medium hover:opacity-90 transition-opacity text-[10px] sm:text-xs tracking-[0.14em]"
             >
               <SlidingText>TERMS AND CONDITIONS</SlidingText>
             </a>
           </div>
           <p
-            className="font-black uppercase text-white leading-[0.82] select-none"
-            style={{
-              fontSize: "clamp(4.5rem, 14vw, 12rem)",
-              letterSpacing: "0.02em",
-            }}
+            className="font-black uppercase text-white leading-[0.82] select-none text-[clamp(2.5rem,12vw,12rem)] sm:text-[clamp(4rem,14vw,12rem)] tracking-[0.02em]"
             aria-hidden
           >
             TRIVOXADS

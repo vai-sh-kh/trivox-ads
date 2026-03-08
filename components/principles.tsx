@@ -125,9 +125,9 @@ export function Principles() {
         />
       </div>
 
-      <div className="relative max-w-[1920px] mx-auto px-6 md:px-10 lg:px-12 flex flex-col w-full z-10">
-        {/* Title block — doc: Why TrivoxAds? + tagline */}
-        <div className="text-center mb-10 md:mb-12 lg:mb-14">
+      <div className="relative max-w-[1920px] mx-auto px-4 sm:px-6 md:px-10 lg:px-12 flex flex-col w-full z-10">
+        {/* Title block — doc: Why TrivoxAds? + tagline (mobile-first) */}
+        <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-14">
           <h2 ref={titleRef} className="text-center">
             <span className="block text-[clamp(2rem,4.5vw,3rem)] md:text-[clamp(2.25rem,5vw,3.5rem)] font-bold leading-[1.05] tracking-tight text-brand-purple">
               Why TrivoxAds?
@@ -144,7 +144,7 @@ export function Principles() {
         {/* Four columns with motion hover */}
         <div
           ref={columnsRef}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-10"
         >
           {principles.map((p, i) => (
             <motion.div
@@ -156,7 +156,7 @@ export function Principles() {
             >
               <div
                 data-principle-card
-                className="flex flex-col rounded-2xl border border-zinc-100 bg-white p-6 md:p-8 shadow-sm hover:shadow-md hover:border-brand-purple/20 transition-all duration-300"
+                className="flex flex-col rounded-xl sm:rounded-2xl border border-zinc-100 bg-white p-5 sm:p-6 md:p-8 shadow-sm hover:shadow-md hover:border-brand-purple/20 transition-all duration-300"
               >
                 {p.showIcon && (
                   <div className="mb-4 flex items-center justify-start">

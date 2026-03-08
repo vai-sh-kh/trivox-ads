@@ -109,18 +109,18 @@ export function HowWeHelpSection() {
     <section
       ref={sectionRef}
       id="how-we-help"
-      className="relative bg-black text-white py-24 md:py-32 overflow-hidden"
+      className="relative bg-black text-white py-16 sm:py-20 md:py-24 lg:py-32 overflow-hidden"
     >
       <div className="w-full max-w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16">
         <h2
           ref={headlineRef}
-          className="text-4xl md:text-5xl lg:text-6xl font-black leading-[0.9] tracking-tight uppercase mb-6 md:whitespace-nowrap"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[0.9] tracking-tight uppercase mb-4 sm:mb-6 md:whitespace-nowrap"
         >
           How We Help Your Business Grow
         </h2>
         <p
           ref={subtitleRef}
-          className="text-zinc-400 text-lg max-w-2xl mb-20"
+          className="text-zinc-400 text-base sm:text-lg max-w-2xl mb-12 sm:mb-16 md:mb-20"
         >
           We specialize in end-to-end digital marketing solutions—executed with
           real-world market insights and industry best practices.
@@ -128,26 +128,26 @@ export function HowWeHelpSection() {
 
         <div
           ref={gridRef}
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10"
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-10"
         >
           {PILLARS.map((pillar, i) => (
             <motion.article
               key={pillar.title}
               data-pillar-card
-              className="p-8 md:p-10 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/[0.08] transition-colors"
+              className="p-6 sm:p-8 md:p-10 rounded-xl sm:rounded-2xl border border-white/10 bg-white/5 hover:bg-white/[0.08] transition-colors"
               whileHover={{ y: -4 }}
             >
-              <h3 className="text-brand-red font-bold text-xl md:text-2xl uppercase tracking-wide mb-4">
+              <h3 className="text-brand-red font-bold text-lg sm:text-xl md:text-2xl uppercase tracking-wide mb-3 sm:mb-4">
                 {pillar.title}
               </h3>
-              <p className="text-zinc-300 leading-relaxed">
+              <p className="text-zinc-300 text-sm sm:text-base leading-relaxed">
                 {pillar.description}
               </p>
             </motion.article>
           ))}
         </div>
 
-        <div ref={ctaRef} className="mt-16 text-center">
+        <div ref={ctaRef} className="mt-10 sm:mt-16 text-center">
           <Link
             href="/digital-marketing"
             className="inline-block bg-brand-purple text-white px-10 py-4 rounded-full font-bold text-sm uppercase tracking-widest hover:bg-purple-900 transition-colors"

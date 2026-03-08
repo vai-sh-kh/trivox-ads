@@ -64,7 +64,7 @@ export function FAQSection() {
                   className="w-full flex items-center justify-between gap-3 sm:gap-4 px-4 py-4 sm:px-6 sm:py-5 md:px-8 md:py-6 text-left hover:bg-zinc-50 transition-colors min-h-14 sm:min-h-0"
                   aria-expanded={isOpen}
                 >
-                  <span className="font-bold text-zinc-900 text-base sm:text-lg md:text-xl lg:text-2xl pr-2 sm:pr-4 text-left">
+                  <span className="font-bold text-zinc-900 text-base sm:text-lg md:text-xl lg:text-2xl pr-2 sm:pr-4 text-left break-words">
                     {item.question}
                   </span>
                   <ChevronDown

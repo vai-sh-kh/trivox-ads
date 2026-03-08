@@ -80,19 +80,19 @@ export function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
           transition={{ duration: 0.12 }}
           className="fixed inset-0 z-100 overflow-y-auto bg-white font-sans"
         >
-          {/* Header – fixed height to match main navbar */}
-          <header className="relative h-[88px] flex items-center max-w-[1920px] mx-auto w-full px-4 sm:px-6 lg:px-8 gap-2 shrink-0">
+          {/* Header – fixed height to match main navbar (mobile-first) */}
+          <header className="relative h-16 sm:h-[72px] lg:h-[88px] flex items-center max-w-[1920px] mx-auto w-full px-4 sm:px-6 lg:px-8 gap-2 shrink-0">
             <Link
               href="/"
               onClick={onClose}
-              className="flex items-center h-14 shrink-0"
+              className="flex items-center h-10 sm:h-12 lg:h-14 shrink-0 min-h-[44px]"
             >
               <Image
                 src="/logo.png"
                 alt="TrivoxAds"
                 width={200}
                 height={56}
-                className="h-14 w-auto max-w-[200px] object-contain object-left z-10"
+                className="h-8 sm:h-10 lg:h-14 w-auto max-w-[120px] sm:max-w-[160px] lg:max-w-[200px] object-contain object-left z-10"
                 priority
               />
             </Link>
@@ -127,16 +127,16 @@ export function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
           </header>
 
           {/* Main content - two columns: left ~60% wider, right ~40% with whitespace */}
-          <div className="max-w-[1920px] mx-auto px-8 md:px-12 pt-24 md:pt-32 pb-20 flex flex-col md:flex-row md:min-h-[calc(100vh-120px)]">
+          <div className="max-w-[1920px] mx-auto px-4 sm:px-8 md:px-12 pt-16 sm:pt-24 md:pt-32 pb-16 sm:pb-20 flex flex-col md:flex-row md:min-h-[calc(100vh-120px)]">
             {/* Left column - primary nav + CTA */}
             <div className="flex-1 md:max-w-[55%] flex flex-col justify-between">
-              <nav className="flex flex-col gap-5 md:gap-7 mt-4 md:mt-0">
+              <nav className="flex flex-col gap-3 sm:gap-5 md:gap-7 mt-4 md:mt-0">
                 {NAV_LINKS.map((link) => (
                   <button
                     key={link.label}
                     type="button"
                     onClick={() => handleNavClick(link.href)}
-                    className="group relative w-fit text-left text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] font-bold text-black hover:text-zinc-600 transition-colors duration-300 uppercase tracking-[-0.02em] leading-[1.05] pb-2"
+                    className="group relative w-fit text-left text-2xl sm:text-3xl md:text-[3.5rem] lg:text-[4rem] font-bold text-black hover:text-zinc-600 transition-colors duration-300 uppercase tracking-[-0.02em] leading-[1.05] pb-2 min-h-[44px] flex items-center"
                   >
                     <span className="whitespace-nowrap">{link.label}</span>
                     <span
@@ -149,7 +149,7 @@ export function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
               <Link
                 href="/contact"
                 onClick={onClose}
-                className="mt-16 md:mt-0 mb-24 md:mb-16 inline-flex items-center gap-2 bg-brand-purple text-white px-10 py-5 rounded-md text-sm font-black uppercase tracking-[0.15em] hover:bg-purple-900 transition-colors w-fit"
+                className="mt-10 sm:mt-16 md:mt-0 mb-16 sm:mb-24 md:mb-16 inline-flex items-center gap-2 bg-brand-purple text-white px-6 sm:px-10 py-4 sm:py-5 rounded-md text-xs sm:text-sm font-black uppercase tracking-[0.15em] hover:bg-purple-900 transition-colors w-fit min-h-[44px] items-center"
               >
                 WORK WITH US
                 <ArrowRight size={18} strokeWidth={2.5} className="shrink-0" />

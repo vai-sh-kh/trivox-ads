@@ -197,7 +197,7 @@ export function StatsSection() {
   return (
     <section
       ref={sectionRef}
-      className="bg-black text-white h-screen max-h-screen py-16 md:py-20 relative overflow-hidden"
+      className="bg-black text-white min-h-dvh py-12 sm:py-16 md:py-20 relative overflow-hidden"
     >
       <div className="flex h-full min-h-0 w-full">
         {/* Col 1: Scrolling text (continuous) — fixed width */}
@@ -267,7 +267,7 @@ export function StatsSection() {
         {/* Col 3: Stats grid — rest of space, 3 rows × 3 cols */}
         <div className="flex-1 min-w-0 flex flex-col overflow-hidden">
           <h2
-            className="lg:hidden text-4xl md:text-5xl font-black leading-[0.85] tracking-tighter uppercase p-6 md:p-8 border-b border-white/10"
+            className="lg:hidden text-3xl sm:text-4xl md:text-5xl font-black leading-[0.85] tracking-tighter uppercase p-4 sm:p-6 md:p-8 border-b border-white/10"
             aria-hidden
           >
             CLIENTS TRUST US
@@ -279,17 +279,17 @@ export function StatsSection() {
             {/* Row 1 */}
             <div
               data-stat-card
-              className="bg-black p-6 md:p-8 border-r border-b border-white/10 flex flex-col justify-between min-h-[140px] md:min-h-[160px] overflow-hidden"
+              className="bg-black p-4 sm:p-6 md:p-8 border-r border-b border-white/10 flex flex-col justify-between min-h-[120px] sm:min-h-[140px] md:min-h-[160px] overflow-hidden"
             >
               <span
                 ref={(el) => {
                   numberRefs.current[0] = el;
                 }}
-                className="text-6xl md:text-7xl font-black tracking-tighter text-white tabular-nums"
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white tabular-nums"
               >
                 5+
               </span>
-              <p className="text-[10px] md:text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
+              <p className="text-[9px] sm:text-[10px] md:text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
                 YEARS OF
                 <br />
                 GROWTH
@@ -297,17 +297,17 @@ export function StatsSection() {
             </div>
             <div
               data-stat-card
-              className="bg-black p-6 md:p-8 border-r border-b border-white/10 flex flex-col justify-between min-h-[140px] md:min-h-[160px] overflow-hidden"
+              className="bg-black p-4 sm:p-6 md:p-8 border-r border-b border-white/10 flex flex-col justify-between min-h-[120px] sm:min-h-[140px] md:min-h-[160px] overflow-hidden"
             >
               <span
                 ref={(el) => {
                   numberRefs.current[1] = el;
                 }}
-                className="text-6xl md:text-7xl font-black tracking-tighter text-white tabular-nums"
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white tabular-nums"
               >
                 50+
               </span>
-              <p className="text-[10px] md:text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
+              <p className="text-[9px] sm:text-[10px] md:text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
                 PROJECTS
                 <br />
                 DELIVERED
@@ -315,17 +315,17 @@ export function StatsSection() {
             </div>
             <div
               data-stat-card
-              className="bg-black p-6 md:p-8 border-b border-white/10 flex flex-col justify-between min-h-[140px] md:min-h-[160px] overflow-hidden"
+              className="bg-black p-4 sm:p-6 md:p-8 border-b border-white/10 flex flex-col justify-between min-h-[120px] sm:min-h-[140px] md:min-h-[160px] overflow-hidden"
             >
               <span
                 ref={(el) => {
                   numberRefs.current[2] = el;
                 }}
-                className="text-6xl md:text-7xl font-black tracking-tighter text-white tabular-nums"
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white tabular-nums"
               >
                 8
               </span>
-              <p className="text-[10px] md:text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
+              <p className="text-[9px] sm:text-[10px] md:text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
                 WEEKS TO
                 <br />
                 MEASURABLE
@@ -337,17 +337,17 @@ export function StatsSection() {
             {/* Row 2 */}
             <div
               data-stat-card
-              className="bg-black p-6 md:p-8 border-r border-b border-white/10 flex flex-col justify-between min-h-[140px] md:min-h-[160px] overflow-hidden"
+              className="bg-black p-4 sm:p-6 md:p-8 border-r border-b border-white/10 flex flex-col justify-between min-h-[120px] sm:min-h-[140px] md:min-h-[160px] overflow-hidden"
             >
               <span
                 ref={(el) => {
                   numberRefs.current[3] = el;
                 }}
-                className="text-6xl md:text-7xl font-black tracking-tighter text-white tabular-nums"
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white tabular-nums"
               >
                 100+
               </span>
-              <p className="text-[10px] md:text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
+              <p className="text-[9px] sm:text-[10px] md:text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
                 CLIENTS
                 <br />
                 TRUST US
@@ -355,9 +355,9 @@ export function StatsSection() {
             </div>
             <div
               data-stat-card
-              className="md:col-span-2 bg-black p-6 md:p-8 border-b border-white/10 flex flex-col justify-center min-h-[140px] md:min-h-[160px] overflow-hidden"
+              className="sm:col-span-2 md:col-span-2 bg-black p-4 sm:p-6 md:p-8 border-b border-white/10 flex flex-col justify-center min-h-[120px] sm:min-h-[140px] md:min-h-[160px] overflow-hidden"
             >
-              <blockquote className="text-lg md:text-2xl font-black leading-[1.15] tracking-tight uppercase mb-4 text-white">
+              <blockquote className="text-sm sm:text-base md:text-lg lg:text-2xl font-black leading-[1.15] tracking-tight uppercase mb-3 sm:mb-4 text-white">
                 &quot;TRIVOXADS IS A PERFORMANCE-DRIVEN DIGITAL MARKETING AGENCY
                 FOCUSED ON CREATING IMPACTFUL ONLINE STRATEGIES THAT HELP BRANDS
                 GROW, ENGAGE, AND CONVERT.&quot;
@@ -370,17 +370,17 @@ export function StatsSection() {
             {/* Row 3 */}
             <div
               data-stat-card
-              className="bg-black p-6 md:p-8 border-r border-white/10 flex flex-col justify-between min-h-[140px] md:min-h-[160px] overflow-hidden"
+              className="bg-black p-4 sm:p-6 md:p-8 border-r border-white/10 flex flex-col justify-between min-h-[120px] sm:min-h-[140px] md:min-h-[160px] overflow-hidden"
             >
               <span
                 ref={(el) => {
                   numberRefs.current[4] = el;
                 }}
-                className="text-6xl md:text-7xl font-black tracking-tighter text-white tabular-nums"
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white tabular-nums"
               >
                 200+
               </span>
-              <p className="text-[10px] md:text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
+              <p className="text-[9px] sm:text-[10px] md:text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
                 BRANDS WE&apos;VE
                 <br />
                 HELPED SCALE
@@ -388,22 +388,22 @@ export function StatsSection() {
             </div>
             <div
               data-stat-card
-              className="bg-black p-6 md:p-8 border-r border-white/10 flex flex-col justify-between min-h-[140px] md:min-h-[160px] overflow-hidden"
+              className="bg-black p-4 sm:p-6 md:p-8 border-r border-white/10 flex flex-col justify-between min-h-[120px] sm:min-h-[140px] md:min-h-[160px] overflow-hidden"
             >
               <span
                 ref={(el) => {
                   numberRefs.current[5] = el;
                 }}
-                className="text-6xl md:text-7xl font-black tracking-tighter text-white tabular-nums"
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white tabular-nums"
               >
                 6
               </span>
-              <p className="text-[10px] md:text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
+              <p className="text-[9px] sm:text-[10px] md:text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
                 SERVICES
                 <br />& COUNTING
               </p>
             </div>
-            <div className="bg-black min-h-[140px] md:min-h-[160px]" />
+            <div className="bg-black min-h-[120px] sm:min-h-[140px] md:min-h-[160px]" />
           </div>
         </div>
       </div>

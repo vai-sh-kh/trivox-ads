@@ -13,6 +13,15 @@
   /* Logo gradient: deep purple → pink/magenta */
   --color-logo-purple: #5D3FD3;
   --color-logo-pink: #E0115F;
+  
+  /* Mobile-first typography scale (base = mobile, then sm/md/lg in components) */
+  --text-hero-mobile: clamp(2rem, 10vw, 2.75rem);
+  --text-hero-video-mobile: clamp(1.5rem, 5vw, 2.25rem);
+  --text-h1-mobile: clamp(2rem, 6vw, 3rem);
+  --text-h2-mobile: clamp(1.5rem, 4.5vw, 2.25rem);
+  --text-body-mobile: 1rem;
+  --text-small-mobile: 0.875rem;
+  --touch-min: 44px;
 }
 
 @layer base {
@@ -134,11 +143,16 @@
     -webkit-mask-position: center;
   }
 
-  /* Hero: transparent text with white stroke (over video) */
+  /* Hero: transparent text with white stroke (over video) — thinner stroke on mobile */
   .hero-title {
     color: transparent;
-    -webkit-text-stroke: 2px rgba(255, 255, 255, 0.9);
+    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.9);
     text-shadow: 0 0 40px rgba(0, 0, 0, 0.35);
+  }
+  @media (min-width: 640px) {
+    .hero-title {
+      -webkit-text-stroke-width: 2px;
+    }
   }
 
   /* Hero TRIVOXADS: large letters, uniform gap – responsive for mobile */
@@ -146,25 +160,38 @@
     height: 100%;
     width: 100%;
   }
+  /* Hero: mobile-first — smaller base, scale up on larger screens */
   .text-hero-size {
-    font-size: clamp(2.75rem, 12.5vw, min(12.5vw, 40vh));
+    font-size: clamp(1.75rem, 9vw, 2.75rem);
+    letter-spacing: -0.03em;
+  }
+  @media (min-width: 640px) {
+    .text-hero-size {
+      font-size: clamp(2.75rem, 12.5vw, 4rem);
+    }
   }
   @media (min-width: 768px) {
     .text-hero-size {
-      font-size: clamp(4.5rem, 12.5vw, 320px);
+      font-size: clamp(4rem, 12.5vw, 320px);
     }
   }
   @media (min-width: 1024px) {
     .text-hero-size {
       font-size: min(12.5vw, 40vh);
+      letter-spacing: -0.02em;
     }
   }
-  /* Hero inside 60vh video panel: smaller text, correct placement */
+  /* Hero inside 60vh video panel: mobile-first smaller text */
   .text-hero-size-video {
-    font-size: clamp(2rem, 5.5vw, 2.75rem);
+    font-size: clamp(1.35rem, 4.5vw, 2rem);
     letter-spacing: -0.02em;
   }
   @media (min-width: 640px) {
+    .text-hero-size-video {
+      font-size: clamp(2rem, 5.5vw, 2.75rem);
+    }
+  }
+  @media (min-width: 768px) {
     .text-hero-size-video {
       font-size: clamp(2.5rem, 6.5vw, 4rem);
     }
