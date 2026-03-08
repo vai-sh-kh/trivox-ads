@@ -35,18 +35,7 @@ export function FeaturedSection({ embedded }: { embedded?: boolean }) {
   }, []);
 
   if (embedded) {
-    return (
-      <section ref={sectionRef} className="px-2 py-1 flex-shrink-0">
-        <div className="max-w-[1920px] mx-auto px-2 sm:px-4">
-          <div
-            ref={containerRef}
-            className="relative flex items-center justify-center py-2"
-          >
-            {/* Compact placeholder inside 60vh video panel */}
-          </div>
-        </div>
-      </section>
-    );
+    return null;
   }
 
   return (

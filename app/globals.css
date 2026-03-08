@@ -18,8 +18,14 @@
 @layer base {
   html {
     @apply overflow-x-hidden;
-    overflow-y: scroll; /* reserve scrollbar space, allow vertical scroll */
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    /* Hide scrollbar but keep scrolling */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  html::-webkit-scrollbar {
+    display: none;
   }
   body {
     @apply bg-brand-white text-brand-black font-sans antialiased overflow-x-hidden;
@@ -27,9 +33,14 @@
     min-height: 100%;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: none;
-    touch-action: pan-y; /* allow vertical touch scroll */
+    touch-action: pan-y;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
-  /* Touch/narrow: plain wrapper so document scroll works; no height/overflow lock */
+  body::-webkit-scrollbar {
+    display: none;
+  }
+  /* Touch/narrow: plain wrapper so document scroll works */
   .scroll-container-touch {
     overflow-x: hidden;
     overflow-y: visible;
@@ -38,8 +49,6 @@
     -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
   }
-
-  /* Allow native overscroll on touch devices so vertical scroll works reliably */
   @media (pointer: coarse) {
     body {
       overscroll-behavior-y: auto;
@@ -55,7 +64,29 @@
     font-weight: 900;
   }
   
-  /* Logo-inspired gradient: deep purple (trivox) → vibrant pink (ads) */
+  /* Logo gradient: single source of truth for hero text, footer, accents */
+  .logo-gradient {
+    background: linear-gradient(
+      to right,
+      #5D3FD3 0%,
+      #7B4FDF 35%,
+      #C71585 70%,
+      #E0115F 100%
+    );
+  }
+
+  /* Footer: same palette but more width for the right (pink/magenta) color */
+  .footer-gradient {
+    background: linear-gradient(
+      to right,
+      #5D3FD3 0%,
+      #7B4FDF 22%,
+      #C71585 42%,
+      #E0115F 100%
+    );
+  }
+
+  /* Logo-inspired gradient for text (same color stops as .logo-gradient) */
   .text-gradient {
     background: linear-gradient(
       to right,
@@ -74,6 +105,35 @@
     text-wrap: balance;
   }
 
+  /* Grid overlay for hero-style sections (visible, aligned correctly) */
+  .section-grid-pattern {
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.09) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.09) 1px, transparent 1px);
+    background-size: 72px 72px;
+    background-position: 0 0;
+  }
+
+  /* Light grid with disappear feel: fades toward edges */
+  .section-grid-fade {
+    mask-image: radial-gradient(
+      ellipse 80% 70% at 50% 50%,
+      black 0%,
+      black 35%,
+      transparent 75%
+    );
+    -webkit-mask-image: radial-gradient(
+      ellipse 80% 70% at 50% 50%,
+      black 0%,
+      black 35%,
+      transparent 75%
+    );
+    mask-size: 100% 100%;
+    mask-position: center;
+    -webkit-mask-size: 100% 100%;
+    -webkit-mask-position: center;
+  }
+
   /* Hero: transparent text with white stroke (over video) */
   .hero-title {
     color: transparent;
@@ -87,31 +147,31 @@
     width: 100%;
   }
   .text-hero-size {
-    font-size: clamp(2.5rem, 11.2vw, min(11.2vw, 36vh));
+    font-size: clamp(2.75rem, 12.5vw, min(12.5vw, 40vh));
   }
   @media (min-width: 768px) {
     .text-hero-size {
-      font-size: clamp(4rem, 11.2vw, 280px);
+      font-size: clamp(4.5rem, 12.5vw, 320px);
     }
   }
   @media (min-width: 1024px) {
     .text-hero-size {
-      font-size: min(11.2vw, 36vh);
+      font-size: min(12.5vw, 40vh);
     }
   }
   /* Hero inside 60vh video panel: smaller text, correct placement */
   .text-hero-size-video {
-    font-size: clamp(1.75rem, 5vw, 2.5rem);
+    font-size: clamp(2rem, 5.5vw, 2.75rem);
     letter-spacing: -0.02em;
   }
   @media (min-width: 640px) {
     .text-hero-size-video {
-      font-size: clamp(2.25rem, 6vw, 3.5rem);
+      font-size: clamp(2.5rem, 6.5vw, 4rem);
     }
   }
   @media (min-width: 1024px) {
     .text-hero-size-video {
-      font-size: clamp(2.5rem, 4.5vw, 4rem);
+      font-size: clamp(2.75rem, 5vw, 4.5rem);
     }
   }
   /* Same letter-spacing between every character for even gaps */
@@ -126,11 +186,20 @@
 
   @keyframes vertical-scroll {
     0% { transform: translateY(0); }
-    100% { transform: translateY(-50%); }
+    100% { transform: translateY(-25%); }
   }
 
   .animate-vertical-scroll {
-    animation: vertical-scroll 30s linear infinite;
+    animation: vertical-scroll 40s linear infinite;
+    will-change: transform;
+  }
+
+  @keyframes stats-curve-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.85; }
+  }
+  .animate-stats-curve-pulse {
+    animation: stats-curve-pulse 3s ease-in-out infinite;
   }
 
   /* GSAP AnimatedText: chars need inline-block for transform animations */

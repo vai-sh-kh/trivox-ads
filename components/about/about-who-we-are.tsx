@@ -6,7 +6,7 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { LineRevealText } from "@/components/line-reveal-text";
 import { ParticleBackground } from "@/components/particle-background";
 
-export function DefiningMomentsSection() {
+export function AboutWhoWeAre() {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const buttonRef = useRef<HTMLAnchorElement>(null);
@@ -22,23 +22,6 @@ export function DefiningMomentsSection() {
     });
   }, []);
 
-  const onMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLElement>) => updateCursor(e.clientX, e.clientY),
-    [updateCursor],
-  );
-
-  const onMouseLeave = useCallback(() => setCursor(null), []);
-
-  const onTouchMove = useCallback(
-    (e: React.TouchEvent<HTMLElement>) => {
-      const touch = e.touches[0];
-      if (touch) updateCursor(touch.clientX, touch.clientY);
-    },
-    [updateCursor],
-  );
-
-  const onTouchEnd = useCallback(() => setCursor(null), []);
-
   useLayoutEffect(() => {
     const section = sectionRef.current;
     const heading = headingRef.current;
@@ -46,8 +29,6 @@ export function DefiningMomentsSection() {
     if (!section || !heading || !button) return;
 
     const ctx = gsap.context(() => {
-      const trigger = section;
-
       gsap.fromTo(
         heading,
         { y: 50, opacity: 0 },
@@ -56,10 +37,9 @@ export function DefiningMomentsSection() {
           opacity: 1,
           duration: 0.9,
           ease: "power2.out",
-          scrollTrigger: { trigger, start: "top 85%", once: true },
+          scrollTrigger: { trigger: section, start: "top 85%", once: true },
         },
       );
-
       gsap.fromTo(
         button,
         { opacity: 0, y: 20 },
@@ -69,7 +49,7 @@ export function DefiningMomentsSection() {
           duration: 0.6,
           delay: 0.35,
           ease: "power2.out",
-          scrollTrigger: { trigger, start: "top 85%", once: true },
+          scrollTrigger: { trigger: section, start: "top 85%", once: true },
         },
       );
     }, section);
@@ -80,14 +60,15 @@ export function DefiningMomentsSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative bg-white min-h-screen overflow-hidden flex flex-col justify-center px-4 py-8 sm:px-6 sm:py-10 md:px-8 md:py-12 lg:px-10 lg:py-14"
-      onMouseMove={onMouseMove}
-      onMouseLeave={onMouseLeave}
-      onTouchMove={onTouchMove}
-      onTouchEnd={onTouchEnd}
-      onTouchCancel={onTouchEnd}
+      className="relative bg-white min-h-screen overflow-hidden flex flex-col justify-center px-4 py-8 sm:px-6 sm:py-10 md:px-8 md:py-12 lg:px-10 lg:py-14 border-t border-zinc-100"
+      onMouseMove={(e) => updateCursor(e.clientX, e.clientY)}
+      onMouseLeave={() => setCursor(null)}
+      onTouchMove={(e) => {
+        const t = e.touches[0];
+        if (t) updateCursor(t.clientX, t.clientY);
+      }}
+      onTouchEnd={() => setCursor(null)}
     >
-      {/* Grid layer: inside padding, light and fading toward edges */}
       <div
         className="absolute inset-4 sm:inset-6 md:inset-8 lg:inset-10 section-grid-pattern section-grid-fade opacity-90 pointer-events-none z-0"
         aria-hidden
@@ -98,8 +79,6 @@ export function DefiningMomentsSection() {
         chaseSpeed={0.18}
         pullStrength={0.035}
       />
-
-      {/* Subtle gradient orbs — soft, centered for hero-style look */}
       <div className="absolute inset-0 pointer-events-none z-0" aria-hidden>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(100vw,600px)] h-[min(80vw,500px)] rounded-full bg-brand-purple/4 blur-3xl" />
       </div>

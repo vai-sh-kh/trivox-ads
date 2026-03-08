@@ -6,12 +6,7 @@ import { SlidingText } from "@/components/sliding-text";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
-const HEADER_TEXTS = [
-  "2X ADWEEK'S FASTEST GROWING AGENCY",
-  "CREATIVE THAT DRIVES RESULTS",
-  "YOUR GROWTH PARTNER IN ADS",
-];
+import { HEADER_TEXTS } from "@/lib/constants";
 
 interface NavbarProps {
   onMenuClick?: () => void;
@@ -21,6 +16,7 @@ export function Navbar({ onMenuClick }: NavbarProps) {
   const [textIndex, setTextIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
+
   useEffect(() => {
     const fullText = HEADER_TEXTS[textIndex];
     const typeSpeed = isDeleting ? 40 : 80;
@@ -56,22 +52,22 @@ export function Navbar({ onMenuClick }: NavbarProps) {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed top-0 left-0 w-full z-50 py-5 bg-transparent"
+      className="fixed top-0 left-0 w-full z-50 h-[88px] flex items-center bg-transparent"
     >
-      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center relative gap-2">
+      <div className="max-w-[1920px] mx-auto w-full px-4 sm:px-6 lg:px-8 flex justify-between items-center relative gap-2">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="flex items-center gap-3 flex-1 justify-start"
+          className="flex items-center gap-3 flex-1 justify-start min-w-0 h-14"
         >
-          <Link href="/">
+          <Link href="/" className="flex items-center h-14 min-w-0">
             <Image
               src="/logo.png"
-              alt="Trivoxad Logo"
-              width={540}
-              height={45}
-              className="w-auto h-12 md:h-14 lg:h-16 object-contain"
+              alt="TrivoxAds"
+              width={200}
+              height={56}
+              className="h-14 w-auto max-w-[200px] object-contain object-left shrink-0"
               priority
             />
           </Link>
@@ -90,20 +86,22 @@ export function Navbar({ onMenuClick }: NavbarProps) {
         </motion.div>
 
         <div className="flex items-center gap-2 sm:gap-4 flex-1 justify-end min-w-0 shrink-0">
-          <motion.button
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="group bg-[#4A148C] text-white px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 rounded-full text-[10px] sm:text-[12px] font-black uppercase tracking-widest hover:scale-105 transition-transform whitespace-nowrap"
-          >
-            <SlidingText>WORK WITH US</SlidingText>
-          </motion.button>
+          <Link href="/contact">
+            <motion.span
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              className="group inline-block bg-brand-purple text-white px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 rounded-full text-[10px] sm:text-[12px] font-black uppercase tracking-widest hover:scale-105 transition-transform whitespace-nowrap"
+            >
+              <SlidingText>WORK WITH US</SlidingText>
+            </motion.span>
+          </Link>
           <motion.button
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4, duration: 1, ease: [0.16, 1, 0.3, 1] }}
             onClick={onMenuClick}
-            className="group bg-[#F2F2F2] text-[#4A148C] px-4 sm:px-6 py-2.5 sm:py-3.5 rounded-full text-[10px] sm:text-[12px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-[#4A148C] hover:text-white transition-colors shrink-0"
+            className="group bg-[#F2F2F2] text-brand-purple border border-zinc-300/80 px-4 sm:px-6 py-2.5 sm:py-3.5 rounded-full text-[10px] sm:text-[12px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-brand-purple hover:text-white hover:border-brand-purple/50 transition-colors shrink-0"
           >
             <Menu size={14} className="sm:w-4 sm:h-4" strokeWidth={4} />
             <SlidingText>MENU</SlidingText>

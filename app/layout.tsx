@@ -6,6 +6,17 @@ import { GlobalCursor } from "@/components/global-cursor";
 export const metadata: Metadata = {
   title: "TRIVOXAD",
   description: "Landing page for Trivoxads with bold typography and animations",
+  icons: {
+    icon: "/logo-icon.png",
+    apple: "/logo-icon.png",
+  },
+  openGraph: {
+    images: ["/logo-icon.png"],
+  },
+  twitter: {
+    card: "summary",
+    images: ["/logo-icon.png"],
+  },
 };
 
 export const viewport: Viewport = {

@@ -5,7 +5,7 @@ import { useRef, useEffect } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { HeroSwoosh } from "./hero-swoosh";
 
-const CONTAINER_CLASS = "max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8";
+const CONTAINER_CLASS = "w-full";
 const CONTAINER_VIDEO_CLASS = "w-full";
 
 export function Hero({ videoBackground }: { videoBackground?: boolean }) {
@@ -55,51 +55,37 @@ export function Hero({ videoBackground }: { videoBackground?: boolean }) {
           }}
         >
           {videoBackground ? (
-            /* Video-through-text: compact for 60vh panel – smaller text, correct placement */
+            /* Video-through-text: 9 equal slots, full width, even spacing */
             <div
               ref={titleRef}
               className="flex w-full items-stretch justify-between gap-0 leading-none font-black uppercase hero-title-fit text-hero-size-video bg-black mix-blend-multiply [&_span]:text-white"
             >
-              {["T", "R", "I"].map((letter, i) => (
-                <span
-                  key={`l-${i}`}
-                  className="flex-1 flex items-center justify-center min-w-0"
-                >
-                  {letter}
-                </span>
-              ))}
-              <span className="flex-none w-[0.2em] min-w-[0.2em]" aria-hidden />
-              {["V", "O", "X", "A", "D", "S"].map((letter, i) => (
-                <span
-                  key={`r-${i}`}
-                  className="flex-1 flex items-center justify-center min-w-0"
-                >
-                  {letter}
-                </span>
-              ))}
+              {["T", "R", "I", "V", "O", "X", "A", "D", "S"].map(
+                (letter, i) => (
+                  <span
+                    key={i}
+                    className="flex-1 flex items-center justify-center min-w-0"
+                  >
+                    {letter}
+                  </span>
+                ),
+              )}
             </div>
           ) : (
             <h1
               ref={titleRef}
               className="flex w-full items-stretch justify-between gap-0 leading-none font-black uppercase hero-title-fit text-gradient text-hero-size"
             >
-              {["T", "R", "I"].map((letter, i) => (
-                <span
-                  key={`l-${i}`}
-                  className="flex-1 flex items-center justify-center min-w-0"
-                >
-                  {letter}
-                </span>
-              ))}
-              <span className="flex-none w-[0.2em] min-w-[0.2em]" aria-hidden />
-              {["V", "O", "X", "A", "D", "S"].map((letter, i) => (
-                <span
-                  key={`r-${i}`}
-                  className="flex-1 flex items-center justify-center min-w-0"
-                >
-                  {letter}
-                </span>
-              ))}
+              {["T", "R", "I", "V", "O", "X", "A", "D", "S"].map(
+                (letter, i) => (
+                  <span
+                    key={i}
+                    className="flex-1 flex items-center justify-center min-w-0"
+                  >
+                    {letter}
+                  </span>
+                ),
+              )}
             </h1>
           )}
         </motion.div>

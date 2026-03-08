@@ -1,29 +1,12 @@
 "use client";
 
 import { motion, AnimatePresence } from "motion/react";
-import { X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { X, ArrowRight } from "lucide-react";
+import { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
-
-const HEADER_TEXTS = [
-  "2X ADWEEK'S FASTEST GROWING AGENCY",
-  "CREATIVE THAT DRIVES RESULTS",
-  "YOUR GROWTH PARTNER IN ADS",
-];
-
-const NAV_LINKS = [
-  { label: "Results", href: "#results" },
-  { label: "Services", href: "#services" },
-  { label: "Industries", href: "#industries" },
-  { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
-];
-
-const SOCIAL_LINKS = [
-  { label: "LinkedIn", href: "#" },
-  { label: "Instagram", href: "#" },
-  { label: "Behance", href: "#" },
-];
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { CONTACT, MEDIA_LINKS, HEADER_TEXTS, NAV_LINKS } from "@/lib/constants";
 
 interface MenuOverlayProps {
   isOpen: boolean;
@@ -31,9 +14,18 @@ interface MenuOverlayProps {
 }
 
 export function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
+  const router = useRouter();
   const [textIndex, setTextIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleNavClick = useCallback(
+    (href: string) => {
+      onClose();
+      router.push(href);
+    },
+    [onClose, router],
+  );
 
   useEffect(() => {
     if (isOpen) {
@@ -86,79 +78,88 @@ export function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.12 }}
-          className="fixed inset-0 z-[100] overflow-y-auto bg-white font-sans"
+          className="fixed inset-0 z-100 overflow-y-auto bg-white font-sans"
         >
-          {/* Header - matches reference: logo left, slogan center, buttons right */}
-          <header className="relative max-w-[1920px] mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
-            <Image
-              src="/logo.png"
-              alt="Trivoxad Logo"
-              width={180}
-              height={45}
-              className="w-auto h-12 md:h-14 lg:h-16 object-contain z-10"
-              priority
-            />
+          {/* Header – fixed height to match main navbar */}
+          <header className="relative h-[88px] flex items-center max-w-[1920px] mx-auto w-full px-4 sm:px-6 lg:px-8 gap-2 shrink-0">
+            <Link
+              href="/"
+              onClick={onClose}
+              className="flex items-center h-14 shrink-0"
+            >
+              <Image
+                src="/logo.png"
+                alt="TrivoxAds"
+                width={200}
+                height={56}
+                className="h-14 w-auto max-w-[200px] object-contain object-left z-10"
+                priority
+              />
+            </Link>
 
-            <span className="hidden sm:block absolute left-1/2 -translate-x-1/2 text-[11px] md:text-xs font-black tracking-[0.12em] uppercase text-black pointer-events-none min-h-[1.2em]">
+            <span className="hidden lg:flex flex-1 justify-center absolute left-1/2 -translate-x-1/2 w-full max-w-4xl px-4 text-center text-[0.875rem] min-[1200px]:text-[1rem] font-black tracking-[0.12em] uppercase text-black pointer-events-none min-h-[1.2em] font-sans">
               {displayText}
               <span className="animate-pulse">|</span>
             </span>
 
-            <div className="flex items-center gap-4 z-10">
-              <a
-                href="#contact"
+            <div className="flex items-center gap-2 sm:gap-4 flex-1 justify-end shrink-0 z-10">
+              <Link
+                href="/contact"
                 onClick={onClose}
-                className="bg-brand-purple text-white px-8 py-3.5 rounded-full text-[12px] font-black uppercase tracking-widest hover:scale-105 transition-transform"
+                className="inline-block bg-brand-purple text-white px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 rounded-full text-[10px] sm:text-[12px] font-black uppercase tracking-widest hover:scale-105 transition-transform whitespace-nowrap"
               >
                 WORK WITH US
-              </a>
+              </Link>
               <button
-                onClick={onClose}
-                className="bg-[#F2F2F2] text-black px-6 py-3.5 rounded-full text-[12px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-zinc-200 transition-colors"
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onClose();
+                }}
+                className="bg-[#F2F2F2] text-brand-purple border border-zinc-300/80 px-4 sm:px-6 py-2.5 sm:py-3.5 rounded-full text-[10px] sm:text-[12px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-brand-purple hover:text-white hover:border-brand-purple/50 transition-colors shrink-0"
                 aria-label="Close menu"
               >
-                <X size={16} strokeWidth={2.5} />
+                <X size={14} className="sm:w-4 sm:h-4" strokeWidth={4} />
                 EXIT
               </button>
             </div>
           </header>
 
           {/* Main content - two columns: left ~60% wider, right ~40% with whitespace */}
-          <div className="max-w-[1920px] mx-auto px-8 md:px-12 pt-12 md:pt-20 pb-20 flex flex-col md:flex-row md:min-h-[calc(100vh-120px)]">
+          <div className="max-w-[1920px] mx-auto px-8 md:px-12 pt-24 md:pt-32 pb-20 flex flex-col md:flex-row md:min-h-[calc(100vh-120px)]">
             {/* Left column - primary nav + CTA */}
             <div className="flex-1 md:max-w-[55%] flex flex-col justify-between">
-              <nav className="flex flex-col gap-5 md:gap-7">
+              <nav className="flex flex-col gap-5 md:gap-7 mt-4 md:mt-0">
                 {NAV_LINKS.map((link) => (
-                  <a
+                  <button
                     key={link.label}
-                    href={link.href}
-                    onClick={onClose}
-                    className="text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] font-black text-black hover:text-zinc-600 transition-colors uppercase tracking-[-0.02em] leading-[1.05]"
+                    type="button"
+                    onClick={() => handleNavClick(link.href)}
+                    className="group relative w-fit text-left text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] font-bold text-black hover:text-zinc-600 transition-colors duration-300 uppercase tracking-[-0.02em] leading-[1.05] pb-2"
                   >
-                    {link.label}
-                  </a>
+                    <span className="whitespace-nowrap">{link.label}</span>
+                    <span
+                      className="absolute left-0 bottom-0 h-[3px] w-0 rounded-full bg-current group-hover:w-full transition-[width] duration-300 ease-out"
+                      aria-hidden
+                    />
+                  </button>
                 ))}
               </nav>
-              <a
-                href="#contact"
+              <Link
+                href="/contact"
                 onClick={onClose}
-                className="mt-12 md:mt-0 bg-brand-purple text-white px-10 py-5 rounded-md text-sm font-black uppercase tracking-[0.15em] hover:bg-purple-900 transition-colors w-fit"
+                className="mt-16 md:mt-0 mb-24 md:mb-16 inline-flex items-center gap-2 bg-brand-purple text-white px-10 py-5 rounded-md text-sm font-black uppercase tracking-[0.15em] hover:bg-purple-900 transition-colors w-fit"
               >
                 WORK WITH US
-              </a>
+                <ArrowRight size={18} strokeWidth={2.5} className="shrink-0" />
+              </Link>
             </div>
 
-            {/* Right column - Blog, social, contact (right-aligned) */}
+            {/* Right column - social, contact (right-aligned) */}
             <div className="flex-1 md:max-w-[45%] flex flex-col items-end md:pt-0 pt-16">
-              <a
-                href="#blog"
-                onClick={onClose}
-                className="text-[2rem] md:text-[2.5rem] font-black text-black hover:text-zinc-600 transition-colors uppercase tracking-[-0.02em] leading-tight text-right"
-              >
-                Blog
-              </a>
               <div className="flex flex-col gap-3 items-end mt-6 md:mt-8">
-                {SOCIAL_LINKS.map((link) => (
+                {MEDIA_LINKS.map((link) => (
                   <a
                     key={link.label}
                     href={link.href}
@@ -169,18 +170,18 @@ export function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
                     {link.label} →
                   </a>
                 ))}
-                <a
-                  href="#contact"
+                <Link
+                  href="/contact"
                   onClick={onClose}
                   className="text-base md:text-lg font-normal text-black hover:text-zinc-600 transition-colors"
                 >
                   Contact →
-                </a>
+                </Link>
                 <a
-                  href="mailto:hello@trivoxads.com"
+                  href={`mailto:${CONTACT.email}`}
                   className="text-sm text-black/80 hover:text-black transition-colors mt-1"
                 >
-                  hello@trivoxads.com
+                  {CONTACT.email}
                 </a>
               </div>
             </div>

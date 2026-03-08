@@ -32,43 +32,74 @@ export function AnimatedText({
     const el = textRef.current;
     if (!el) return;
 
-    const ctx = gsap.context(() => {
-      const split = SplitText.create(el, {
-        type: "chars",
-        charsClass: "animated-text-char",
-      });
+    let revert: (() => void) | undefined;
 
-      const trigger = sectionRef?.current ?? el;
+    try {
+      if (typeof SplitText?.create === "function") {
+        const ctx = gsap.context(() => {
+          const split = SplitText.create(el, {
+            type: "chars",
+            charsClass: "animated-text-char",
+          });
 
-      const useSectionAtTop = completeWhenSectionAtTop && sectionRef?.current;
-      const start = useSectionAtTop
-        ? "top bottom"
-        : sectionRef
-          ? "top 88%"
-          : "top 100%";
-      const end = useSectionAtTop
-        ? "top top"
-        : sectionRef
-          ? "top 28%"
-          : "top 30%";
+          if (!split?.chars?.length) {
+            gsap.fromTo(
+              el,
+              { opacity: 0, y: 20 },
+              { opacity: 1, y: 0, duration: 0.6 },
+            );
+            return;
+          }
 
-      split.chars.forEach((char) => {
-        gsap.from(char, {
-          yPercent: "random(-200, 200)",
-          rotation: "random(-20, 20)",
-          opacity: 0,
-          ease: "back.out(1.2)",
-          scrollTrigger: {
-            trigger,
-            start,
-            end,
-            scrub: 1.2,
-          },
-        });
-      });
-    }, el);
+          const trigger = sectionRef?.current ?? el;
 
-    return () => ctx.revert();
+          const useSectionAtTop =
+            completeWhenSectionAtTop && sectionRef?.current;
+          const start = useSectionAtTop
+            ? "top bottom"
+            : sectionRef
+              ? "top 88%"
+              : "top 100%";
+          const end = useSectionAtTop
+            ? "top top"
+            : sectionRef
+              ? "top 28%"
+              : "top 30%";
+
+          split.chars.forEach((char) => {
+            gsap.from(char, {
+              yPercent: "random(-200, 200)",
+              rotation: "random(-20, 20)",
+              opacity: 0,
+              ease: "back.out(1.2)",
+              scrollTrigger: {
+                trigger,
+                start,
+                end,
+                scrub: 1.2,
+              },
+            });
+          });
+        }, el);
+        revert = () => ctx.revert();
+      } else {
+        gsap.fromTo(
+          el,
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.6 },
+        );
+      }
+    } catch {
+      gsap.fromTo(
+        el,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6 },
+      );
+    }
+
+    return () => {
+      revert?.();
+    };
   }, [children, sectionRef, completeWhenSectionAtTop]);
 
   return (

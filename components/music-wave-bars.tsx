@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 
 const BAR_COUNT = 5;
-const WAVE_DURATION = 0.8;
+const WAVE_DURATION = 1.4;
 
 interface MusicWaveBarsProps {
   /** Tailwind color class, e.g. bg-white, bg-[#FF0000] */

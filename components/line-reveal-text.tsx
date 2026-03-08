@@ -26,27 +26,56 @@ export function LineRevealText({
     const el = textRef.current;
     if (!el) return;
 
-    const ctx = gsap.context(() => {
-      gsap.set(el, { opacity: 1 });
+    let revert: (() => void) | undefined;
 
-      const split = SplitText.create(el, {
-        type: "words,lines",
-        linesClass: "line-reveal-line",
-        autoSplit: true,
-        mask: "lines",
-      });
+    try {
+      if (typeof SplitText?.create === "function") {
+        const ctx = gsap.context(() => {
+          gsap.set(el, { opacity: 1 });
 
-      gsap.from(split.lines, {
-        duration: 0.6,
-        yPercent: 100,
-        opacity: 0,
-        stagger: 0.1,
-        ease: "expo.out",
-        delay: 0.2,
-      });
-    }, el);
+          const split = SplitText.create(el, {
+            type: "words,lines",
+            linesClass: "line-reveal-line",
+            autoSplit: true,
+            mask: "lines",
+          });
 
-    return () => ctx.revert();
+          if (split?.lines?.length) {
+            gsap.from(split.lines, {
+              duration: 0.6,
+              yPercent: 100,
+              opacity: 0,
+              stagger: 0.1,
+              ease: "expo.out",
+              delay: 0.2,
+            });
+          } else {
+            gsap.fromTo(
+              el,
+              { opacity: 0, y: 12 },
+              { opacity: 1, y: 0, duration: 0.6, delay: 0.2 },
+            );
+          }
+        }, el);
+        revert = () => ctx.revert();
+      } else {
+        gsap.fromTo(
+          el,
+          { opacity: 0, y: 12 },
+          { opacity: 1, y: 0, duration: 0.6, delay: 0.2 },
+        );
+      }
+    } catch {
+      gsap.fromTo(
+        el,
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.6, delay: 0.2 },
+      );
+    }
+
+    return () => {
+      revert?.();
+    };
   }, [children]);
 
   return (

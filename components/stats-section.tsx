@@ -2,19 +2,95 @@
 
 import { useRef, useLayoutEffect } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { StatsBottomCurve } from "@/components/stats-bottom-curve";
+
+// ─── Helper: Odometer counter animation ────────────────────────────────────
+function animateCounter(
+  el: HTMLElement,
+  target: number,
+  suffix: string,
+  prefix: string,
+  trigger: Element,
+) {
+  const obj = { val: 0 };
+  gsap.to(obj, {
+    val: target,
+    duration: 2.2,
+    ease: "power3.out",
+    scrollTrigger: {
+      trigger,
+      start: "top 85%",
+      once: true,
+    },
+    onUpdate() {
+      const v = Math.round(obj.val);
+      el.textContent =
+        prefix + (v >= 1000 ? (v / 1000).toFixed(1) + "k" : String(v)) + suffix;
+    },
+  });
+}
+
+const STATS = [
+  {
+    display: "5+",
+    prefix: "",
+    raw: 5,
+    suffix: "+",
+    label: ["YEARS OF", "GROWTH"],
+  },
+  {
+    display: "50+",
+    prefix: "",
+    raw: 50,
+    suffix: "+",
+    label: ["PROJECTS", "DELIVERED"],
+  },
+  {
+    display: "8",
+    prefix: "",
+    raw: 8,
+    suffix: "",
+    label: ["WEEKS TO", "MEASURABLE", "RESULTS"],
+  },
+  {
+    display: "100+",
+    prefix: "",
+    raw: 100,
+    suffix: "+",
+    label: ["CLIENTS", "TRUST US"],
+  },
+  {
+    display: "200+",
+    prefix: "",
+    raw: 200,
+    suffix: "+",
+    label: ["BRANDS WE'VE", "HELPED SCALE"],
+  },
+  {
+    display: "6",
+    prefix: "",
+    raw: 6,
+    suffix: "",
+    label: ["SERVICES", "& COUNTING"],
+  },
+];
 
 export function StatsSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const statsGridRef = useRef<HTMLDivElement>(null);
+  const leftColumnRef = useRef<HTMLDivElement>(null);
+  const numberRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
     const heading = headingRef.current;
     const statsGrid = statsGridRef.current;
+    const leftCol = leftColumnRef.current;
     if (!section || !heading) return;
 
     const ctx = gsap.context(() => {
+      // ── Heading slide-in ────────────────────────────────────────────────
       gsap.fromTo(
         heading,
         { x: -60, opacity: 0 },
@@ -32,23 +108,85 @@ export function StatsSection() {
         },
       );
 
-      // Stagger stat cards when section enters
+      // ── Parallax left column ─────────────────────────────────────────────
+      if (leftCol) {
+        gsap.to(leftCol, {
+          y: 60,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1.2,
+          },
+        });
+      }
+
+      // ── Counter roll-up + clip-path reveal for each stat card ────────────
       if (statsGrid) {
         const cards = gsap.utils.toArray<HTMLElement>(
           statsGrid.querySelectorAll("[data-stat-card]"),
         );
-        gsap.set(cards, { opacity: 0, y: 24 });
+
+        // Initial clip-path hidden state
+        gsap.set(cards, {
+          clipPath: "inset(0 0 100% 0)",
+          opacity: 0,
+        });
+
         gsap.to(cards, {
+          clipPath: "inset(0 0 0% 0)",
           opacity: 1,
-          y: 0,
-          duration: 0.6,
-          stagger: 0.08,
-          ease: "power2.out",
+          duration: 0.7,
+          stagger: 0.09,
+          ease: "power3.out",
           scrollTrigger: {
             trigger: section,
             start: "top 85%",
             once: true,
           },
+          onComplete() {
+            // After reveal, remove clip-path so sub-elements aren't clipped
+            gsap.set(cards, { clearProps: "clipPath" });
+          },
+        });
+
+        // Odometer counters
+        numberRefs.current.forEach((el, i) => {
+          if (!el) return;
+          const stat = STATS[i];
+          if (!stat) return;
+          // Stretch the number vertically before counting (typewriter up)
+          const obj = { val: 0 };
+          gsap.from(el, {
+            y: 40,
+            opacity: 0,
+            duration: 0.5,
+            delay: i * 0.07,
+            ease: "power3.out",
+            scrollTrigger: { trigger: section, start: "top 85%", once: true },
+          });
+          gsap.to(obj, {
+            val: stat.raw,
+            duration: 1.8 + i * 0.1,
+            ease: "power2.out",
+            delay: i * 0.07 + 0.3,
+            scrollTrigger: { trigger: section, start: "top 85%", once: true },
+            onUpdate() {
+              const v = obj.val;
+              if (stat.suffix === "bn+") {
+                el.textContent = `$${(v / 1000).toFixed(1)}bn`;
+              } else if (stat.suffix === "X") {
+                el.textContent = `${Math.round(v)}X`;
+              } else if (stat.suffix === "+") {
+                el.textContent = `${Math.round(v)}+`;
+              } else if (stat.suffix === "%") {
+                el.textContent = `${Math.round(v)}%`;
+              } else {
+                el.textContent = String(Math.round(v));
+              }
+            },
+          });
         });
       }
     }, section);
@@ -59,187 +197,218 @@ export function StatsSection() {
   return (
     <section
       ref={sectionRef}
-      className="bg-black text-white py-24 md:py-32 min-h-screen relative overflow-x-hidden"
+      className="bg-black text-white h-screen max-h-screen py-16 md:py-20 relative overflow-hidden"
     >
-      <div className="flex">
-        <div className="hidden lg:flex flex-col border-r border-white/10 select-none bg-black">
+      <div className="flex h-full min-h-0 w-full">
+        {/* Col 1: Scrolling text (continuous) — fixed width */}
+        <div
+          ref={leftColumnRef}
+          className="hidden lg:flex w-[200px] shrink-0 flex-col border-r border-white/10 select-none bg-black overflow-hidden"
+        >
           <div className="animate-vertical-scroll flex flex-col">
-            {[...Array(20)].map((_, i) => {
-              const rotations = [-4, 2, -3, 1, -2];
-              const deg = rotations[i % rotations.length];
-              return (
-                <div
-                  key={i}
-                  className="px-6 py-3 flex flex-col items-center border-b border-white/5 origin-center"
-                  style={{ transform: `rotate(${deg}deg)` }}
-                >
-                  <span className="text-2xl font-black tracking-tighter text-white leading-none">
-                    BORN
-                  </span>
-                  <span className="text-2xl font-black tracking-tighter text-brand-red leading-none">
-                    & BRED®
-                  </span>
-                </div>
-              );
-            })}
+            {[0, 1, 2, 3, 4].map((block) => (
+              <div key={block} className="flex flex-col">
+                {[
+                  "CREATIVE",
+                  "THAT DRIVES",
+                  "RESULTS",
+                  "TRIVOXADS",
+                  "YOUR GROWTH",
+                  "PARTNER",
+                  "GROWTH · ADS",
+                  "CREATIVE",
+                  "RESULTS",
+                  "TRIVOXADS",
+                ].map((line, i) => {
+                  const rotations = [-3, 2, -2, 1, -1];
+                  const deg = rotations[i % rotations.length];
+                  const isBrand =
+                    line === "TRIVOXADS" || line === "GROWTH · ADS";
+                  return (
+                    <div
+                      key={`${block}-${i}`}
+                      className="px-4 py-3 flex flex-col items-center border-b border-white/5 origin-center shrink-0"
+                      style={{ transform: `rotate(${deg}deg)` }}
+                    >
+                      {isBrand ? (
+                        <>
+                          <span className="text-xl font-black tracking-tighter text-white leading-none">
+                            {line === "TRIVOXADS" ? "TRIVOX" : "GROWTH ·"}
+                          </span>
+                          <span className="text-xl font-black tracking-tighter text-logo-pink leading-none">
+                            {line === "TRIVOXADS" ? "ADS" : " ADS"}
+                          </span>
+                        </>
+                      ) : (
+                        <span className="text-xl font-black tracking-tighter text-white leading-none">
+                          {line}
+                        </span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
           </div>
         </div>
 
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 bg-black">
-          <div className="lg:col-span-3 bg-black p-12 md:p-16 flex flex-col justify-center border-r border-white/10">
-            <h2
-              ref={headingRef}
-              className="text-6xl md:text-8xl font-black leading-[0.8] tracking-tighter uppercase"
-            >
-              OUR
-              <br />
-              DATA
-              <br />
-              DOES
-              <br />
-              THE
-              <br />
-              TALKING
-            </h2>
-          </div>
+        {/* Col 2: CLIENTS TRUST US — double width of col 1 */}
+        <div className="hidden lg:flex w-[400px] shrink-0 flex-col justify-center bg-black p-8 md:p-12 border-r border-white/10">
+          <h2
+            ref={headingRef}
+            className="text-5xl md:text-7xl font-black leading-[0.85] tracking-tighter uppercase"
+          >
+            <span className="block mb-2 md:mb-3">CLIENTS</span>
+            <span className="block mb-2 md:mb-3">TRUST</span>
+            <span className="block">US</span>
+          </h2>
+        </div>
 
+        {/* Col 3: Stats grid — rest of space, 3 rows × 3 cols */}
+        <div className="flex-1 min-w-0 flex flex-col overflow-hidden">
+          <h2
+            className="lg:hidden text-4xl md:text-5xl font-black leading-[0.85] tracking-tighter uppercase p-6 md:p-8 border-b border-white/10"
+            aria-hidden
+          >
+            CLIENTS TRUST US
+          </h2>
           <div
             ref={statsGridRef}
-            className="lg:col-span-9 grid grid-cols-1 md:grid-cols-3 bg-black"
+            className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-3 grid-rows-3 bg-black"
           >
+            {/* Row 1 */}
             <div
               data-stat-card
-              className="bg-black p-12 border-r border-b border-white/10 flex flex-col justify-between h-72"
+              className="bg-black p-6 md:p-8 border-r border-b border-white/10 flex flex-col justify-between min-h-[140px] md:min-h-[160px] overflow-hidden"
             >
-              <span className="text-8xl font-black tracking-tighter text-white">
-                2X
+              <span
+                ref={(el) => {
+                  numberRefs.current[0] = el;
+                }}
+                className="text-6xl md:text-7xl font-black tracking-tighter text-white tabular-nums"
+              >
+                5+
               </span>
-              <div>
-                <p className="text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
-                  AVERAGE YEAR
-                  <br />
-                  OVER YEAR
-                  <br />
-                  GROWTH
-                </p>
-              </div>
+              <p className="text-[10px] md:text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
+                YEARS OF
+                <br />
+                GROWTH
+              </p>
             </div>
             <div
               data-stat-card
-              className="bg-black p-12 border-r border-b border-white/10 flex flex-col justify-between h-72"
+              className="bg-black p-6 md:p-8 border-r border-b border-white/10 flex flex-col justify-between min-h-[140px] md:min-h-[160px] overflow-hidden"
             >
-              <span className="text-8xl font-black tracking-tighter text-white">
-                6
+              <span
+                ref={(el) => {
+                  numberRefs.current[1] = el;
+                }}
+                className="text-6xl md:text-7xl font-black tracking-tighter text-white tabular-nums"
+              >
+                50+
               </span>
-              <div>
-                <p className="text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
-                  CLIENT
-                  <br />
-                  EXITS
-                </p>
-              </div>
+              <p className="text-[10px] md:text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
+                PROJECTS
+                <br />
+                DELIVERED
+              </p>
             </div>
             <div
               data-stat-card
-              className="bg-black p-12 border-b border-white/10 flex flex-col justify-between h-72"
+              className="bg-black p-6 md:p-8 border-b border-white/10 flex flex-col justify-between min-h-[140px] md:min-h-[160px] overflow-hidden"
             >
-              <span className="text-8xl font-black tracking-tighter text-white">
+              <span
+                ref={(el) => {
+                  numberRefs.current[2] = el;
+                }}
+                className="text-6xl md:text-7xl font-black tracking-tighter text-white tabular-nums"
+              >
                 8
               </span>
-              <div>
-                <p className="text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
-                  WEEKS TO
-                  <br />
-                  MEASURABLE
-                  <br />
-                  GROWTH
-                </p>
-              </div>
+              <p className="text-[10px] md:text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
+                WEEKS TO
+                <br />
+                MEASURABLE
+                <br />
+                RESULTS
+              </p>
             </div>
 
+            {/* Row 2 */}
             <div
               data-stat-card
-              className="md:col-span-1 bg-black p-12 border-r border-b border-white/10 flex flex-col justify-between h-80"
+              className="bg-black p-6 md:p-8 border-r border-b border-white/10 flex flex-col justify-between min-h-[140px] md:min-h-[160px] overflow-hidden"
             >
-              <span className="text-7xl font-black tracking-tighter text-white">
-                $2.7bn
+              <span
+                ref={(el) => {
+                  numberRefs.current[3] = el;
+                }}
+                className="text-6xl md:text-7xl font-black tracking-tighter text-white tabular-nums"
+              >
+                100+
               </span>
-              <div>
-                <p className="text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
-                  VC FUNDING RAISED
-                  <br />
-                  BY OUR PARTNERS
-                </p>
-              </div>
+              <p className="text-[10px] md:text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
+                CLIENTS
+                <br />
+                TRUST US
+              </p>
             </div>
             <div
               data-stat-card
-              className="md:col-span-2 bg-black p-12 md:p-16 border-b border-white/10 flex flex-col justify-center"
+              className="md:col-span-2 bg-black p-6 md:p-8 border-b border-white/10 flex flex-col justify-center min-h-[140px] md:min-h-[160px] overflow-hidden"
             >
-              <blockquote className="text-2xl md:text-4xl font-black leading-[1.1] tracking-tight uppercase mb-8 text-white">
-                &quot;BORN & BRED WAS A STRATEGIC GAME-CHANGER. THEIR METICULOUS
-                CURATION CUT THROUGH INDUSTRY NOISE, SHAPING A BRAND THAT
-                POSITIONS US FOR SCALABLE SUCCESS.&quot;
+              <blockquote className="text-lg md:text-2xl font-black leading-[1.15] tracking-tight uppercase mb-4 text-white">
+                &quot;TRIVOXADS IS A PERFORMANCE-DRIVEN DIGITAL MARKETING AGENCY
+                FOCUSED ON CREATING IMPACTFUL ONLINE STRATEGIES THAT HELP BRANDS
+                GROW, ENGAGE, AND CONVERT.&quot;
               </blockquote>
-              <cite className="not-italic text-[11px] font-black uppercase tracking-widest text-zinc-400">
-                MARCUS SCHILLER | FOUNDER
+              <cite className="not-italic text-[10px] md:text-[11px] font-black uppercase tracking-widest text-zinc-400">
+                CLIENTS TRUST US
               </cite>
             </div>
 
+            {/* Row 3 */}
             <div
               data-stat-card
-              className="bg-black p-12 border-r border-white/10 flex flex-col justify-between h-72"
+              className="bg-black p-6 md:p-8 border-r border-white/10 flex flex-col justify-between min-h-[140px] md:min-h-[160px] overflow-hidden"
             >
-              <span className="text-8xl font-black tracking-tighter text-white">
+              <span
+                ref={(el) => {
+                  numberRefs.current[4] = el;
+                }}
+                className="text-6xl md:text-7xl font-black tracking-tighter text-white tabular-nums"
+              >
                 200+
               </span>
-              <div>
-                <p className="text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
-                  CLIENTS WE&apos;VE
-                  <br />
-                  HELPED SCALE
-                </p>
-              </div>
+              <p className="text-[10px] md:text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
+                BRANDS WE&apos;VE
+                <br />
+                HELPED SCALE
+              </p>
             </div>
             <div
               data-stat-card
-              className="bg-black p-12 border-r border-white/10 flex flex-col justify-between h-72"
+              className="bg-black p-6 md:p-8 border-r border-white/10 flex flex-col justify-between min-h-[140px] md:min-h-[160px] overflow-hidden"
             >
-              <span className="text-8xl font-black tracking-tighter text-white">
-                12
+              <span
+                ref={(el) => {
+                  numberRefs.current[5] = el;
+                }}
+                className="text-6xl md:text-7xl font-black tracking-tighter text-white tabular-nums"
+              >
+                6
               </span>
-              <div>
-                <p className="text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
-                  YEARS SCALING
-                  <br />
-                  AMBITIOUS BUSINESSES
-                </p>
-              </div>
+              <p className="text-[10px] md:text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
+                SERVICES
+                <br />& COUNTING
+              </p>
             </div>
-            <div className="bg-black p-12 flex items-center justify-center" />
+            <div className="bg-black min-h-[140px] md:min-h-[160px]" />
           </div>
         </div>
       </div>
 
-      {/* White band at bottom with black paint drips (clipped to avoid overflow on mobile) */}
-      <div className="absolute bottom-0 left-0 w-full h-28 overflow-hidden pointer-events-none">
-        <div className="w-full h-28 bg-white" />
-        <svg
-          className="absolute bottom-0 left-0 w-full h-28"
-          viewBox="0 0 100 28"
-          preserveAspectRatio="none"
-          fill="black"
-        >
-        {/* Irregular organic black drip shapes on white */}
-        <path d="M 0 0 L 6 28 L 14 12 L 18 0 Z" />
-        <path d="M 14 0 Q 20 14 22 28 L 30 8 L 32 0 Z" />
-        <path d="M 28 0 L 34 24 L 42 0 Z" />
-        <path d="M 40 0 Q 46 10 50 28 L 58 16 L 62 0 Z" />
-        <path d="M 58 0 L 66 28 L 74 6 L 78 0 Z" />
-        <path d="M 74 0 L 80 22 L 88 0 Z" />
-        <path d="M 86 0 Q 92 14 98 28 L 100 28 L 100 0 Z" />
-      </svg>
-      </div>
+      <StatsBottomCurve />
     </section>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useLayoutEffect } from "react";
+import { ArrowRight } from "lucide-react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { FlipModalGrid } from "@/components/flip-modal-grid";
 
@@ -23,7 +24,7 @@ const GRID_ITEMS = [
           alt="Futuristic Brain"
           className="w-full h-full min-h-[80px] object-cover object-center"
         />
-        <div className="absolute bottom-0 left-0 right-0 p-2.5 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="absolute bottom-0 left-0 right-0 p-2.5 bg-linear-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
           <p className="text-[10px] font-black text-white uppercase leading-tight">
             Strategic creative for tech & innovation brands
           </p>
@@ -79,7 +80,7 @@ const GRID_ITEMS = [
           alt="Del Monte"
           className="w-full h-full min-h-[80px] object-cover object-center"
         />
-        <div className="absolute bottom-0 left-0 right-0 p-2.5 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="absolute bottom-0 left-0 right-0 p-2.5 bg-linear-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
           <p className="text-[10px] font-black text-white uppercase leading-tight">
             Del Monte — growing the most profitable product in history
           </p>
@@ -112,7 +113,7 @@ const GRID_ITEMS = [
           alt="Cyberpunk Group"
           className="w-full h-full min-h-[80px] object-cover object-center"
         />
-        <div className="absolute bottom-0 left-0 right-0 p-2.5 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="absolute bottom-0 left-0 right-0 p-2.5 bg-linear-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
           <p className="text-[10px] font-black text-white uppercase leading-tight">
             Cyberpunk-inspired campaign creative
           </p>
@@ -235,50 +236,49 @@ export function GrowTodaySection() {
     <section
       ref={sectionRef}
       id="grow"
-      className="bg-white py-24 md:py-32 min-h-screen overflow-hidden relative border-t border-zinc-200"
+      className="bg-white py-20 sm:py-24 md:py-28 lg:py-32 overflow-hidden relative border-t border-zinc-200"
     >
-      <div className="max-w-[1800px] mx-auto px-6 md:px-8">
+      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16">
         <div
           ref={headerRef}
-          className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-16 gap-10"
+          className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 lg:gap-12 mb-12 md:mb-16"
         >
-          <div className="flex-1">
+          <div className="flex-1 max-w-3xl">
             <h2
               ref={headingRef}
-              className="text-[clamp(2rem,6vw,4rem)] font-black leading-[0.85] tracking-wide uppercase text-zinc-900"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.05] text-black"
             >
-              Grow Today
+              <span className="text-brand-purple">Grow</span>
+              <span> Today</span>
             </h2>
             <p
               ref={paragraphRef}
-              className="text-zinc-600 text-base md:text-lg font-medium leading-relaxed mt-4 max-w-xl"
+              className="text-zinc-600 text-base md:text-lg leading-relaxed mt-4"
             >
               Your growth partner in ads. We help brands scale through strategic
-              creative and performance marketing.
+              creative and performance marketing. Get in touch and let&apos;s
+              grow together.
             </p>
           </div>
 
-          <div className="shrink-0">
+          <div className="shrink-0 self-start">
             <a
               ref={ctaRef}
-              href="#contact"
-              className="inline-flex items-center gap-3 bg-white text-zinc-900 px-6 py-4 rounded-2xl font-semibold text-base shadow-none border-0 hover:bg-zinc-50 transition-colors hover:scale-[1.02] active:scale-[0.98]"
+              href="/contact"
+              className="group relative inline-flex items-center gap-2 sm:gap-2.5 px-5 sm:px-6 py-3 sm:py-3.5 rounded-full border-2 border-brand-purple bg-transparent text-brand-purple overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-purple focus-visible:ring-offset-2"
             >
-              <span>Get a quote</span>
-              <span className="w-9 h-9 rounded-full bg-[#8BC34A] flex items-center justify-center shrink-0">
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-zinc-900"
-                >
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
+              <span
+                className="absolute left-1/2 top-1/2 h-[120%] w-[120%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-purple scale-0 transition-transform duration-500 ease-out group-hover:scale-[2] origin-center"
+                aria-hidden
+              />
+              <span className="relative z-10 text-xs sm:text-sm font-bold uppercase tracking-widest transition-colors duration-300 group-hover:text-white">
+                Get a quote
+              </span>
+              <span className="relative z-10 flex items-center justify-center transition-colors duration-300 group-hover:text-white text-brand-purple">
+                <ArrowRight
+                  className="w-4 h-4 sm:w-5 sm:h-5"
+                  strokeWidth={2.5}
+                />
               </span>
             </a>
           </div>
@@ -286,11 +286,11 @@ export function GrowTodaySection() {
 
         <FlipModalGrid
           gridRef={gridRef}
-          gridClassName="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-4 gap-3 md:gap-4"
+          gridClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"
           boxClassName="min-w-0 aspect-[4/3]"
-          boxContentClassName="aspect-[4/3] w-full h-full min-h-[80px] sm:min-h-0 rounded-xl overflow-hidden cursor-pointer flex items-center justify-center [&>div]:min-h-full [&>div]:min-w-0 [&>div]:w-full [&>div]:h-full"
+          boxContentClassName="aspect-[4/3] w-full h-full min-h-[120px] sm:min-h-0 rounded-2xl overflow-hidden cursor-pointer flex items-center justify-center border border-zinc-200 bg-white shadow-sm hover:shadow-md hover:border-brand-purple/20 transition-all duration-300 [&>div]:min-h-full [&>div]:min-w-0 [&>div]:w-full [&>div]:h-full"
           itemWrapperClassNames={undefined}
-          modalContentClassName="[&>*]:w-full [&>*]:h-full [&>*]:min-h-0 [&>*]:rounded-xl [&>*]:overflow-hidden"
+          modalContentClassName="[&>*]:w-full [&>*]:h-full [&>*]:min-h-0 [&>*]:rounded-2xl [&>*]:overflow-hidden"
         >
           {GRID_ITEMS.map((item) => item.content)}
         </FlipModalGrid>

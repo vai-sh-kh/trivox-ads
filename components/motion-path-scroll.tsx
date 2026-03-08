@@ -4,87 +4,162 @@ import { useRef, useEffect, useCallback, ReactNode } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 /**
- * GSAP MotionPath scroll animation - matches CodePen:
- * https://codepen.io/GreenSock/pen/raerLaK
+ * A card config defines one floating WhiteCard that travels along
+ * its own curved GSAP MotionPath between two section markers.
  *
- * A floating box travels along a curved path through section markers
- * as the user scrolls from the first section to the last.
+ * fromSection / toSection are indices into the children array.
+ *
+ * positionHint lets you nudge which horizontal side the card starts on
+ * within the fromSection:
+ *   "left"  → card starts at ~25% of the section width
+ *   "right" → card starts at ~75% of the section width (default)
  */
-export function MotionPathScroll({ children }: { children: ReactNode }) {
+export type MotionCardConfig = {
+  /** The card JSX to render (e.g. <WhiteCard ... />) */
+  card: ReactNode;
+  /** Section index where the card animation starts (0-based, matches children order) */
+  fromSection: number;
+  /** Section index where the card animation ends */
+  toSection: number;
+  /** Which side of the fromSection the card starts on */
+  positionHint?: "left" | "right";
+};
+
+interface MotionPathScrollProps {
+  children: ReactNode;
+  /** Cards that travel along curved paths between sections */
+  cards?: MotionCardConfig[];
+}
+
+/**
+ * MotionPathScroll
+ *
+ * Wraps an arbitrary number of page sections and drives N floating cards
+ * along individual curved GSAP MotionPaths.  Each card has its own
+ * ScrollTrigger that scrubs across the span of its assigned sections.
+ *
+ * On viewports < 1024 px wide the animated cards are hidden entirely
+ * (they are decorative / desktop-only).
+ */
+export function MotionPathScroll({
+  children,
+  cards = [],
+}: MotionPathScrollProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const boxRef = useRef<HTMLDivElement>(null);
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
+  // One ref per card element
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const ctxRef = useRef<ReturnType<typeof gsap.context> | null>(null);
 
-  const createTimeline = useCallback(() => {
+  const buildTimelines = useCallback(() => {
     ctxRef.current?.revert();
 
-    const box = boxRef.current;
     const wrapper = wrapperRef.current;
-    if (!box || !wrapper) return;
+    if (!wrapper) return;
     if (typeof window !== "undefined" && window.innerWidth < 1024) return;
 
     const sections = sectionRefs.current.filter(Boolean);
     if (sections.length < 2) return;
 
-    const firstSection = sections[0];
-    const lastSection = sections[sections.length - 1];
-
     ctxRef.current = gsap.context(() => {
-      const boxStartRect = box.getBoundingClientRect();
+      const wrapperRect = wrapper.getBoundingClientRect();
 
-      // All sections except the first (markers for the path)
-      const markerSections = sections.slice(1);
+      cards.forEach((cfg, cardIdx) => {
+        const cardEl = cardRefs.current[cardIdx];
+        if (!cardEl) return;
 
-      // Zigzag: alternate left/right per section, stay at vertical center of each
-      const points = markerSections.map((section, i) => {
-        const r = section!.getBoundingClientRect();
-        const isRight = i % 2 === 0; // section 1→right, 2→left, 3→right...
-        const xOffset = isRight ? r.width * 0.75 : r.width * 0.25; // 25%/75% - zigzag but centered
-        return {
-          x: r.left + xOffset - (boxStartRect.left + boxStartRect.width / 2),
-          y:
-            r.top + r.height / 2 - (boxStartRect.top + boxStartRect.height / 2),
-        };
-      });
+        const fromSec = sections[cfg.fromSection];
+        const toSec = sections[cfg.toSection];
+        if (!fromSec || !toSec) return;
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: firstSection,
-          start: "clamp(top center)",
-          endTrigger: lastSection,
-          end: "clamp(top center)",
-          scrub: 0.5, // Snappy sync for both top→bottom and bottom→top scroll
-          invalidateOnRefresh: true,
-        },
-      });
+        const cardSize = cardEl.getBoundingClientRect();
+        const hint = cfg.positionHint ?? "right";
 
-      tl.to(box, {
-        duration: 1,
-        ease: "none",
-        motionPath: {
-          path: points,
-          curviness: 1.5,
-        },
+        // ── Compute the start position (inside fromSection) ──────────────
+        const fromRect = fromSec.getBoundingClientRect();
+        const startX =
+          fromRect.left +
+          (hint === "left" ? fromRect.width * 0.1 : fromRect.width * 0.7) -
+          wrapperRect.left -
+          cardSize.width / 2;
+        const startY =
+          fromRect.top +
+          fromRect.height * 0.45 -
+          wrapperRect.top -
+          cardSize.height / 2;
+
+        // ── Snap card to its starting coordinates ────────────────────────
+        gsap.set(cardEl, { x: startX, y: startY });
+
+        // ── Build path waypoints (fromSection centre → intermediate → toSection centre) ──
+        const toRect = toSec.getBoundingClientRect();
+
+        // Alternate horizontal side for the destination
+        const toHint = hint === "left" ? "right" : "left";
+        const endX =
+          toRect.left +
+          (toHint === "left" ? toRect.width * 0.1 : toRect.width * 0.7) -
+          wrapperRect.left -
+          cardSize.width / 2;
+        const endY =
+          toRect.top +
+          toRect.height * 0.45 -
+          wrapperRect.top -
+          cardSize.height / 2;
+
+        // Mid-point: horizontal opposite side, vertically between the two sections
+        const midX =
+          hint === "left"
+            ? wrapperRect.width * 0.72 - cardSize.width / 2
+            : wrapperRect.width * 0.08;
+        const midY = (startY + endY) / 2;
+
+        const points = [
+          { x: midX, y: midY },
+          { x: endX, y: endY },
+        ];
+
+        // ── ScrollTrigger that spans fromSection → toSection ─────────────
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: fromSec,
+            start: "clamp(top center)",
+            endTrigger: toSec,
+            end: "clamp(top center)",
+            scrub: 0.6,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        tl.to(cardEl, {
+          duration: 1,
+          ease: "none",
+          motionPath: {
+            path: points,
+            curviness: 1.4,
+            type: "cubic",
+          },
+        });
       });
     }, wrapper);
-
-    return () => {
-      ctxRef.current?.revert();
-    };
-  }, []);
+  }, [cards]);
 
   useEffect(() => {
-    createTimeline();
-    // Refresh ScrollTrigger after ScrollSmoother/layout is ready (works both scroll directions)
-    const refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 100);
-    window.addEventListener("resize", createTimeline);
+    buildTimelines();
+    // Wrap in void arrow so the callback satisfies GSAP's Callback type (no return value)
+    const onRefresh = () => {
+      buildTimelines();
+    };
+    ScrollTrigger.addEventListener("refresh", onRefresh);
+    const t = setTimeout(() => ScrollTrigger.refresh(), 500);
+    window.addEventListener("resize", onRefresh);
     return () => {
-      clearTimeout(refreshTimer);
-      window.removeEventListener("resize", createTimeline);
+      clearTimeout(t);
+      ScrollTrigger.removeEventListener("refresh", onRefresh);
+      window.removeEventListener("resize", onRefresh);
       ctxRef.current?.revert();
     };
-  }, [createTimeline]);
+  }, [buildTimelines]);
 
   const childArray = Array.isArray(children)
     ? (children as ReactNode[])
@@ -92,12 +167,21 @@ export function MotionPathScroll({ children }: { children: ReactNode }) {
 
   return (
     <div ref={wrapperRef} className="relative">
-      {/* Floating box: visible only on desktop (lg+) so mobile gets same design without the ornament */}
-      <div
-        ref={boxRef}
-        className="hidden lg:flex absolute top-0 left-0 w-4 h-4 rounded-full bg-brand-purple border-2 border-white shadow-lg pointer-events-none z-10"
-        aria-hidden
-      />
+      {/* Render each card as an absolutely positioned layer inside the wrapper */}
+      {cards.map((cfg, i) => (
+        <div
+          key={i}
+          ref={(el) => {
+            cardRefs.current[i] = el;
+          }}
+          className="hidden lg:flex absolute top-0 left-0 w-[300px] min-w-[300px] pointer-events-none z-20 items-center justify-center"
+          aria-hidden
+        >
+          <div className="pointer-events-auto w-full">{cfg.card}</div>
+        </div>
+      ))}
+
+      {/* Section wrappers — each gets a ref for path calculation */}
       {childArray.map((child, i) => (
         <div
           key={i}
@@ -112,4 +196,13 @@ export function MotionPathScroll({ children }: { children: ReactNode }) {
       ))}
     </div>
   );
+}
+
+/** Client-only wrapper for the home page. No floating cards. */
+export function MotionPathScrollWithHomeCards({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  return <MotionPathScroll>{children}</MotionPathScroll>;
 }

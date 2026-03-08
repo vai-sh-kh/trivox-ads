@@ -3,56 +3,88 @@
 import { useRef, useLayoutEffect } from "react";
 import { motion } from "motion/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
-import { AnimatedText } from "@/components/animated-text";
 
 const principles = [
   {
-    title: "We Show Up\nAt Critical\nInflection Points",
+    title: "Performance-Driven",
     description:
-      "Launches. Pivots. Category creation. We do our best work when the stakes are highest, helping you make decisions that move your business forward, fast.",
+      "We focus on real business outcomes. Every campaign is planned with clear objectives and optimized for measurable results—conversions, cost efficiency, and audience response.",
   },
   {
-    title: "Your Creative\nMust Convert",
+    title: "Data-Backed Strategies",
     description:
-      "There are plenty of designers in the world, and AI can generate a pretty picture in seconds. Good design is table stakes. We build creative and marketing solutions that actually perform, driving growth, traction, and results for your business.",
+      "We combine market insights, innovative creatives, and advanced analytics. No guesswork: we help brands connect with the right audience and achieve measurable growth.",
   },
   {
-    title: "We're In It For\nThe long Haul",
+    title: "End-to-End Solutions",
     description:
-      "From brand to performance, we align with your goals from the start. We don't do one-offs. Instead, we build robust systems designed to scale and consistently deliver value over time.",
+      "From paid advertising and social media to SEO, content strategy, influencer marketing, and performance optimization—executed with real-world market insights and industry best practices.",
   },
   {
-    title: "Doing Great Work,\nWith Great People",
+    title: "Transparency & Trust",
     description:
-      "We believe in working with good people, doing good things, to generate exceptional results, accelerating both business growth and personal success",
+      "We aim to become a trusted digital growth partner by setting new standards in performance, innovation, and transparency—driving sustainable results in an ever-evolving digital landscape.",
+    showIcon: true,
   },
 ];
 
 export function Principles() {
   const sectionRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLSpanElement>(null);
   const columnsRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
+    const title = titleRef.current;
+    const subtitle = subtitleRef.current;
     const columns = columnsRef.current;
     if (!section || !columns) return;
 
     const ctx = gsap.context(() => {
+      const trigger = section;
+
+      if (title) {
+        gsap.fromTo(
+          title,
+          { y: 40, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.9,
+            ease: "power2.out",
+            scrollTrigger: { trigger, start: "top 82%", once: true },
+          },
+        );
+      }
+
+      if (subtitle) {
+        gsap.fromTo(
+          subtitle,
+          { y: 28, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.75,
+            delay: 0.15,
+            ease: "power2.out",
+            scrollTrigger: { trigger, start: "top 82%", once: true },
+          },
+        );
+      }
+
       const cards = gsap.utils.toArray<HTMLElement>(
         columns.querySelectorAll("[data-principle-card]"),
       );
-      gsap.set(cards, { opacity: 0, y: 28 });
+      gsap.set(cards, { opacity: 0, y: 36 });
       gsap.to(cards, {
         opacity: 1,
         y: 0,
         duration: 0.7,
-        stagger: 0.08,
+        stagger: 0.12,
         ease: "power2.out",
-        scrollTrigger: {
-          trigger: section,
-          start: "top 82%",
-          once: true,
-        },
+        delay: 0.25,
+        scrollTrigger: { trigger, start: "top 82%", once: true },
       });
     }, section);
 
@@ -62,78 +94,88 @@ export function Principles() {
   return (
     <section
       ref={sectionRef}
-      className="relative bg-white overflow-hidden py-24 md:py-32 min-h-screen flex flex-col"
+      className="relative overflow-hidden py-16 md:py-20 lg:py-24 flex flex-col bg-[#faf9fc]"
     >
-      {/* Running animation: subtle moving shine matching the section design */}
+      {/* Base gradient: soft warm white to very light purple */}
+      <div
+        className="absolute inset-0 pointer-events-none z-0"
+        style={{
+          background:
+            "linear-gradient(165deg, #fdfcff 0%, #f8f6fc 35%, #f3effa 70%, #faf9fc 100%)",
+        }}
+      />
+
+      {/* Soft gradient orbs (brand purple / pink) */}
+      <div className="absolute inset-0 pointer-events-none z-0" aria-hidden>
+        <div className="absolute -top-24 left-1/4 w-[min(90vw,480px)] h-[min(90vw,480px)] rounded-full bg-brand-purple/6 blur-3xl" />
+        <div className="absolute top-1/2 -right-20 w-[min(70vw,380px)] h-[min(70vw,380px)] rounded-full bg-logo-pink/5 blur-3xl" />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[min(80vw,420px)] h-[min(60vw,320px)] rounded-full bg-brand-purple/4 blur-3xl" />
+      </div>
+
+      {/* Subtle moving shine */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
         <motion.div
           className="absolute top-0 left-0 h-full w-[200%]"
           style={{
             background:
-              "linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.02) 25%, rgba(0,0,0,0.04) 50%, rgba(0,0,0,0.02) 75%, transparent 100%)",
+              "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 25%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0.4) 75%, transparent 100%)",
           }}
           animate={{ x: ["0%", "-50%"] }}
-          transition={{
-            duration: 12,
-            repeat: Infinity,
-            ease: "linear",
-          }}
+          transition={{ duration: 14, repeat: Infinity, ease: "linear" }}
         />
       </div>
 
-      {/* Full-height vertical lines: top to bottom of section (touch dark section boundary) */}
-      <div
-        className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[1920px] hidden lg:block pointer-events-none z-1 px-6 md:px-10 lg:px-12"
-        aria-hidden
-      >
-        <div className="relative w-full h-full flex">
-          <div className="absolute left-[25%] top-0 bottom-0 w-px bg-zinc-200" />
-          <div className="absolute left-[50%] top-0 bottom-0 w-px bg-zinc-200" />
-          <div className="absolute left-[75%] top-0 bottom-0 w-px bg-zinc-200" />
-        </div>
-      </div>
-
-      <div className="relative max-w-[1920px] mx-auto px-6 md:px-10 lg:px-12 flex-1 flex flex-col w-full">
-        {/* Title floats above the vertical lines */}
-        <div className="text-center mb-20 md:mb-28 lg:mb-32">
-          <h2 className="text-left inline-block max-w-[min(90vw,1000px)]">
-            <span className="block text-[clamp(2rem,4vw,2.75rem)] md:text-[clamp(2.25rem,4.5vw,3.5rem)] font-bold leading-[1.05] tracking-tight text-brand-purple">
-              <AnimatedText
-                sectionRef={sectionRef}
-                as="span"
-                className="inline-block"
-              >
-                Four Principles
-              </AnimatedText>
+      <div className="relative max-w-[1920px] mx-auto px-6 md:px-10 lg:px-12 flex flex-col w-full z-10">
+        {/* Title block — doc: Why TrivoxAds? + tagline */}
+        <div className="text-center mb-10 md:mb-12 lg:mb-14">
+          <h2 ref={titleRef} className="text-center">
+            <span className="block text-[clamp(2rem,4.5vw,3rem)] md:text-[clamp(2.25rem,5vw,3.5rem)] font-bold leading-[1.05] tracking-tight text-brand-purple">
+              Why TrivoxAds?
             </span>
-            <span className="block mt-1 text-[clamp(1.5rem,3.2vw,2.5rem)] md:text-[clamp(1.75rem,3.5vw,3rem)] font-bold leading-[1.05] tracking-tight text-black">
-              <AnimatedText
-                sectionRef={sectionRef}
-                as="span"
-                className="inline-block"
-              >
-                We Never Get Bored Of Talking About
-              </AnimatedText>
+            <span
+              ref={subtitleRef}
+              className="block mt-2 md:mt-3 text-[clamp(1.25rem,2.8vw,2rem)] md:text-[clamp(1.5rem,3vw,2.25rem)] font-bold leading-[1.1] tracking-tight text-black"
+            >
+              Results-Oriented. Data-Backed. Trusted.
             </span>
           </h2>
         </div>
 
-        {/* Four columns aligned with full-height vertical lines */}
+        {/* Four columns with motion hover */}
         <div
           ref={columnsRef}
-          className="mt-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-16 lg:gap-y-0 lg:gap-x-0 items-stretch"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10"
         >
           {principles.map((p, i) => (
-            <div key={i} className="lg:px-8">
-              <div data-principle-card>
-                <h3 className="text-xl md:text-2xl font-bold tracking-tight leading-[1.2] text-black mb-6 whitespace-pre-line">
+            <motion.div
+              key={i}
+              className="lg:px-6 xl:px-8 flex"
+              initial={false}
+              whileHover={{ y: -6 }}
+              transition={{ type: "spring", stiffness: 400, damping: 25 }}
+            >
+              <div
+                data-principle-card
+                className="flex flex-col rounded-2xl border border-zinc-100 bg-white p-6 md:p-8 shadow-sm hover:shadow-md hover:border-brand-purple/20 transition-all duration-300"
+              >
+                {p.showIcon && (
+                  <div className="mb-4 flex items-center justify-start">
+                    <span
+                      className="w-8 h-8 rounded-full border-2 border-brand-purple flex items-center justify-center"
+                      aria-hidden
+                    >
+                      <span className="w-2 h-2 rounded-full bg-brand-purple" />
+                    </span>
+                  </div>
+                )}
+                <h3 className="text-xl md:text-2xl font-bold tracking-tight leading-[1.2] text-black mb-4">
                   {p.title}
                 </h3>
-                <p className="text-base md:text-[1.05rem] leading-relaxed text-black font-normal">
+                <p className="text-base md:text-[1.05rem] leading-relaxed text-zinc-700 flex-1">
                   {p.description}
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
