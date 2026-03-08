@@ -4,15 +4,25 @@
  */
 export const IS_HERO_SECTION_FULL = true;
 
+// ─── Site (SEO, sitemap, robots) ─────────────────────────────────────────────
+export const SITE_URL =
+  (typeof process !== "undefined" && process.env?.NEXT_PUBLIC_SITE_URL) ||
+  "https://trivoxads.com";
+export const SITE_NAME = "TrivoxAds";
+export const SITE_DEFAULT_TITLE = "TrivoxAds | Results-Oriented Digital Marketing Agency";
+export const SITE_DEFAULT_DESCRIPTION =
+  "TrivoxAds is a results-oriented digital marketing agency in Trivandrum. We help brands grow through strategic planning, creative execution, and performance-driven campaigns. Social media, SEO, content, and analytics.";
+
 // ─── Contact (single source of truth) ───────────────────────────────────────
-export const CONTACT_PHONE = "+91 98765 43210";
+export const CONTACT_PHONE = "+91 8089609045";
 export const CONTACT_EMAIL = "hello@trivoxads.com";
 export const CONTACT_ADDRESS =
-  "Your address here, City, State – Pin Code";
-export const CONTACT_INSTAGRAM_URL = "https://instagram.com/trivoxads";
-export const CONTACT_FACEBOOK_URL = "https://facebook.com/trivoxads";
+  "320/21, SREEVALSAM, KARIYAKONAM, VELICODE, OORUTTAMBALAM P O, Trivandrum";
+export const CONTACT_INSTAGRAM_URL = "https://www.instagram.com/trivox_ads";
+export const CONTACT_FACEBOOK_URL = "https://www.facebook.com/share/1WBbfi3cDj/";
 /** Phone digits only for WhatsApp (derived from CONTACT_PHONE) */
 export const CONTACT_WHATSAPP_NUMBER = CONTACT_PHONE.replace(/\D/g, "");
+export const CONTACT_WHATSAPP_URL = `https://wa.me/${CONTACT_WHATSAPP_NUMBER}`;
 
 export const CONTACT = {
   phone: CONTACT_PHONE,
@@ -21,12 +31,14 @@ export const CONTACT = {
   instagram: CONTACT_INSTAGRAM_URL,
   facebook: CONTACT_FACEBOOK_URL,
   whatsappNumber: CONTACT_WHATSAPP_NUMBER,
+  whatsappUrl: CONTACT_WHATSAPP_URL,
 } as const;
 
 /** Media/social links for menu overlay and footer (single source of truth) */
 export const MEDIA_LINKS = [
   { label: "Instagram", href: CONTACT.instagram },
   { label: "Facebook", href: CONTACT.facebook },
+  { label: "WhatsApp", href: CONTACT.whatsappUrl },
 ] as const;
 
 /** Rotating tagline in header (navbar + menu overlay) */

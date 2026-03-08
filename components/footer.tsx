@@ -227,8 +227,14 @@ export function Footer() {
           aria-hidden
         />
 
-        {/* Bottom: legal links + large wordmark */}
-        <div className="px-4 sm:px-10 lg:px-14 pt-10 sm:pt-14 pb-10 sm:pb-14">
+        {/* Bottom: legal links + large wordmark (safe area for home indicator) */}
+        <div
+          className="px-4 sm:px-10 lg:px-14 pt-10 sm:pt-14 pb-10 sm:pb-14"
+          style={{
+            paddingBottom:
+              "max(2.5rem, calc(2.5rem + env(safe-area-inset-bottom, 0)))",
+          }}
+        >
           <div className="flex flex-wrap gap-4 sm:gap-6 md:gap-8 lg:gap-12 mb-4 sm:mb-6">
             <a
               href="#"

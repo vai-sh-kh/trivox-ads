@@ -18,7 +18,7 @@ export function ScrollSmootherProvider({
       <Navbar onMenuClick={() => setIsMenuOpen(true)} />
       <MenuOverlay isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
       <div
-        className={`scroll-container-touch overflow-x-hidden min-h-full ${isMenuOpen ? "overflow-y-hidden max-h-screen" : ""}`}
+        className={`scroll-container-touch overflow-x-hidden min-h-full w-full max-w-[100vw] ${isMenuOpen ? "overflow-y-hidden max-h-dvh" : ""}`}
       >
         <MotionRevealProvider>{children}</MotionRevealProvider>
       </div>

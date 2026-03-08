@@ -42,7 +42,7 @@ export function InnerPageLayout({
   return (
     <main
       ref={sectionRef}
-      className={`selection:bg-black selection:text-white overflow-x-hidden bg-white min-h-screen relative ${className}`}
+      className={`selection:bg-black selection:text-white overflow-x-hidden bg-white min-h-dvh w-full max-w-[100vw] relative ${className}`}
       onMouseMove={(e) => updateCursor(e.clientX, e.clientY)}
       onMouseLeave={() => setCursor(null)}
       onTouchMove={(e) => {
@@ -72,8 +72,8 @@ export function InnerPageLayout({
         </div>
       )}
 
-      {/* Floating content block — left-aligned or centered, constrained width (mobile-first) */}
-      <div className="relative z-10 max-w-[1920px] mx-auto w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16 pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-12 sm:pb-16 md:pb-24 min-h-[85vh] flex flex-col justify-center">
+      {/* Floating content block — left-aligned or centered, constrained width (mobile-first + safe area) */}
+      <div className="relative z-10 max-w-[1920px] mx-auto w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16 pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-content-safe min-h-[85dvh] flex flex-col justify-center">
         <div
           className={`${contentClassName || "max-w-4xl"} ${centerContent ? "mx-auto text-center" : ""}`}
         >

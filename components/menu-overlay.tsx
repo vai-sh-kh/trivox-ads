@@ -78,7 +78,13 @@ export function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.12 }}
-          className="fixed inset-0 z-100 overflow-y-auto bg-white font-sans"
+          className="fixed inset-0 z-100 overflow-y-auto overflow-x-hidden bg-white font-sans w-full max-w-[100vw]"
+          style={{
+            paddingTop: "env(safe-area-inset-top, 0)",
+            paddingLeft: "env(safe-area-inset-left, 0)",
+            paddingRight: "env(safe-area-inset-right, 0)",
+            paddingBottom: "env(safe-area-inset-bottom, 0)",
+          }}
         >
           {/* Header – fixed height to match main navbar (mobile-first) */}
           <header className="relative h-16 sm:h-[72px] lg:h-[88px] flex items-center max-w-[1920px] mx-auto w-full px-4 sm:px-6 lg:px-8 gap-2 shrink-0">

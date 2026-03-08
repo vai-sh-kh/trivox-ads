@@ -15,7 +15,7 @@ import { MotionPathScrollWithHomeCards } from "@/components/motion-path-scroll";
 
 export default function Home() {
   return (
-    <main className="selection:bg-black selection:text-white overflow-x-hidden">
+    <main className="selection:bg-black selection:text-white overflow-x-hidden w-full max-w-[100vw] min-h-dvh">
       {!IS_HERO_SECTION_FULL ? (
         <VideoHeroContainer />
       ) : (

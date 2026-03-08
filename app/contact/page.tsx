@@ -5,7 +5,15 @@ import { Footer } from "@/components/footer";
 import { InnerPageLayout } from "@/components/inner-page-layout";
 import { CONTACT, MEDIA_LINKS } from "@/lib/constants";
 import { motion } from "motion/react";
-import { Phone, Mail, MapPin, Instagram, Facebook, Send } from "lucide-react";
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Instagram,
+  Facebook,
+  MessageCircle,
+  Send,
+} from "lucide-react";
 
 const INTRO_COPY =
   "Get in touch. We'd love to hear about your brand and how we can help you grow. Reach us by phone, email, or send a message directly via WhatsApp.";
@@ -93,8 +101,8 @@ export default function ContactPage() {
 
           {/* Contact details + form: two columns on large screens */}
           <section className="grid grid-cols-1 lg:grid-cols-5 gap-8 md:gap-10 lg:gap-12">
-            {/* Contact info cards: same style as DM/About cards */}
-            <div className="lg:col-span-2 space-y-6">
+            {/* Contact info cards: same style as DM/About cards — title and value aligned start */}
+            <div className="lg:col-span-2 space-y-6 text-start">
               <motion.a
                 href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CONTACT.address)}`}
                 target="_blank"
@@ -198,8 +206,13 @@ export default function ContactPage() {
                     <span className="w-12 h-12 rounded-xl bg-brand-purple/10 flex items-center justify-center shrink-0 group-hover:bg-brand-purple/20 transition-colors">
                       {link.label === "Instagram" ? (
                         <Instagram size={24} className="text-brand-purple" />
-                      ) : (
+                      ) : link.label === "Facebook" ? (
                         <Facebook size={24} className="text-brand-purple" />
+                      ) : (
+                        <MessageCircle
+                          size={24}
+                          className="text-brand-purple"
+                        />
                       )}
                     </span>
                     <div>
@@ -257,7 +270,7 @@ export default function ContactPage() {
                       aria-describedby={
                         errors.name ? "contact-name-error" : undefined
                       }
-                      className={`w-full px-4 py-3.5 rounded-xl border bg-white text-zinc-800 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-brand-purple focus:border-brand-purple transition-all duration-200 text-base text-start ${
+                      className={`w-full min-h-[44px] px-4 py-3.5 rounded-xl border bg-white text-zinc-800 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-brand-purple focus:border-brand-purple transition-all duration-200 text-base text-start ${
                         errors.name ? "border-red-500" : "border-zinc-200"
                       }`}
                     />
@@ -292,7 +305,7 @@ export default function ContactPage() {
                       aria-describedby={
                         errors.email ? "contact-email-error" : undefined
                       }
-                      className={`w-full px-4 py-3.5 rounded-xl border bg-white text-zinc-800 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-brand-purple focus:border-brand-purple transition-all duration-200 text-base text-start ${
+                      className={`w-full min-h-[44px] px-4 py-3.5 rounded-xl border bg-white text-zinc-800 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-brand-purple focus:border-brand-purple transition-all duration-200 text-base text-start ${
                         errors.email ? "border-red-500" : "border-zinc-200"
                       }`}
                     />
@@ -330,7 +343,7 @@ export default function ContactPage() {
                       aria-describedby={
                         errors.message ? "contact-message-error" : undefined
                       }
-                      className={`w-full px-4 py-3.5 rounded-xl border bg-white text-zinc-800 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-brand-purple focus:border-brand-purple transition-all duration-200 resize-y min-h-[140px] text-base leading-relaxed text-start ${
+                      className={`w-full px-4 py-3.5 rounded-xl border bg-white text-zinc-800 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-brand-purple focus:border-brand-purple transition-all duration-200 resize-y min-h-[120px] sm:min-h-[140px] text-base leading-relaxed text-start ${
                         errors.message ? "border-red-500" : "border-zinc-200"
                       }`}
                     />
@@ -346,7 +359,7 @@ export default function ContactPage() {
                   </div>
                   <button
                     type="submit"
-                    className="inline-flex items-center justify-center gap-2 bg-brand-purple text-white px-10 py-4 rounded-full font-black text-sm uppercase tracking-widest hover:bg-purple-900 transition-all duration-300 w-full sm:w-auto"
+                    className="inline-flex items-center justify-center gap-2 min-h-[44px] bg-brand-purple text-white px-10 py-4 rounded-full font-black text-sm uppercase tracking-widest hover:bg-purple-900 transition-all duration-300 w-full sm:w-auto active:scale-[0.98]"
                   >
                     <Send size={18} strokeWidth={2.5} />
                     Send via WhatsApp
