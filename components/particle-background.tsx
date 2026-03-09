@@ -2,13 +2,6 @@
 
 import { useRef, useEffect, useCallback } from "react";
 
-/**
- * Single cluster chasing the cursor:
- * - One chase point follows the mouse; all particles are pulled toward it
- * - Whole blob lags behind the cursor for a "chasing" feel
- * - Particles stay in a loose cloud around the chase point
- */
-
 const COLORS = ["#7A00FF", "#A140F0", "#40A0F0", "#C71585", "#E0115F"];
 
 const PARTICLE_COUNT = 340;
@@ -17,9 +10,7 @@ const SIZE_MAX = 4.2;
 const OPACITY_MIN = 0.14;
 const OPACITY_MAX = 0.52;
 
-// Default: how fast the cluster center chases the cursor (lag = chasing feel)
-const DEFAULT_CHASE_SPEED = 0.065;
-// Default: how strongly particles are pulled toward the cluster center
+const DEFAULT_CHASE_SPEED = 0.04;
 const DEFAULT_PULL_STRENGTH = 0.022;
 
 interface Particle {
@@ -46,24 +37,17 @@ function createParticles(width: number, height: number): Particle[] {
     const x = cx + Math.cos(angle) * spread + (Math.random() - 0.5) * 60;
     const y = cy + Math.sin(angle) * spread + (Math.random() - 0.5) * 60;
 
-    const color = COLORS[Math.floor(Math.random() * COLORS.length)];
-    const size = SIZE_MIN + Math.random() * (SIZE_MAX - SIZE_MIN);
-    const opacity = OPACITY_MIN + Math.random() * (OPACITY_MAX - OPACITY_MIN);
-    const phase = Math.random() * Math.PI * 2;
-    const orbitRadius = 6 + Math.random() * 22;
-    const orbitPhase = Math.random() * Math.PI * 2;
-
     particles.push({
       x,
       y,
       vx: 0,
       vy: 0,
-      size,
-      color,
-      opacity,
-      phase,
-      orbitRadius,
-      orbitPhase,
+      size: SIZE_MIN + Math.random() * (SIZE_MAX - SIZE_MIN),
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      opacity: OPACITY_MIN + Math.random() * (OPACITY_MAX - OPACITY_MIN),
+      phase: Math.random() * Math.PI * 2,
+      orbitRadius: 6 + Math.random() * 22,
+      orbitPhase: Math.random() * Math.PI * 2,
     });
   }
   return particles;
@@ -76,11 +60,8 @@ export function ParticleBackground({
   pullStrength = DEFAULT_PULL_STRENGTH,
 }: {
   className?: string;
-  /** Cursor position in section/canvas coordinates */
   cursor: { x: number; y: number } | null;
-  /** How fast the cluster follows the cursor (0–1). Higher = snappier. */
   chaseSpeed?: number;
-  /** How strongly particles are pulled toward the cursor. */
   pullStrength?: number;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -138,7 +119,7 @@ export function ParticleBackground({
       const targetX = cur !== null ? cur.x : width * 0.5;
       const targetY = cur !== null ? cur.y : height * 0.5;
 
-      // Single chase point: cluster center follows (chases) the cursor
+      // Cluster center lazily follows the cursor
       const chase = chaseRef.current;
       const speed = chaseSpeedRef.current;
       chase.x += (targetX - chase.x) * speed;
@@ -151,12 +132,10 @@ export function ParticleBackground({
         const dx = chase.x - p.x;
         const dy = chase.y - p.y;
         const dist = Math.hypot(dx, dy) || 0.01;
-        // Pull toward chase point; stronger when far (so cluster holds together)
         const pull = Math.min(100 / dist, 5) * pullStr;
         p.vx += (dx / dist) * pull;
         p.vy += (dy / dist) * pull;
 
-        // Soft orbit so blob isn’t a perfect ball
         const orbit = p.orbitRadius * 0.35;
         p.vx += Math.sin(t * 0.5 + p.orbitPhase) * orbit * 0.01;
         p.vy += Math.cos(t * 0.45 + p.orbitPhase * 1.2) * orbit * 0.01;

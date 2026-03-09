@@ -94,11 +94,19 @@ export function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
               className="flex items-center h-10 sm:h-12 lg:h-14 shrink-0 min-h-[44px]"
             >
               <Image
+                src="/logo-icon.png"
+                alt="TrivoxAds"
+                width={56}
+                height={56}
+                className="h-14 w-14 sm:hidden object-contain object-left z-10"
+                priority
+              />
+              <Image
                 src="/logo.png"
                 alt="TrivoxAds"
                 width={200}
                 height={56}
-                className="h-8 sm:h-10 lg:h-14 w-auto max-w-[120px] sm:max-w-[160px] lg:max-w-[200px] object-contain object-left z-10"
+                className="hidden sm:block h-10 lg:h-14 w-auto max-w-[160px] lg:max-w-[200px] object-contain object-left z-10"
                 priority
               />
             </Link>
@@ -108,11 +116,11 @@ export function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
               <span className="animate-pulse">|</span>
             </span>
 
-            <div className="flex items-center gap-2 sm:gap-4 flex-1 justify-end shrink-0 z-10">
+            <div className="flex items-center gap-1.5 sm:gap-4 flex-1 justify-end shrink-0 z-10">
               <Link
                 href="/contact"
                 onClick={onClose}
-                className="inline-block bg-brand-purple text-white px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 rounded-full text-[10px] sm:text-[12px] font-black uppercase tracking-widest hover:scale-105 transition-transform whitespace-nowrap"
+                className="inline-block bg-brand-purple text-white px-2.5 sm:px-6 lg:px-8 py-2 sm:py-3.5 rounded-full text-[9px] sm:text-[12px] font-black uppercase tracking-widest hover:scale-105 transition-transform whitespace-nowrap"
               >
                 WORK WITH US
               </Link>
@@ -123,10 +131,10 @@ export function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
                   e.stopPropagation();
                   onClose();
                 }}
-                className="bg-[#F2F2F2] text-brand-purple border border-zinc-300/80 px-4 sm:px-6 py-2.5 sm:py-3.5 rounded-full text-[10px] sm:text-[12px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-brand-purple hover:text-white hover:border-brand-purple/50 transition-colors shrink-0"
+                className="bg-[#F2F2F2] text-brand-purple border border-zinc-300/80 px-2.5 sm:px-6 py-2 sm:py-3.5 rounded-full text-[9px] sm:text-[12px] font-black uppercase tracking-widest flex items-center gap-1.5 sm:gap-2 hover:bg-brand-purple hover:text-white hover:border-brand-purple/50 transition-colors shrink-0"
                 aria-label="Close menu"
               >
-                <X size={14} className="sm:w-4 sm:h-4" strokeWidth={4} />
+                <X size={12} className="sm:w-4 sm:h-4 w-3 h-3" strokeWidth={4} />
                 EXIT
               </button>
             </div>

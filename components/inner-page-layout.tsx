@@ -73,7 +73,7 @@ export function InnerPageLayout({
       )}
 
       {/* Floating content block — left-aligned or centered, constrained width (mobile-first + safe area) */}
-      <div className="relative z-10 max-w-[1920px] mx-auto w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16 pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-content-safe min-h-[85dvh] flex flex-col justify-center">
+      <div className="relative z-10 max-w-[1920px] mx-auto w-full px-3 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16 pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-content-safe min-h-[85dvh] flex flex-col justify-center">
         <div
           className={`${contentClassName || "max-w-4xl"} ${centerContent ? "mx-auto text-center" : ""}`}
         >

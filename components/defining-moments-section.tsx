@@ -80,7 +80,7 @@ export function DefiningMomentsSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative bg-white min-h-screen overflow-hidden flex flex-col justify-center px-4 py-8 sm:px-6 sm:py-10 md:px-8 md:py-12 lg:px-10 lg:py-14"
+      className="relative bg-white sm:min-h-screen overflow-hidden flex flex-col justify-start sm:justify-center px-4 pt-10 pb-8 sm:px-6 sm:py-10 md:px-8 md:py-12 lg:px-10 lg:py-14"
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
       onTouchMove={onTouchMove}
@@ -95,7 +95,7 @@ export function DefiningMomentsSection() {
       <ParticleBackground
         className="opacity-[0.6]"
         cursor={cursor}
-        chaseSpeed={0.18}
+        chaseSpeed={0.04}
         pullStrength={0.035}
       />
 
@@ -108,14 +108,14 @@ export function DefiningMomentsSection() {
         <div className="flex flex-col items-center text-center">
           <h2
             ref={headingRef}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] tracking-wide uppercase mt-8 sm:mt-12 md:mt-16 lg:mt-20 mb-8 sm:mb-10 md:mb-12 lg:mb-16"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-[0.85] tracking-tighter uppercase mt-0 sm:mt-8 md:mt-12 lg:mt-16 mb-10 sm:mb-12 md:mb-14 lg:mb-18"
           >
             <span className="text-gradient">Who we are</span>
           </h2>
 
-          <div className="space-y-5 sm:space-y-6 mb-12 sm:mb-14 md:mb-16 max-w-6xl mx-auto">
+          <div className="space-y-6 sm:space-y-8 mb-14 sm:mb-18 md:mb-24 max-w-6xl mx-auto">
             <LineRevealText
-              className="text-2xl sm:text-3xl md:text-4xl text-zinc-700 leading-relaxed font-normal tracking-wide"
+              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-zinc-700 leading-relaxed font-normal tracking-tight"
               as="p"
             >
               TrivoxAds is a results-oriented digital marketing agency committed
@@ -125,7 +125,7 @@ export function DefiningMomentsSection() {
               engagement, and conversions across online platforms.
             </LineRevealText>
             <LineRevealText
-              className="text-xl sm:text-2xl md:text-3xl text-zinc-600 leading-relaxed font-normal tracking-wide"
+              className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-zinc-500 leading-relaxed font-normal tracking-tight"
               as="p"
             >
               By combining market insights, innovative creatives, and advanced

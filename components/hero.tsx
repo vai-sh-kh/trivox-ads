@@ -40,7 +40,7 @@ export function Hero({ videoBackground }: { videoBackground?: boolean }) {
   return (
     <section
       ref={sectionRef}
-      className={`relative overflow-hidden flex flex-col justify-center w-full max-w-[100vw] ${videoBackground ? "flex-1 min-h-0 py-2 sm:py-3" : "pt-16 sm:pt-20 md:pt-24 lg:pt-28"} ${!videoBackground ? "bg-gradient-to-b from-[#5D3FD3]/[0.06] via-transparent to-[#E0115F]/[0.04]" : ""}`}
+      className={`relative overflow-hidden flex flex-col justify-center w-full max-w-[100vw] ${videoBackground ? "flex-1 min-h-0 py-2 sm:py-3" : "pt-32 pb-10 sm:pt-24 sm:pb-16 md:pt-28 lg:pt-32"} ${!videoBackground ? "bg-white" : ""}`}
     >
       <div
         className={`${videoBackground ? CONTAINER_VIDEO_CLASS : CONTAINER_CLASS} max-w-full`}

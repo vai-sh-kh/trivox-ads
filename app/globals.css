@@ -3,7 +3,7 @@
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  
+
   --color-brand-red: #FF0000;
   --color-brand-purple: #4A148C;
   --color-brand-green: #1B7332;
@@ -13,7 +13,7 @@
   /* Logo gradient: deep purple → pink/magenta */
   --color-logo-purple: #5D3FD3;
   --color-logo-pink: #E0115F;
-  
+
   /* Mobile-first typography scale (base = mobile, then sm/md/lg in components) */
   --text-hero-mobile: clamp(2rem, 10vw, 2.75rem);
   --text-hero-video-mobile: clamp(1.5rem, 5vw, 2.25rem);
@@ -34,9 +34,11 @@
     /* Prevent horizontal overflow on mobile */
     max-width: 100vw;
   }
+
   html::-webkit-scrollbar {
     display: none;
   }
+
   body {
     @apply bg-brand-white text-brand-black font-sans antialiased overflow-x-hidden;
     overflow-y: auto;
@@ -53,13 +55,16 @@
     padding-right: env(safe-area-inset-right, 0);
     padding-bottom: env(safe-area-inset-bottom, 0);
   }
+
   body::-webkit-scrollbar {
     display: none;
   }
+
   /* Reduce tap highlight on touch devices */
   * {
     -webkit-tap-highlight-color: transparent;
   }
+
   /* Touch/narrow: plain wrapper so document scroll works */
   .scroll-container-touch {
     overflow-x: hidden;
@@ -71,27 +76,33 @@
     touch-action: pan-y;
     padding-bottom: env(safe-area-inset-bottom, 0);
   }
+
   @media (pointer: coarse) {
     body {
       overscroll-behavior-y: auto;
     }
   }
+
   /* Utility: safe area top padding for fixed nav */
   .safe-area-top {
     padding-top: env(safe-area-inset-top, 0);
   }
+
   .safe-area-bottom {
     padding-bottom: env(safe-area-inset-bottom, 0);
   }
+
   /* Content area: base padding + safe area (e.g. inner pages), responsive */
   .pb-content-safe {
     padding-bottom: max(3rem, calc(3rem + env(safe-area-inset-bottom, 0)));
   }
+
   @media (min-width: 640px) {
     .pb-content-safe {
       padding-bottom: max(4rem, calc(4rem + env(safe-area-inset-bottom, 0)));
     }
   }
+
   @media (min-width: 768px) {
     .pb-content-safe {
       padding-bottom: max(6rem, calc(6rem + env(safe-area-inset-bottom, 0)));
@@ -106,44 +117,38 @@
     letter-spacing: -0.08em;
     font-weight: 900;
   }
-  
+
   /* Logo gradient: single source of truth for hero text, footer, accents */
   .logo-gradient {
-    background: linear-gradient(
-      to right,
-      #5D3FD3 0%,
-      #7B4FDF 35%,
-      #C71585 70%,
-      #E0115F 100%
-    );
+    background: linear-gradient(to right,
+        #5D3FD3 0%,
+        #7B4FDF 35%,
+        #C71585 70%,
+        #E0115F 100%);
   }
 
   /* Footer: same palette but more width for the right (pink/magenta) color */
   .footer-gradient {
-    background: linear-gradient(
-      to right,
-      #5D3FD3 0%,
-      #7B4FDF 22%,
-      #C71585 42%,
-      #E0115F 100%
-    );
+    background: linear-gradient(to right,
+        #5D3FD3 0%,
+        #7B4FDF 22%,
+        #C71585 42%,
+        #E0115F 100%);
   }
 
   /* Logo-inspired gradient for text (same color stops as .logo-gradient) */
   .text-gradient {
-    background: linear-gradient(
-      to right,
-      #5D3FD3 0%,
-      #7B4FDF 35%,
-      #C71585 70%,
-      #E0115F 100%
-    );
+    background: linear-gradient(to right,
+        #5D3FD3 0%,
+        #7B4FDF 35%,
+        #C71585 70%,
+        #E0115F 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent;
   }
-  
+
   .text-balance {
     text-wrap: balance;
   }
@@ -151,26 +156,22 @@
   /* Grid overlay for hero-style sections (visible, aligned correctly) */
   .section-grid-pattern {
     background-image:
-      linear-gradient(rgba(0, 0, 0, 0.09) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 0, 0, 0.09) 1px, transparent 1px);
+      linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
     background-size: 72px 72px;
     background-position: 0 0;
   }
 
   /* Light grid with disappear feel: fades toward edges */
   .section-grid-fade {
-    mask-image: radial-gradient(
-      ellipse 80% 70% at 50% 50%,
-      black 0%,
-      black 35%,
-      transparent 75%
-    );
-    -webkit-mask-image: radial-gradient(
-      ellipse 80% 70% at 50% 50%,
-      black 0%,
-      black 35%,
-      transparent 75%
-    );
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 50%,
+        black 0%,
+        black 35%,
+        transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 50%,
+        black 0%,
+        black 35%,
+        transparent 75%);
     mask-size: 100% 100%;
     mask-position: center;
     -webkit-mask-size: 100% 100%;
@@ -183,6 +184,7 @@
     -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.9);
     text-shadow: 0 0 40px rgba(0, 0, 0, 0.35);
   }
+
   @media (min-width: 640px) {
     .hero-title {
       -webkit-text-stroke-width: 2px;
@@ -194,47 +196,57 @@
     height: 100%;
     width: 100%;
   }
+
   /* Hero: mobile-first — smaller base, scale up on larger screens */
   .text-hero-size {
-    font-size: clamp(1.75rem, 9vw, 2.75rem);
-    letter-spacing: -0.03em;
+    font-size: clamp(2.25rem, 12vw, 3.5rem);
+    letter-spacing: -0.05em;
+    line-height: 0.8;
   }
+
   @media (min-width: 640px) {
     .text-hero-size {
       font-size: clamp(2.75rem, 12.5vw, 4rem);
     }
   }
+
   @media (min-width: 768px) {
     .text-hero-size {
       font-size: clamp(4rem, 12.5vw, 320px);
     }
   }
+
   @media (min-width: 1024px) {
     .text-hero-size {
       font-size: min(12.5vw, 40vh);
       letter-spacing: -0.02em;
     }
   }
+
   /* Hero inside 60vh video panel: mobile-first smaller text */
   .text-hero-size-video {
     font-size: clamp(1.35rem, 4.5vw, 2rem);
     letter-spacing: -0.02em;
   }
+
   @media (min-width: 640px) {
     .text-hero-size-video {
       font-size: clamp(2rem, 5.5vw, 2.75rem);
     }
   }
+
   @media (min-width: 768px) {
     .text-hero-size-video {
       font-size: clamp(2.5rem, 6.5vw, 4rem);
     }
   }
+
   @media (min-width: 1024px) {
     .text-hero-size-video {
       font-size: clamp(2.75rem, 5vw, 4.5rem);
     }
   }
+
   /* Same letter-spacing between every character for even gaps */
   .hero-title-tracking {
     letter-spacing: -0.02em;
@@ -246,8 +258,13 @@
   }
 
   @keyframes vertical-scroll {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-25%); }
+    0% {
+      transform: translateY(0);
+    }
+
+    100% {
+      transform: translateY(-25%);
+    }
   }
 
   .animate-vertical-scroll {
@@ -256,9 +273,17 @@
   }
 
   @keyframes stats-curve-pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.85; }
+
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.85;
+    }
   }
+
   .animate-stats-curve-pulse {
     animation: stats-curve-pulse 3s ease-in-out infinite;
   }

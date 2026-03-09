@@ -47,21 +47,36 @@ export function ServicesSection() {
       const cells = gsap.utils.toArray<HTMLElement>(
         grid.querySelectorAll("[data-service-cell]"),
       );
+      const isNarrow =
+        typeof window !== "undefined" && window.innerWidth < 1024;
       cells.forEach((el, i) => {
+        // Mobile: reveal from below with stagger; desktop: from sides. Both use 3 cols now.
         const col = i % 3;
-        const fromX = col === 0 ? -24 : col === 1 ? 0 : 24;
-        gsap.set(el, { opacity: 0, y: 40, x: fromX, scale: 0.96 });
+        const fromX = isNarrow
+          ? col === 0
+            ? -16
+            : col === 1
+              ? 0
+              : 16
+          : col === 0
+            ? -24
+            : col === 1
+              ? 0
+              : 24;
+        const fromY = isNarrow ? 24 : 40;
+        gsap.set(el, { opacity: 0, y: fromY, x: fromX, scale: 0.98 });
         gsap.to(el, {
           opacity: 1,
           y: 0,
           x: 0,
           scale: 1,
-          duration: 0.6,
+          duration: 0.55,
+          delay: isNarrow ? i * 0.06 : 0,
           ease: "power2.out",
           scrollTrigger: {
             trigger: el,
             start: "top 92%",
-            end: "top 60%",
+            end: "top 55%",
             once: true,
           },
         });
@@ -117,36 +132,38 @@ export function ServicesSection() {
           </motion.div>
         </div>
 
-        {/* 3 per row grid: image on hover, SlidingText for service name */}
-        <div
-          ref={gridRef}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0 border border-zinc-200 overflow-hidden rounded-lg mt-10 sm:mt-12 md:mt-16"
-        >
-          {SERVICES.map((service, i) => {
-            const imageSrc = serviceImages[i % serviceImages.length];
-            return (
-              <motion.div
-                key={service.id}
-                data-service-cell
-                className="group relative flex items-center justify-center min-h-[160px] sm:min-h-[180px] md:min-h-[200px] lg:min-h-[220px] border-r border-b border-zinc-200 nth-[3n]:border-r-0 nth-[n+4]:border-b-0 bg-white overflow-hidden cursor-pointer"
-                whileHover={{ y: -8 }}
-              >
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0">
-                  <Image
-                    src={imageSrc}
-                    alt=""
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                  <div className="absolute inset-0 bg-brand-purple/70" />
-                </div>
-                <span className="text-lg sm:text-xl md:text-2xl font-bold text-zinc-800 group-hover:text-white text-center relative z-10 transition-colors duration-300 px-4 group-hover:drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
-                  <SlidingText>{service.name}</SlidingText>
-                </span>
-              </motion.div>
-            );
-          })}
+        {/* Mobile: 2 cols, bigger cells, grid lines extend edge-to-edge; desktop: 3 cols */}
+        <div className="mt-10 sm:mt-12 md:mt-16 -mx-4 sm:mx-0">
+          <div
+            ref={gridRef}
+            className="grid grid-cols-2 lg:grid-cols-3 gap-0 border border-zinc-300 sm:rounded-lg overflow-hidden [&>*:nth-child(2n)]:border-r-0 lg:[&>*:nth-child(2n)]:border-r lg:[&>*:nth-child(3n)]:border-r-0 [&>*:nth-child(n+5)]:border-b-0 lg:[&>*:nth-child(n+4)]:border-b-0"
+          >
+            {SERVICES.map((service, i) => {
+              const imageSrc = serviceImages[i % serviceImages.length];
+              return (
+                <motion.div
+                  key={service.id}
+                  data-service-cell
+                  className="group relative flex items-center justify-center min-h-[150px] sm:min-h-[140px] md:min-h-[160px] lg:min-h-[200px] border-r border-b border-zinc-300 bg-white overflow-hidden cursor-pointer"
+                  whileHover={{ y: -6 }}
+                >
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0">
+                    <Image
+                      src={imageSrc}
+                      alt=""
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                    <div className="absolute inset-0 bg-brand-purple/70" />
+                  </div>
+                  <span className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-bold text-zinc-800 group-hover:text-white text-center relative z-10 transition-colors duration-300 px-3 sm:px-4 group-hover:drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)] leading-tight">
+                    <SlidingText>{service.name}</SlidingText>
+                  </span>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

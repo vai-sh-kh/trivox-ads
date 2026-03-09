@@ -7,11 +7,11 @@ import { HowWeHelpSection } from "@/components/how-we-help-section";
 import { ServicesSection } from "@/components/services-section";
 import { StatsSection } from "@/components/stats-section";
 import { Principles } from "@/components/principles";
-import { HallOfFame } from "@/components/hall-of-fame";
 import { FAQSection } from "@/components/faq-section";
 import { GrowTodaySection } from "@/components/grow-today-section";
 import { Footer } from "@/components/footer";
 import { MotionPathScrollWithHomeCards } from "@/components/motion-path-scroll";
+import { HallOfFame } from "@/components/hall-of-fame";
 
 export default function Home() {
   return (

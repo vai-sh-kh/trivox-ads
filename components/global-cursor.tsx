@@ -34,7 +34,7 @@ export function GlobalCursor() {
   const xToArrow = useRef<((v: number) => void) | null>(null);
   const yToArrow = useRef<((v: number) => void) | null>(null);
   const [mounted, setMounted] = useState(false);
-  const [isPointer, setIsPointer] = useState(true);
+  const [showCursor, setShowCursor] = useState(false);
 
   const handleMove = useCallback((e: MouseEvent) => {
     const x = e.clientX;
@@ -74,12 +74,16 @@ export function GlobalCursor() {
   }, []);
 
   useEffect(() => {
-    const prefersCoarse = window.matchMedia("(pointer: coarse)").matches;
-    if (prefersCoarse) {
-      setIsPointer(false);
-      return;
-    }
-    setMounted(true);
+    const update = () => {
+      const prefersCoarse = window.matchMedia("(pointer: coarse)").matches;
+      const isNarrowViewport = window.matchMedia("(max-width: 1023px)").matches;
+      const shouldShow = !prefersCoarse && !isNarrowViewport;
+      setShowCursor(shouldShow);
+      setMounted(shouldShow);
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
   }, []);
 
   useEffect(() => {
@@ -142,7 +146,7 @@ export function GlobalCursor() {
     };
   }, [mounted, handleMove]);
 
-  if (!isPointer) return null;
+  if (!showCursor) return null;
 
   return (
     /* Full-page overlay so cursor shows in all sections (above ScrollSmoother wrapper) */

@@ -1,86 +1,15 @@
 "use client";
-
 import { useRef, useLayoutEffect } from "react";
-import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { gsap } from "@/lib/gsap";
 import { StatsBottomCurve } from "@/components/stats-bottom-curve";
-
-// ─── Helper: Odometer counter animation ────────────────────────────────────
-function animateCounter(
-  el: HTMLElement,
-  target: number,
-  suffix: string,
-  prefix: string,
-  trigger: Element,
-) {
-  const obj = { val: 0 };
-  gsap.to(obj, {
-    val: target,
-    duration: 2.2,
-    ease: "power3.out",
-    scrollTrigger: {
-      trigger,
-      start: "top 85%",
-      once: true,
-    },
-    onUpdate() {
-      const v = Math.round(obj.val);
-      el.textContent =
-        prefix + (v >= 1000 ? (v / 1000).toFixed(1) + "k" : String(v)) + suffix;
-    },
-  });
-}
-
-const STATS = [
-  {
-    display: "5+",
-    prefix: "",
-    raw: 5,
-    suffix: "+",
-    label: ["YEARS OF", "GROWTH"],
-  },
-  {
-    display: "50+",
-    prefix: "",
-    raw: 50,
-    suffix: "+",
-    label: ["PROJECTS", "DELIVERED"],
-  },
-  {
-    display: "8",
-    prefix: "",
-    raw: 8,
-    suffix: "",
-    label: ["WEEKS TO", "MEASURABLE", "RESULTS"],
-  },
-  {
-    display: "100+",
-    prefix: "",
-    raw: 100,
-    suffix: "+",
-    label: ["CLIENTS", "TRUST US"],
-  },
-  {
-    display: "200+",
-    prefix: "",
-    raw: 200,
-    suffix: "+",
-    label: ["BRANDS WE'VE", "HELPED SCALE"],
-  },
-  {
-    display: "6",
-    prefix: "",
-    raw: 6,
-    suffix: "",
-    label: ["SERVICES", "& COUNTING"],
-  },
-];
+import { Instagram, ExternalLink } from "lucide-react";
+import { CLIENTS_LIST } from "@/lib/constants";
 
 export function StatsSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const statsGridRef = useRef<HTMLDivElement>(null);
   const leftColumnRef = useRef<HTMLDivElement>(null);
-  const numberRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
@@ -122,13 +51,12 @@ export function StatsSection() {
         });
       }
 
-      // ── Counter roll-up + clip-path reveal for each stat card ────────────
+      // ── Clip-path reveal for each client card ────────────
       if (statsGrid) {
         const cards = gsap.utils.toArray<HTMLElement>(
-          statsGrid.querySelectorAll("[data-stat-card]"),
+          statsGrid.querySelectorAll("[data-client-card]"),
         );
 
-        // Initial clip-path hidden state
         gsap.set(cards, {
           clipPath: "inset(0 0 100% 0)",
           opacity: 0,
@@ -137,8 +65,8 @@ export function StatsSection() {
         gsap.to(cards, {
           clipPath: "inset(0 0 0% 0)",
           opacity: 1,
-          duration: 0.7,
-          stagger: 0.09,
+          duration: 0.8,
+          stagger: 0.15,
           ease: "power3.out",
           scrollTrigger: {
             trigger: section,
@@ -146,47 +74,8 @@ export function StatsSection() {
             once: true,
           },
           onComplete() {
-            // After reveal, remove clip-path so sub-elements aren't clipped
             gsap.set(cards, { clearProps: "clipPath" });
           },
-        });
-
-        // Odometer counters
-        numberRefs.current.forEach((el, i) => {
-          if (!el) return;
-          const stat = STATS[i];
-          if (!stat) return;
-          // Stretch the number vertically before counting (typewriter up)
-          const obj = { val: 0 };
-          gsap.from(el, {
-            y: 40,
-            opacity: 0,
-            duration: 0.5,
-            delay: i * 0.07,
-            ease: "power3.out",
-            scrollTrigger: { trigger: section, start: "top 85%", once: true },
-          });
-          gsap.to(obj, {
-            val: stat.raw,
-            duration: 1.8 + i * 0.1,
-            ease: "power2.out",
-            delay: i * 0.07 + 0.3,
-            scrollTrigger: { trigger: section, start: "top 85%", once: true },
-            onUpdate() {
-              const v = obj.val;
-              if (stat.suffix === "bn+") {
-                el.textContent = `$${(v / 1000).toFixed(1)}bn`;
-              } else if (stat.suffix === "X") {
-                el.textContent = `${Math.round(v)}X`;
-              } else if (stat.suffix === "+") {
-                el.textContent = `${Math.round(v)}+`;
-              } else if (stat.suffix === "%") {
-                el.textContent = `${Math.round(v)}%`;
-              } else {
-                el.textContent = String(Math.round(v));
-              }
-            },
-          });
         });
       }
     }, section);
@@ -197,13 +86,13 @@ export function StatsSection() {
   return (
     <section
       ref={sectionRef}
-      className="bg-black text-white min-h-dvh py-12 sm:py-16 md:py-20 relative overflow-hidden"
+      className="bg-black text-white lg:h-screen relative overflow-hidden"
     >
-      <div className="flex h-full min-h-0 w-full">
+      <div className="flex flex-col lg:flex-row h-full min-h-0 w-full">
         {/* Col 1: Scrolling text (continuous) — fixed width */}
         <div
           ref={leftColumnRef}
-          className="hidden lg:flex w-[200px] shrink-0 flex-col border-r border-white/10 select-none bg-black overflow-hidden"
+          className="hidden lg:flex w-[160px] xl:w-[200px] shrink-0 flex-col border-r border-white/10 select-none bg-black overflow-hidden"
         >
           <div className="animate-vertical-scroll flex flex-col">
             {[0, 1, 2, 3, 4].map((block) => (
@@ -232,15 +121,15 @@ export function StatsSection() {
                     >
                       {isBrand ? (
                         <>
-                          <span className="text-xl font-black tracking-tighter text-white leading-none">
+                          <span className="text-lg xl:text-xl font-black tracking-tighter text-white leading-none">
                             {line === "TRIVOXADS" ? "TRIVOX" : "GROWTH ·"}
                           </span>
-                          <span className="text-xl font-black tracking-tighter text-logo-pink leading-none">
+                          <span className="text-lg xl:text-xl font-black tracking-tighter text-logo-pink leading-none">
                             {line === "TRIVOXADS" ? "ADS" : " ADS"}
                           </span>
                         </>
                       ) : (
-                        <span className="text-xl font-black tracking-tighter text-white leading-none">
+                        <span className="text-lg xl:text-xl font-black tracking-tighter text-white leading-none">
                           {line}
                         </span>
                       )}
@@ -252,158 +141,86 @@ export function StatsSection() {
           </div>
         </div>
 
-        {/* Col 2: CLIENTS TRUST US — double width of col 1 */}
-        <div className="hidden lg:flex w-[400px] shrink-0 flex-col justify-center bg-black p-8 md:p-12 border-r border-white/10">
+        {/* Col 2: CLIENTS TRUST US — responsive width */}
+        <div className="flex w-full lg:w-[320px] xl:w-[400px] shrink-0 flex-col justify-center bg-black p-8 md:p-12 lg:border-r border-white/10">
           <h2
             ref={headingRef}
-            className="text-5xl md:text-7xl font-black leading-[0.85] tracking-tighter uppercase"
+            className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-black leading-[0.85] tracking-tighter uppercase"
           >
-            <span className="block mb-2 md:mb-3">CLIENTS</span>
-            <span className="block mb-2 md:mb-3">TRUST</span>
+            <span className="block mb-2">CLIENTS</span>
+            <span className="block mb-2">TRUST</span>
             <span className="block">US</span>
           </h2>
         </div>
 
-        {/* Col 3: Stats grid — rest of space, 3 rows × 3 cols */}
+        {/* Col 3: Clients grid — rest of space */}
         <div className="flex-1 min-w-0 flex flex-col overflow-hidden">
-          <h2
-            className="lg:hidden text-3xl sm:text-4xl md:text-5xl font-black leading-[0.85] tracking-tighter uppercase p-4 sm:p-6 md:p-8 border-b border-white/10"
-            aria-hidden
-          >
-            CLIENTS TRUST US
-          </h2>
           <div
             ref={statsGridRef}
-            className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-3 grid-rows-3 bg-black"
+            className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 bg-black"
           >
-            {/* Row 1 */}
-            <div
-              data-stat-card
-              className="bg-black p-4 sm:p-6 md:p-8 border-r border-b border-white/10 flex flex-col justify-between min-h-[120px] sm:min-h-[140px] md:min-h-[160px] overflow-hidden"
-            >
-              <span
-                ref={(el) => {
-                  numberRefs.current[0] = el;
-                }}
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white tabular-nums"
+            {CLIENTS_LIST.map((client, i) => (
+              <div
+                key={client.id}
+                data-client-card
+                className={`group relative p-8 md:p-10 lg:p-12 border-b border-white/10 lg:border-b-0 flex flex-col justify-between overflow-hidden transition-all duration-500 hover:bg-zinc-950/50 ${i < 2 ? "lg:border-r" : ""
+                  }`}
               >
-                5+
-              </span>
-              <p className="text-[9px] sm:text-[10px] md:text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
-                YEARS OF
-                <br />
-                GROWTH
-              </p>
-            </div>
-            <div
-              data-stat-card
-              className="bg-black p-4 sm:p-6 md:p-8 border-r border-b border-white/10 flex flex-col justify-between min-h-[120px] sm:min-h-[140px] md:min-h-[160px] overflow-hidden"
-            >
-              <span
-                ref={(el) => {
-                  numberRefs.current[1] = el;
-                }}
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white tabular-nums"
-              >
-                50+
-              </span>
-              <p className="text-[9px] sm:text-[10px] md:text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
-                PROJECTS
-                <br />
-                DELIVERED
-              </p>
-            </div>
-            <div
-              data-stat-card
-              className="bg-black p-4 sm:p-6 md:p-8 border-b border-white/10 flex flex-col justify-between min-h-[120px] sm:min-h-[140px] md:min-h-[160px] overflow-hidden"
-            >
-              <span
-                ref={(el) => {
-                  numberRefs.current[2] = el;
-                }}
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white tabular-nums"
-              >
-                8
-              </span>
-              <p className="text-[9px] sm:text-[10px] md:text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
-                WEEKS TO
-                <br />
-                MEASURABLE
-                <br />
-                RESULTS
-              </p>
-            </div>
+                {/* Background glow effect on hover */}
+                <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-brand-purple/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-            {/* Row 2 */}
-            <div
-              data-stat-card
-              className="bg-black p-4 sm:p-6 md:p-8 border-r border-b border-white/10 flex flex-col justify-between min-h-[120px] sm:min-h-[140px] md:min-h-[160px] overflow-hidden"
-            >
-              <span
-                ref={(el) => {
-                  numberRefs.current[3] = el;
-                }}
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white tabular-nums"
-              >
-                100+
-              </span>
-              <p className="text-[9px] sm:text-[10px] md:text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
-                CLIENTS
-                <br />
-                TRUST US
-              </p>
-            </div>
-            <div
-              data-stat-card
-              className="sm:col-span-2 md:col-span-2 bg-black p-4 sm:p-6 md:p-8 border-b border-white/10 flex flex-col justify-center min-h-[120px] sm:min-h-[140px] md:min-h-[160px] overflow-hidden"
-            >
-              <blockquote className="text-sm sm:text-base md:text-lg lg:text-2xl font-black leading-[1.15] tracking-tight uppercase mb-3 sm:mb-4 text-white">
-                &quot;TRIVOXADS IS A PERFORMANCE-DRIVEN DIGITAL MARKETING AGENCY
-                FOCUSED ON CREATING IMPACTFUL ONLINE STRATEGIES THAT HELP BRANDS
-                GROW, ENGAGE, AND CONVERT.&quot;
-              </blockquote>
-              <cite className="not-italic text-[10px] md:text-[11px] font-black uppercase tracking-widest text-zinc-400">
-                CLIENTS TRUST US
-              </cite>
-            </div>
+                <div className="space-y-6 relative z-10">
+                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl md:text-3xl font-black text-white group-hover:scale-110 group-hover:bg-brand-purple/20 group-hover:border-brand-purple/30 transition-all duration-500">
+                    {client.initials}
+                  </div>
+                  <div>
+                    <h3 className="text-2xl md:text-3xl xl:text-4xl font-black leading-tight tracking-tighter uppercase text-white mb-2">
+                      {client.name}
+                    </h3>
+                    <p className="text-zinc-500 text-[10px] md:text-xs font-black uppercase tracking-[0.2em] leading-relaxed">
+                      {client.tagline}
+                    </p>
+                  </div>
+                </div>
 
-            {/* Row 3 */}
-            <div
-              data-stat-card
-              className="bg-black p-4 sm:p-6 md:p-8 border-r border-white/10 flex flex-col justify-between min-h-[120px] sm:min-h-[140px] md:min-h-[160px] overflow-hidden"
-            >
-              <span
-                ref={(el) => {
-                  numberRefs.current[4] = el;
-                }}
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white tabular-nums"
-              >
-                200+
-              </span>
-              <p className="text-[9px] sm:text-[10px] md:text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
-                BRANDS WE&apos;VE
-                <br />
-                HELPED SCALE
-              </p>
+                <div className="flex flex-col gap-4 mt-12 relative z-10">
+                  <div className="h-px bg-white/10 w-full group-hover:bg-brand-purple/30 transition-colors" />
+                  <div className="flex items-center gap-4">
+                    {client.instagram && client.instagram !== "#" && (
+                      <a
+                        href={client.instagram}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-zinc-400 hover:text-white hover:bg-brand-purple hover:border-brand-purple transition-all duration-300"
+                        aria-label={`${client.name} Instagram`}
+                      >
+                        <Instagram size={18} />
+                      </a>
+                    )}
+                    <a
+                      href={`https://${client.website}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 flex items-center justify-between border border-white/10 px-5 py-3 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest text-zinc-400 hover:text-white hover:border-white transition-all duration-300 group/btn"
+                    >
+                      <span>{client.website}</span>
+                      <ExternalLink size={14} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Bottom Quote / CTA bar */}
+          <div className="bg-zinc-950 p-6 md:p-8 lg:p-10 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden relative group">
+            <p className="text-sm md:text-base lg:text-lg font-black leading-tight tracking-tight uppercase text-white max-w-2xl relative z-10">
+              &quot;TRIVOXADS HELPS BRANDS GROW, ENGAGE, AND CONVERT WITH DATA-DRIVEN STRATEGIES.&quot;
+            </p>
+            <div className="flex items-center gap-4 shrink-0 relative z-10">
+              <span className="text-[10px] font-black tracking-widest text-zinc-500 uppercase">OUR GROWTH PARTNER</span>
+              <div className="w-10 h-px bg-zinc-700" />
             </div>
-            <div
-              data-stat-card
-              className="bg-black p-4 sm:p-6 md:p-8 border-r border-white/10 flex flex-col justify-between min-h-[120px] sm:min-h-[140px] md:min-h-[160px] overflow-hidden"
-            >
-              <span
-                ref={(el) => {
-                  numberRefs.current[5] = el;
-                }}
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white tabular-nums"
-              >
-                6
-              </span>
-              <p className="text-[9px] sm:text-[10px] md:text-[11px] font-black uppercase tracking-widest leading-tight text-zinc-400">
-                SERVICES
-                <br />& COUNTING
-              </p>
-            </div>
-            <div className="bg-black min-h-[120px] sm:min-h-[140px] md:min-h-[160px]" />
           </div>
         </div>
       </div>

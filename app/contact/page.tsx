@@ -1,10 +1,12 @@
 "use client";
 
-import { useState, FormEvent } from "react";
 import { Footer } from "@/components/footer";
 import { InnerPageLayout } from "@/components/inner-page-layout";
 import { CONTACT, MEDIA_LINKS } from "@/lib/constants";
 import { motion } from "motion/react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import {
   Phone,
   Mail,
@@ -18,50 +20,28 @@ import {
 const INTRO_COPY =
   "Get in touch. We'd love to hear about your brand and how we can help you grow. Reach us by phone, email, or send a message directly via WhatsApp.";
 
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const contactSchema = z.object({
+  name: z.string().trim().min(2, "Name must be at least 2 characters."),
+  email: z.string().trim().email("Please enter a valid email address."),
+  message: z.string().trim().min(10, "Message must be at least 10 characters."),
+});
+
+type ContactFormData = z.infer<typeof contactSchema>;
 
 export default function ContactPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [errors, setErrors] = useState<{
-    name?: string;
-    email?: string;
-    message?: string;
-  }>({});
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactSchema),
+  });
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    const next: typeof errors = {};
-
-    const trimmedName = name.trim();
-    if (!trimmedName) {
-      next.name = "Name is required.";
-    } else if (trimmedName.length < 2) {
-      next.name = "Name must be at least 2 characters.";
-    }
-
-    const trimmedEmail = email.trim();
-    if (!trimmedEmail) {
-      next.email = "Email is required.";
-    } else if (!EMAIL_REGEX.test(trimmedEmail)) {
-      next.email = "Please enter a valid email address.";
-    }
-
-    const trimmedMessage = message.trim();
-    if (!trimmedMessage) {
-      next.message = "Message is required.";
-    } else if (trimmedMessage.length < 10) {
-      next.message = "Message must be at least 10 characters.";
-    }
-
-    setErrors(next);
-    if (Object.keys(next).length > 0) return;
-
+  const onSubmit = (data: ContactFormData) => {
     const lines = [];
-    lines.push(`Name: ${trimmedName}`);
-    lines.push(`Email: ${trimmedEmail}`);
-    lines.push(`Message: ${trimmedMessage}`);
+    lines.push(`Name: ${data.name}`);
+    lines.push(`Email: ${data.email}`);
+    lines.push(`Message: ${data.message}`);
     const text = lines.join("\n\n");
     const url = `https://wa.me/${CONTACT.whatsappNumber}?text=${encodeURIComponent(text)}`;
     window.open(url, "_blank", "noopener,noreferrer");
@@ -107,7 +87,7 @@ export default function ContactPage() {
                 href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CONTACT.address)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block p-8 md:p-10 rounded-2xl border border-zinc-200 bg-white hover:border-brand-purple/30 hover:shadow-xl transition-all duration-300 group"
+                className="block px-4 py-8 md:p-10 rounded-2xl border border-zinc-200 bg-white hover:border-brand-purple/30 hover:shadow-xl transition-all duration-300 group"
                 initial={{ opacity: 0, y: 32 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
@@ -134,7 +114,7 @@ export default function ContactPage() {
 
               <motion.a
                 href={`mailto:${CONTACT.email}`}
-                className="block p-8 md:p-10 rounded-2xl border border-zinc-200 bg-white hover:border-brand-purple/30 hover:shadow-xl transition-all duration-300 group"
+                className="block px-4 py-8 md:p-10 rounded-2xl border border-zinc-200 bg-white hover:border-brand-purple/30 hover:shadow-xl transition-all duration-300 group"
                 initial={{ opacity: 0, y: 32 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
@@ -161,7 +141,7 @@ export default function ContactPage() {
 
               <motion.a
                 href={`tel:${CONTACT.phone.replace(/\s/g, "")}`}
-                className="block p-8 md:p-10 rounded-2xl border border-zinc-200 bg-white hover:border-brand-purple/30 hover:shadow-xl transition-all duration-300 group"
+                className="block px-4 py-8 md:p-10 rounded-2xl border border-zinc-200 bg-white hover:border-brand-purple/30 hover:shadow-xl transition-all duration-300 group"
                 initial={{ opacity: 0, y: 32 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
@@ -192,7 +172,7 @@ export default function ContactPage() {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block p-8 md:p-10 rounded-2xl border border-zinc-200 bg-white hover:border-brand-purple/30 hover:shadow-xl transition-all duration-300 group"
+                  className="block px-4 py-8 md:p-10 rounded-2xl border border-zinc-200 bg-white hover:border-brand-purple/30 hover:shadow-xl transition-all duration-300 group"
                   initial={{ opacity: 0, y: 32 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
@@ -240,7 +220,7 @@ export default function ContactPage() {
               }}
               whileHover={{ y: -6 }}
             >
-              <div className="p-8 md:p-10 rounded-2xl border border-zinc-200 bg-white hover:border-brand-purple/30 hover:shadow-xl transition-all duration-300">
+              <div className="px-4 py-8 md:p-10 rounded-2xl border border-zinc-200 bg-white hover:border-brand-purple/30 hover:shadow-xl transition-all duration-300">
                 <h2 className="text-brand-purple font-black text-2xl md:text-3xl uppercase tracking-tight mb-2 text-start">
                   Send a message via WhatsApp
                 </h2>
@@ -248,31 +228,25 @@ export default function ContactPage() {
                   Fill in your details and message below. Click Send to open
                   WhatsApp with your message ready to send.
                 </p>
-                <form onSubmit={handleSubmit} className="space-y-6 text-start">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 text-start">
                   <div>
                     <label
                       htmlFor="contact-name"
                       className="block text-brand-purple font-black text-xs uppercase tracking-widest mb-2 text-start"
                     >
-                      Name
+                      Name*
                     </label>
                     <input
                       id="contact-name"
                       type="text"
-                      value={name}
-                      onChange={(e) => {
-                        setName(e.target.value);
-                        if (errors.name)
-                          setErrors((prev) => ({ ...prev, name: undefined }));
-                      }}
+                      {...register("name")}
                       placeholder="Your name"
                       aria-invalid={!!errors.name}
                       aria-describedby={
                         errors.name ? "contact-name-error" : undefined
                       }
-                      className={`w-full min-h-[44px] px-4 py-3.5 rounded-xl border bg-white text-zinc-800 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-brand-purple focus:border-brand-purple transition-all duration-200 text-base text-start ${
-                        errors.name ? "border-red-500" : "border-zinc-200"
-                      }`}
+                      className={`w-full min-h-[44px] px-4 py-3.5 rounded-xl border bg-white text-zinc-800 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-brand-purple focus:border-brand-purple transition-all duration-200 text-base text-start ${errors.name ? "border-red-500" : "border-zinc-200"
+                        }`}
                     />
                     {errors.name && (
                       <p
@@ -280,7 +254,7 @@ export default function ContactPage() {
                         className="mt-1.5 text-sm text-red-600 text-start"
                         role="alert"
                       >
-                        {errors.name}
+                        {errors.name.message}
                       </p>
                     )}
                   </div>
@@ -289,25 +263,19 @@ export default function ContactPage() {
                       htmlFor="contact-email"
                       className="block text-brand-purple font-black text-xs uppercase tracking-widest mb-2 text-start"
                     >
-                      Email
+                      Email*
                     </label>
                     <input
                       id="contact-email"
                       type="email"
-                      value={email}
-                      onChange={(e) => {
-                        setEmail(e.target.value);
-                        if (errors.email)
-                          setErrors((prev) => ({ ...prev, email: undefined }));
-                      }}
+                      {...register("email")}
                       placeholder="your@email.com"
                       aria-invalid={!!errors.email}
                       aria-describedby={
                         errors.email ? "contact-email-error" : undefined
                       }
-                      className={`w-full min-h-[44px] px-4 py-3.5 rounded-xl border bg-white text-zinc-800 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-brand-purple focus:border-brand-purple transition-all duration-200 text-base text-start ${
-                        errors.email ? "border-red-500" : "border-zinc-200"
-                      }`}
+                      className={`w-full min-h-[44px] px-4 py-3.5 rounded-xl border bg-white text-zinc-800 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-brand-purple focus:border-brand-purple transition-all duration-200 text-base text-start ${errors.email ? "border-red-500" : "border-zinc-200"
+                        }`}
                     />
                     {errors.email && (
                       <p
@@ -315,7 +283,7 @@ export default function ContactPage() {
                         className="mt-1.5 text-sm text-red-600 text-start"
                         role="alert"
                       >
-                        {errors.email}
+                        {errors.email.message}
                       </p>
                     )}
                   </div>
@@ -324,28 +292,19 @@ export default function ContactPage() {
                       htmlFor="contact-message"
                       className="block text-brand-purple font-black text-xs uppercase tracking-widest mb-2 text-start"
                     >
-                      Message
+                      Message*
                     </label>
                     <textarea
                       id="contact-message"
-                      value={message}
-                      onChange={(e) => {
-                        setMessage(e.target.value);
-                        if (errors.message)
-                          setErrors((prev) => ({
-                            ...prev,
-                            message: undefined,
-                          }));
-                      }}
+                      {...register("message")}
                       placeholder="Your message..."
                       rows={5}
                       aria-invalid={!!errors.message}
                       aria-describedby={
                         errors.message ? "contact-message-error" : undefined
                       }
-                      className={`w-full px-4 py-3.5 rounded-xl border bg-white text-zinc-800 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-brand-purple focus:border-brand-purple transition-all duration-200 resize-y min-h-[120px] sm:min-h-[140px] text-base leading-relaxed text-start ${
-                        errors.message ? "border-red-500" : "border-zinc-200"
-                      }`}
+                      className={`w-full px-4 py-3.5 rounded-xl border bg-white text-zinc-800 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-brand-purple focus:border-brand-purple transition-all duration-200 resize-y min-h-[120px] sm:min-h-[140px] text-base leading-relaxed text-start ${errors.message ? "border-red-500" : "border-zinc-200"
+                        }`}
                     />
                     {errors.message && (
                       <p
@@ -353,7 +312,7 @@ export default function ContactPage() {
                         className="mt-1.5 text-sm text-red-600 text-start"
                         role="alert"
                       >
-                        {errors.message}
+                        {errors.message.message}
                       </p>
                     )}
                   </div>

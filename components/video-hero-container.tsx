@@ -8,7 +8,7 @@ export function VideoHeroContainer() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   return (
-    <section className="relative h-[50vh] min-h-[280px] sm:min-h-[320px] sm:h-[60vh] overflow-hidden bg-black isolate">
+    <section className="relative h-[65vh] min-h-[360px] sm:h-[60vh] sm:min-h-[320px] overflow-hidden bg-black isolate">
       {/* Video as background */}
       <video
         ref={videoRef}

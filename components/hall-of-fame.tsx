@@ -100,9 +100,10 @@ export function HallOfFame() {
       <div className="max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16">
         <h2
           ref={headingRef}
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black leading-[0.9] tracking-tighter uppercase mb-2 sm:mb-3"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black leading-[0.9] tracking-tighter uppercase mb-2 sm:mb-3 flex flex-col gap-4 sm:gap-5"
         >
-          Our Clients Say
+          <span>Our Clients</span>
+          <span>Say</span>
         </h2>
         <p className="text-zinc-400 max-w-2xl text-sm sm:text-base md:text-lg mb-8 sm:mb-12 md:mb-16">
           We&apos;ve been privileged to work with brands doing great things.
@@ -221,39 +222,7 @@ export function HallOfFame() {
             </div>
           </div>
 
-          {/* Right panel: active client details */}
-          <div
-            ref={panelRef}
-            className="lg:w-[380px] xl:w-[420px] shrink-0 border border-white/10 rounded-xl bg-white/5 p-4 sm:p-6 md:p-8 flex flex-col justify-center"
-          >
-            <p className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-zinc-500 mb-1.5 sm:mb-2">
-              Client spotlight
-            </p>
-            <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white mb-3 sm:mb-4 break-words">
-              {current.company || current.authorName}
-            </h3>
-            <p className="text-white font-semibold mb-6">
-              {current.company ? current.authorName : current.date}
-            </p>
-            <div className="flex flex-wrap gap-2 mb-6">
-              <span className="px-3 py-1.5 rounded-full border border-white/20 text-xs font-bold uppercase">
-                Results-Driven
-              </span>
-              <span className="px-3 py-1.5 rounded-full border border-white/20 text-xs font-bold uppercase">
-                Trusted Partner
-              </span>
-              <span className="px-3 py-1.5 rounded-full border border-white/20 text-xs font-bold uppercase">
-                Growth Focused
-              </span>
-            </div>
-            <ul className="space-y-3 text-sm text-zinc-400 border-t border-white/10 pt-6">
-              <li className="flex items-start gap-2">
-                <Quote className="w-4 h-4 shrink-0 mt-0.5 text-brand-purple/70" />
-                <span>{current.text}</span>
-              </li>
-              <li className="text-zinc-500 text-xs">{current.date}</li>
-            </ul>
-          </div>
+         
         </div>
 
         {/* Bottom CTA */}

@@ -109,17 +109,6 @@ export function StatsBottomCurve() {
           d="M0,0 L1200,0 L1200,120 Q900,60 600,60 Q300,60 0,120 Z"
           fill="black"
         />
-        {/* String-like gradient line: shape from points, persisted in localStorage */}
-        <path
-          d={linePath}
-          fill="none"
-          stroke="url(#stats-bottom-accent)"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="animate-stats-curve-pulse"
-          style={{ filter: "url(#stats-curve-glow)" }}
-        />
       </svg>
     </div>
   );

@@ -69,49 +69,27 @@ export interface Testimonial {
 export const TESTIMONIALS: Testimonial[] = [
   {
     id: "t1",
-    authorName: "Priya Sharma",
-    initials: "PS",
-    date: "15 Jan 2025",
-    text: "TrivoxAds helped us scale our social presence and reach the right audience. Their data-driven approach delivered measurable results within weeks.",
-    company: "TechStart India",
+    authorName: "EduStack Academy",
+    initials: "EA",
+    date: "March 2026",
+    text: "We had a great experience working with Trivox Ads for the marketing of EduStack Academy. Their team clearly understands the education industry and helped us generate quality leads through well-planned digital campaigns. The strategy, creatives, and ad optimization they provided really helped increase our admissions. Highly professional team, responsive support, and result-oriented approach. Highly recommended for any educational institution looking to grow through digital marketing.",
+    company: "EduStack Academy",
   },
   {
     id: "t2",
-    authorName: "Rahul Menon",
-    initials: "RM",
-    date: "02 Dec 2024",
-    text: "From branding to performance campaigns, the team understood our goals and executed with precision. Highly recommend for brands looking to grow.",
-    company: "GreenLeaf Foods",
+    authorName: "Taneya Jewelry",
+    initials: "TJ",
+    date: "March 2026",
+    text: "Working with Trivox Ads for promoting Taneya has been an amazing experience. Their team perfectly understood our brand identity and created campaigns that matched our anti-tarnish minimalist jewelry positioning. From ad creatives to audience targeting, everything was handled professionally. We saw great engagement and brand visibility through their campaigns. Highly recommended for brands that want strong digital growth.",
+    company: "Taneya Jewelry",
   },
   {
     id: "t3",
-    authorName: "Anitha Krishnan",
-    initials: "AK",
-    date: "20 Nov 2024",
-    text: "We saw a clear uplift in engagement and conversions after partnering with TrivoxAds. Professional, creative, and results-focused.",
-  },
-  {
-    id: "t4",
-    authorName: "Vikram Singh",
-    initials: "VS",
-    date: "08 Oct 2024",
-    text: "Their video marketing strategies gave our brand a fresh voice. The team is responsive and truly cares about delivering outcomes.",
-    company: "StyleHub",
-  },
-  {
-    id: "t5",
-    authorName: "Meera Nair",
-    initials: "MN",
-    date: "22 Sep 2024",
-    text: "TrivoxAds combined creativity with analytics in a way that actually moved the needle. Our ROI on digital spend improved significantly.",
-  },
-  {
-    id: "t6",
-    authorName: "Karthik Reddy",
-    initials: "KR",
-    date: "14 Aug 2024",
-    text: "End-to-end digital solutions delivered with transparency and real-world market insights. A trusted partner for growth.",
-    company: "FinServe",
+    authorName: "Aromél by Newmont Aromatics",
+    initials: "AN",
+    date: "March 2026",
+    text: "Our collaboration with Trivox Ads for promoting Aromél by Newmont Aromatics has been fantastic. As a wellness and self-care brand, we wanted marketing that communicates calm, trust, and authenticity — and the Trivox team delivered exactly that. Their campaign strategies helped us reach the right audience interested in wellness, healing, and self-care products. Very supportive team and highly creative approach. Definitely recommend them for wellness and lifestyle brands.",
+    company: "Aromél by Newmont Aromatics",
   },
 ];
 
@@ -191,8 +169,8 @@ export const SERVICE_DESCRIPTIONS: Record<string, string> = {
 };
 
 // ─── About page (single source from doc) ───────────────────────────────────
-export const ABOUT_YEARS = "5+";
-export const ABOUT_YEARS_LABEL = "Years of Growth";
+export const ABOUT_YEARS = "1+";
+export const ABOUT_YEARS_LABEL = "Year Experience";
 export const ABOUT_YEARS_DESCRIPTION =
   "Delivering data-backed digital solutions that increase visibility, engagement, and conversions for brands.";
 
@@ -204,3 +182,39 @@ export const ABOUT_VISION =
 
 export const ABOUT_MAN_BEHIND =
   "The driving force behind TrivoxAds brings together a passion for performance marketing and a commitment to helping brands grow. With a focus on data, creativity, and real-world market insights, the team is dedicated to delivering strategies that connect brands with the right audience and achieve measurable business outcomes.";
+// ─── Clients (for Showcase/Stats section replacement) ──────────────────────
+export interface ClientItem {
+  id: string;
+  name: string;
+  website: string;
+  tagline: string;
+  instagram?: string;
+  initials: string;
+}
+
+export const CLIENTS_LIST: ClientItem[] = [
+  {
+    id: "c1",
+    name: "EduStack Academy LLP",
+    website: "edustackacademy.com",
+    tagline: "Top-Rated Digital Marketing Academy in Kerala",
+    instagram: "https://www.instagram.com/edustack_academy/",
+    initials: "ES",
+  },
+  {
+    id: "c2",
+    name: "Aromél Wellness Blends",
+    website: "aromel.com",
+    tagline: "Wellness & Self-Care Brand. Promoting calm, trust, and authenticity with high-quality healing products.",
+    instagram: "https://www.instagram.com/aromelwellnessblends.official?igsh=MW1jMzc1amFmODg0bA%3D%3D",
+    initials: "AN",
+  },
+  {
+    id: "c3",
+    name: "Taneya Jewelry",
+    website: "taneyajewelry.com",
+    tagline: "Minimalist Anti-Tarnish Jewelry Brand. Premium 316L stainless steel jewelry crafted for everyday elegance.",
+    instagram: "https://www.instagram.com/taneya.jewels?igsh=MWtwMXhna2xrMDN0ZQ%3D%3D",
+    initials: "TJ",
+  },
+];
