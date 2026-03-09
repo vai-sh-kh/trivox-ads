@@ -57,9 +57,9 @@ export function FeaturedSection({ embedded }: { embedded?: boolean }) {
           >
             <source src="/videos/home-banner.mp4" type="video/mp4" />
           </video>
-          <div className="flex items-center gap-4 sm:gap-6 md:gap-8 text-white scale-100 sm:scale-110 md:scale-150 relative z-10">
+          <div className="flex items-center gap-4 sm:gap-6 md:gap-8 text-white relative z-10">
             {/* <MusicWaveBars className="bg-white scale-90 sm:scale-100" /> */}
-            <span className="text-4xl min-[400px]:text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-medium tracking-tighter">
+            <span className="text-5xl min-[400px]:text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-medium tracking-tighter">
               Bold brands. <br />
               Real results.
             </span>
