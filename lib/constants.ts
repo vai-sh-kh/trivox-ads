@@ -15,7 +15,7 @@ export const SITE_DEFAULT_DESCRIPTION =
 
 // ─── Contact (single source of truth) ───────────────────────────────────────
 export const CONTACT_PHONE = "+91 8089609045";
-export const CONTACT_EMAIL = "hello@trivoxads.com";
+export const CONTACT_EMAIL = "info@edustackacademy.com";
 export const CONTACT_ADDRESS =
   "320/21, SREEVALSAM, KARIYAKONAM, VELICODE, OORUTTAMBALAM P O, Trivandrum";
 export const CONTACT_INSTAGRAM_URL = "https://www.instagram.com/trivox_ads";
